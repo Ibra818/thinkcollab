@@ -1,4 +1,4 @@
-# 📚 Documentation API - Plateforme d'Apprentissage en Ligne
+# 📚 Documentation API - Bint School
 
 ## 🌟 Vue d'ensemble
 
@@ -1012,18 +1012,6 @@ Authorization: Bearer {your_token_here}
 ```
 
 Le token est obtenu lors de la connexion ou de l'inscription et doit être inclus dans toutes les requêtes authentifiées.
-
----
-
-## 🌍 Environnements
-
-### Développement
-- **Base URL :** `http://localhost:8001/api`
-- **TouchPoint :** Mode sandbox
-
-### Production
-- **Base URL :** `https://votre-domaine.com/api`
-- **TouchPoint :** Mode production
 
 ---
 
