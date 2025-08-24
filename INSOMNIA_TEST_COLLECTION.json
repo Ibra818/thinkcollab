@@ -1,0 +1,276 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-08-24T13:18:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_payment_methods",
+      "parentId": "fld_touchpoint",
+      "_type": "request",
+      "name": "1. Get Payment Methods",
+      "description": "Récupérer les moyens de paiement disponibles (Orange Money, Wave)",
+      "url": "{{ _.base_url }}/api/payment-methods",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543210,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_register",
+      "parentId": "fld_auth",
+      "_type": "request",
+      "name": "2. Register User",
+      "description": "Créer un nouvel utilisateur pour les tests",
+      "url": "{{ _.base_url }}/api/register",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\",\n  \"role\": \"apprenant\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "_type": "request",
+      "name": "3. Login User",
+      "description": "Se connecter et obtenir un token d'authentification",
+      "url": "{{ _.base_url }}/api/login",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543190,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_initialize_payment",
+      "parentId": "fld_touchpoint",
+      "_type": "request",
+      "name": "4. Initialize Payment",
+      "description": "Initialiser un paiement TouchPoint avec Orange Money ou Wave",
+      "url": "{{ _.base_url }}/api/payments/initialize",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"purchase_id\": 1,\n  \"payment_method_id\": 1,\n  \"customer_name\": \"Amadou Diallo\",\n  \"customer_email\": \"amadou@example.com\",\n  \"phone_number\": \"771234567\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.auth_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543180,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_check_payment_status",
+      "parentId": "fld_touchpoint",
+      "_type": "request",
+      "name": "5. Check Payment Status",
+      "description": "Vérifier le statut d'un paiement",
+      "url": "{{ _.base_url }}/api/payments/TXN_ABC123XYZ789/status",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.auth_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543170,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_webhook_touchpoint",
+      "parentId": "fld_touchpoint",
+      "_type": "request",
+      "name": "6. TouchPoint Webhook (Simulation)",
+      "description": "Simuler une notification webhook de TouchPoint",
+      "url": "{{ _.base_url }}/api/webhooks/touchpoint",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"ref_command\": \"TXN_ABC123XYZ789\",\n  \"status\": \"SUCCESS\",\n  \"transaction_id\": \"TP_789456123\",\n  \"amount\": 250,\n  \"currency\": \"XOF\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.webhook_secret }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543160,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_user_transactions",
+      "parentId": "fld_touchpoint",
+      "_type": "request",
+      "name": "7. User Transactions",
+      "description": "Récupérer l'historique des transactions de l'utilisateur",
+      "url": "{{ _.base_url }}/api/payments/transactions",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.auth_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1692876543150,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_touchpoint",
+      "_type": "request_group",
+      "parentId": "wrk_main",
+      "name": "TouchPoint Payments",
+      "description": "Routes de paiement TouchPoint by InTouch",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1692876543210
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_main",
+      "name": "Authentication",
+      "description": "Routes d'authentification API",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1692876543220
+    },
+    {
+      "_id": "wrk_main",
+      "_type": "workspace",
+      "name": "Bint School API",
+      "description": "API Laravel pour la plateforme d'apprentissage en ligne avec intégration TouchPoint"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000",
+        "auth_token": "",
+        "webhook_secret": "your_webhook_secret_here"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "auth_token", "webhook_secret"]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1692876543210
+    }
+  ]
+}
