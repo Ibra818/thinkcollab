@@ -15,7 +15,10 @@ class FeedVideo extends Model
         'user_id',
         'titre',
         'description',
-        'url',
+        'url_video',
+        'duree',
+        'miniature',
+        'formation_id'
     ];
 
     // Relations

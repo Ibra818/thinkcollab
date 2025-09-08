@@ -14,6 +14,15 @@ class CategorieSeeder extends Seeder
     public function run(): void
     {
         $categories = [
+
+            [
+                'nom' => 'Toutes les categories',
+                'slug' => '',
+                'description' => '',
+                'couleur' => '#3B82F6',
+                'icone' => 'code',
+            ],
+
             [
                 'nom' => 'Développement Web',
                 'slug' => 'developpement-web',

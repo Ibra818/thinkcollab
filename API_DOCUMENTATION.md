@@ -128,7 +128,7 @@ Authorization: Bearer {token}
 
 ### Changer de rôle (Apprenant → Formateur)
 ```http
-POST /user/change-to-formateur
+GET /user/change-to-formateur
 ```
 
 **Headers :**

@@ -69,33 +69,53 @@ class UserProfileController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $user = Auth::user();
+        $user = $request -> user();
         
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
             'bio' => 'sometimes|string|max:1000',
             'avatar' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_url' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Gérer l'upload d'avatar
-        if ($request->hasFile('avatar')) {
+        if ($request->file('avatar')) {
             // Supprimer l'ancien avatar s'il existe
             if ($user->avatar_url) {
                 Storage::disk('public')->delete($user->avatar_url);
             }
             
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar_url'] = $avatarPath;
+            $validated['avatar_url'] = '/'.$avatarPath;
             unset($validated['avatar']);
-        }
+            $user->update($validated);
 
-        $user->update($validated);
-        
-        return response()->json([
+            return response()->json([
             'user' => $user,
             'profile_completion' => $this->calculateProfileCompletion($user),
             'message' => 'Profil mis à jour avec succès'
         ]);
+        }
+
+        if ($request->file('cover')) {
+            // Supprimer l'ancien avatar s'il existe
+            if ($user->cover_url) {
+                Storage::disk('public')->delete($user->cover_url);
+            }
+            
+            $coverPath = $request->file('cover')->store('cover', 'public');
+            $validated['cover_url'] = '/'.$coverPath;
+            unset($validated['cover_url']);
+
+            $user->update($validated);
+
+            return response()->json([
+            'user' => $user,
+            'profile_completion' => $this->calculateProfileCompletion($user),
+            'message' => 'Couverture mis à jour avec succès'
+        ]);
+        }
+
     }
 
     /**

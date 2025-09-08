@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('categorie_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->foreignId('formation_id') -> nullable() -> constrained('formations') -> onDelete('set null');
             $table->string('titre');
             $table->text('description');
             $table->string('url_video');

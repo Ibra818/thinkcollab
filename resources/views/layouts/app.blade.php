@@ -1,174 +1,138 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+<html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Bint School - Plateforme de Formation')</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Bint School - Plateforme de formation en ligne moderne avec des cours de qualité">
+    <meta name="author" content="Bint School">
+    
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Formation') }}</title>
-
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('styles')
+    
+    <!-- jQuery (requis pour les scripts AJAX existants) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- API Configuration -->
+    <script src="{{ asset('js/bintschool-api.js') }}"></script>
+    
+    <!-- ApexCharts (pour les graphiques) -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
-<body class="h-full bg-gray-900 font-inter antialiased">
-    <div class="min-h-full">
-        @yield('content')
+<body class="@yield('body-class', '')">
+    <!-- Loader global -->
+    <div id="global-loader" class="loader-overlay" style="display: none;">
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>Chargement...</p>
+        </div>
     </div>
-
-    <!-- Toggle Theme Script -->
+    
+    <!-- Messages globaux -->
+    <div id="global-messages">
+        <div class="alert alert-success" id="success-alert" style="display: none;">
+            <span class="message"></span>
+            <button type="button" class="close" aria-label="Fermer">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+        <div class="alert alert-error" id="error-alert" style="display: none;">
+            <span class="message"></span>
+            <button type="button" class="close" aria-label="Fermer">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Contenu principal -->
+    <main id="app">
+        @yield('content')
+    </main>
+    
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    
+    <!-- Scripts globaux pour l'API -->
     <script>
-        // Check for saved theme preference or default to dark mode for dashboard
-        const theme = localStorage.getItem('theme') || 'dark';
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-
-        // Auto-scroll function for smooth scrolling
-        function smoothScroll(target) {
-            document.querySelector(target)?.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        // Initialize tooltips and interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add ripple effect to buttons
-            const buttons = document.querySelectorAll('button, .btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.height, rect.width);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = x + 'px';
-                    ripple.style.top = y + 'px';
-                    ripple.classList.add('ripple');
-                    
-                    this.appendChild(ripple);
-                    
+        // Configuration globale de l'API
+        $(document).ready(function() {
+            // Initialiser l'API avec les données utilisateur si disponibles
+            @auth
+                BintSchoolAPI.setUser(@json(auth()->user()));
+                // Récupérer le token depuis la session ou localStorage
+                const token = localStorage.getItem('auth_token');
+                if (token) {
+                    BintSchoolAPI.setToken(token);
+                }
+            @endauth
+            
+            // Gestionnaire global pour les erreurs AJAX
+            $(document).ajaxError(function(event, xhr, settings) {
+                console.error('Erreur AJAX:', xhr.responseJSON);
+                
+                if (xhr.status === 401) {
+                    showGlobalMessage('Session expirée. Veuillez vous reconnecter.', 'error');
                     setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
+                        window.location.href = '/';
+                    }, 2000);
+                } else if (xhr.status >= 500) {
+                    showGlobalMessage('Erreur serveur. Veuillez réessayer plus tard.', 'error');
+                }
+            });
+            
+            // Gestionnaire pour les fermetures d'alertes
+            $(document).on('click', '.alert .close', function() {
+                $(this).parent().fadeOut();
             });
         });
+        
+        /**
+         * Afficher un message global
+         */
+        function showGlobalMessage(message, type = 'success') {
+            const alertId = type === 'success' ? '#success-alert' : '#error-alert';
+            const $alert = $(alertId);
+            
+            $alert.find('.message').text(message);
+            $alert.fadeIn();
+            
+            // Auto-hide après 5 secondes
+            setTimeout(() => {
+                $alert.fadeOut();
+            }, 5000);
+        }
+        
+        /**
+         * Afficher/Cacher le loader global
+         */
+        function toggleGlobalLoader(show = true) {
+            if (show) {
+                $('#global-loader').fadeIn();
+            } else {
+                $('#global-loader').fadeOut();
+            }
+        }
+        
+        // Exporter les fonctions utilitaires globalement
+        window.showGlobalMessage = showGlobalMessage;
+        window.toggleGlobalLoader = toggleGlobalLoader;
     </script>
-
-    <style>
-        /* Custom scrollbar for webkit browsers */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 3px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #f97316 0%, #eab308 100%);
-            border-radius: 3px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #ea580c 0%, #ca8a04 100%);
-        }
-
-        /* Ripple effect */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-        }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        /* Line clamp utility */
-        .line-clamp-2 {
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-        }
-
-        /* Glassmorphism effect */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Smooth transitions for all interactive elements */
-        * {
-            transition: all 0.3s ease;
-        }
-
-        /* Custom focus styles */
-        button:focus,
-        input:focus,
-        textarea:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
-        }
-
-        /* Enhance image loading */
-        img {
-            transition: opacity 0.3s ease;
-        }
-
-        img[src=""] {
-            opacity: 0;
-        }
-
-        /* Custom gradient backgrounds */
-        .bg-gradient-orange {
-            background: linear-gradient(135deg, #f97316 0%, #eab308 100%);
-        }
-
-        .bg-gradient-orange-dark {
-            background: linear-gradient(135deg, #ea580c 0%, #ca8a04 100%);
-        }
-
-        /* Enhanced hover effects */
-        .hover-lift:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Pulse animation for active elements */
-        .pulse-orange {
-            animation: pulse-orange 2s infinite;
-        }
-
-        @keyframes pulse-orange {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(249, 115, 22, 0);
-            }
-        }
-    </style>
+    
+    @stack('scripts')
 </body>
-</html> 
+</html>

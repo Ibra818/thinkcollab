@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Formation;
+use App\Models\{Formation, Feedvideo};
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -19,19 +19,41 @@ class FormationController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'titre' => 'required|string|max:255',
-            'description' => 'required|string',
-            'prix' => 'required|integer|min:0',
-            'categorie_id' => 'required|exists:categories,id',
-            'statut' => 'sometimes|in:draft,published',
+        // return response() -> json($request);
+        // $validated = $request->validate([
+        //     'titre' => 'required|string|max:255',
+        //     'description' => 'required|string',
+        //     'prix' => 'required|integer|min:0',
+        //     'categorie_id' => 'required|exists:categories,id',
+        //     'statut' => 'required|in:brouillon,publie',
+        // ]);
+
+        $couvPath= $request ->file('file') -> store('formations/couvertures', 'public');
+        
+
+        $formation = Formation::create([
+            'titre' => $request -> titre,
+            'description' => $request -> description,
+            'prix' => $request -> prix,
+            'categorie_id' => $request -> categorie,
+            'image_couverture' => '/'.$couvPath,
+            'statut' => 'brouillon',
+            'formateur_id' => $request -> user() ->id,
         ]);
 
-        $validated['formateur_id'] = Auth::id();
-        $validated['statut'] = $validated['statut'] ?? 'draft';
-
-        $formation = Formation::create($validated);
-        return response()->json($formation->load(['formateur', 'categorie']), 201);
+        // $vid_intro = $request -> file('video_intro') -> store('feedVideos', 'public');
+        // $FeedVideo= FeedVideo::create([
+        //     'user_id' => $request -> user() ->id,
+        //     'description' => $request -> description,
+        //     'categorie_id' => $request -> categorie_id,
+        //     // 'formation_id' => $formation -> id,
+        //     'miniature' => '/'.$couvPath,
+        //     'titre' => $request -> titre,
+        //     'url_video' => '/'.$vid_intro,
+        //     'duree' => $request -> duree,
+        // ]);
+        // return response()->json($formation->load(['formateur', 'categorie']), 201);
+        return response() -> json(['message' => 'Formation créer avec success!', 'formation_id' => $formation->id, 201]);
     }
 
     public function show(Formation $formation): JsonResponse

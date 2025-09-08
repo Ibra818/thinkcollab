@@ -19,6 +19,7 @@ class Formation extends Model
         'statut',
         'categorie_id',
         'formateur_id',
+        'image_couverture',
     ];
 
     protected $casts = [

@@ -12,10 +12,10 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function showLogin()
-    {
-        return view('auth.login');
-    }
+    // public function showLogin()
+    // {
+    //     return view('auth.login');
+    // }
 
     public function login(Request $request)
     {
@@ -53,7 +53,51 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:apprenant,formateur',
+            'password_confirmation' => 'required|string|same:password',
+            'role' => 'nullable|in:apprenant,formateur,admin,superadmin',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        if($request -> password == $request -> password_confirmation){
+             $user = User::create([
+                'name' => $request-> name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->profile ?? null, // Permet de créer un utilisateur sans rôle
+            ]);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Compte créé avec succès. Veuillez définir votre profil.',
+                'user' => $user,
+                'token' => $token,
+            ], 200);
+        }else{
+            return response() -> json([ 'status' => '404', 'message' => 'not found']);
+        }
+
+       
+    }
+
+    /**
+     * API Registration without role (for admin use)
+     */
+    public function createUser(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'role' => 'nullable|in:apprenant,formateur,admin,superadmin',
         ]);
 
         if ($validator->fails()) {
@@ -68,17 +112,85 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => $request->role ?? null,
         ]);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
-            'message' => 'User registered successfully',
+            'message' => 'Utilisateur créé avec succès',
             'user' => $user,
-            'token' => $token,
         ], 201);
+    }
+
+    /**
+     * Update user role
+     */
+    public function updateUserRole(Request $request, $userId): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'role' => 'required|in:apprenant,formateur,admin,superadmin',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = User::find($userId);
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
+
+        $user->update(['role' => $request->role]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Rôle mis à jour avec succès',
+            'user' => $user->fresh(),
+        ]);
+    }
+
+    /**
+     * Get all users (for admin use)
+     */
+    public function getAllUsers(): JsonResponse
+    {
+        $users = User::select('id', 'name', 'email', 'role', 'created_at')
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+
+        return response()->json([
+            'success' => true,
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * Get user by ID
+     */
+    public function getUserById($userId): JsonResponse
+    {
+        $user = User::select('id', 'name', 'email', 'role', 'bio', 'avatar_url', 'created_at')
+                    ->find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -145,24 +257,24 @@ class AuthController extends Controller
             ], 400);
         }
 
-        // Validate additional information if needed
-        $validator = Validator::make($request->all(), [
-            'bio' => 'nullable|string|max:1000',
-            'motivation' => 'nullable|string|max:500',
-        ]);
+        // // Validate additional information if needed
+        // $validator = Validator::make($request->all(), [
+        //     'bio' => 'nullable|string|max:1000',
+        //     'motivation' => 'nullable|string|max:500',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Validation failed',
+        //         'errors' => $validator->errors()
+        //     ], 422);
+        // }
 
         // Update user role and bio if provided
         $user->update([
             'role' => 'formateur',
-            'bio' => $request->bio ?? $user->bio,
+            // 'bio' => $request->bio ?? $user->bio,
         ]);
 
         return response()->json([

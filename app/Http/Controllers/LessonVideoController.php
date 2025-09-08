@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LessonVideo;
-use App\Models\Formation;
+use App\Models\{LessonVideo, FeedVideo, Formation};
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class LessonVideoController extends Controller
 {
+    use AuthorizesRequests;
+    
     public function index(Formation $formation): JsonResponse
     {
         $this->authorize('viewLessons', $formation);
@@ -22,17 +25,34 @@ class LessonVideoController extends Controller
     {
         $this->authorize('update', $formation);
 
-        $validated = $request->validate([
-            'titre' => 'required|string|max:255',
-            'url' => 'required|string|max:255',
-            'ordre' => 'required|integer|min:1',
-            'duree' => 'required|integer|min:1',
-        ]);
+        // $validated = $request->validate([
+        //     'titre' => 'required|string|max:255',
+        //     'url_video' => 'required|string|max:255',
+        //     'ordre' => 'required|integer|min:1',
+        //     'duree' => 'required|integer|min:1',
+        // ]);
 
-        $validated['formation_id'] = $formation->id;
+        foreach( $request -> allFiles() as $key => $file){
 
-        $video = LessonVideo::create($validated);
-        return response()->json($video, 201);
+                $index = str_replace('module-file-', '', $key);
+                $namekey = "module-name-" .$index; 
+                
+                $lessonName = $request -> input($namekey);
+                $path = $file->store('lessons', 'public');
+
+                $lesson = LessonVideo::create(
+                    [
+                        'titre' => $lessonName? $lessonName : 'Sans titre',
+                        'url_video' => '/'.$path,  
+                        'ordre' => 1,
+                        'duree' =>  900,
+                        'formation_id' => $request -> id,
+                    ]);
+            }
+
+        return response() -> json(['success' => 'Modules ajoutées avec success']);
+        // $video = LessonVideo::create($validated);
+        // return response()->json($video, 201);
     }
 
     public function show(LessonVideo $lessonVideo): JsonResponse

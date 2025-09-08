@@ -1,0 +1,511 @@
+:root{
+    --primary:rgba(5,7,21,255);
+    --border: #222430;
+    --block: rgba(27, 29, 50, 1);
+    --lite: rgba(197, 199, 222, 1);
+    --secondary: #1B1B1B;
+    --graylite: #353535ff;
+    --green: #5ede50ff;
+    --sidebar: #2a2a2a;
+}
+
+body{
+    position: fixed;
+    top:0;
+    left:0;
+    scrollbar-width: none;
+    width: 100%;
+    height: 100%;
+}
+
+.formation{
+    background-color: var(--sidebar);
+    width: 100%;
+    height:100%;
+    color: white;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5% 0 0 0;
+}
+
+.formation .content{
+    width: 50%;
+    height: auto;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.formation .content .video{
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.formation .content .video video{
+    width: 90%;
+    height: 600px;
+    object-fit: cover;
+    z-index: 1;
+    border-radius: 30px;
+    
+}
+
+.formation .content .video .progression{
+    width: 90%;
+    height: 7vh;
+    display: flex;
+    padding: 0 5% 0 5%;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    transform: translateY(100%);
+    transition: transform .5s ease-out;
+}
+
+.formation .content .video:hover .progression{
+    transform: translateY(0%);
+    transition: transform .5s ease-out;
+}
+
+.formation .content .video .progression button{
+    border: none;
+    background-color: transparent;
+}
+
+.formation .content .video .progression .duree{
+    color: white;
+    font-size: 1em;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 80%;
+}
+
+.formation .content .video .progression button svg{
+    height: 35px;
+    width: 35px;
+    fill: white;
+}
+
+.formation .content .video .progression .progress-bar{
+    width: 80%;
+    height: 25%;
+    /* background: linear-gradient( to right, white 75%, gray 25%); */
+    border-radius: 25px;
+}
+
+.formation .content .categorie{
+    color: gray;
+    font-size: 1.5em;
+    width: 90%;
+    padding: 0 0 0 2%;
+    margin: 2% 0 0 0;
+}
+
+.formation .content .formateur{
+    display:flex; 
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 1% 0 1% 0;
+}
+
+
+.formation .content .formateur .info{
+    width: 80%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.formation .content .formateur .info .profil{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: baseline;
+    margin: 0 0 0 2%;
+}
+
+.formation .content .formateur .visite{
+    border: none;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 80px;
+    height: 4vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.formation .content .formateur .username{
+    max-height: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.2em;
+    text-align: justify;
+}
+
+.formation .content .formateur .specialite{
+    width: 95%;
+    max-height: 45%;
+}
+
+.formation .content .formateur .visite svg{
+    fill: white;
+    height: 80%;
+    width: 28%;
+}
+
+.formation .content .formateur .profil{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.formation .content .formateur img{
+    width: 70px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 50%;
+
+}
+
+.formation .content h3{
+    width: 90%;
+    padding: 0 0 0 0;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    text-align: center;
+    margin: 2% 0 5% 0;
+}
+
+.formation .content .cours{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    height: auto;
+    scroll-behavior: smooth;
+    margin: 5% 0 5% 0;
+}
+
+.formation .content .cours .cour{
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--graylite);
+    border-radius: 10px;
+    margin: 2% 0 2% 0;
+    border: none;
+    transition: border .5s ease;
+}
+
+/* .formation .content .cours .cour:nth-child(1){
+    display: none;
+} */
+
+.formation .content .cours .cour.active .video svg{
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: opacity .5s ease-out; 
+}
+
+.formation .content .cours .cour.active{
+    border:2px solid orange;
+    transition: border .5s ease-in;
+}
+
+.formation .content .cours .cour.active .video svg.bi-play-fill{
+    position: absolute;
+    z-index: 3;
+    fill: white;
+    height: 0%;
+    width: 0%;
+    opacity: 1;
+    transition: opacity .5s ease;
+}
+
+.formation .content .cours .cour.active .video svg.bi-pause-fill{
+    position: absolute;
+    z-index: 2;
+    fill: orange;
+    height: 50%;
+    width: 40%;
+    opacity: 1;
+    transition-delay: 1s;
+    transition: opacity .5s ease;
+}
+
+.formation .content .cours .cour .video{
+    width: 15%;
+    height: 90%;
+    position: relative;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.formation .content .cours .cour .video svg.bi-play-fill{
+    position: absolute;
+    z-index: 3;
+    fill: white;
+    height: 50%;
+    width: 40%;
+    opacity: 1;
+    transition-delay: 1s;
+    transition: opacity .5s ease;
+}
+
+.formation .content .cours .cour .video svg.bi-pause-fill{
+    position: absolute;
+    z-index: 2;
+    fill: white;
+    height: 0%;
+    width: 0%;
+    opacity: 1;
+    transition: opacity .5s ease;
+}
+
+.formation .content .cours .cour .video video{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    z-index: 1;
+    position: absolute;
+}
+
+.formation .content .cours .cour .module{
+    width: 70%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.formation .content .cours .cour .module .modul-progress{
+    color: transparent;
+    transition: color .5s ease;
+}
+
+.formation .content .cours .cour.active .module .modul-progress{
+    color: orange;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition: color .5s ease;
+}
+.formation .content .cours .cour .module-last{
+    width: 10%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+}
+
+/* ========== RESPONSIVE DESIGN POUR FORMATION ========== */
+
+@media (max-width: 768px) {
+    /* Layout principal responsive */
+    main {
+        padding-bottom: 80px; /* Espace pour navigation bottom */
+    }
+
+    .formation {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+    }
+
+    .formation .sidebar {
+        width: 100%;
+        height: auto;
+        order: 2;
+        margin-top: 2rem;
+    }
+
+    .formation .content {
+        width: 100%;
+        order: 1;
+        padding: 0;
+    }
+
+    .formation .content .video-container {
+        width: 100%;
+        height: 250px;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .formation .content .video-container video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .formation .content .formation-info {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .formation .content .formation-info h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .formation .content .formation-info p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .formation .content .formation-actions {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .formation .content .formation-actions button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    /* Sidebar responsive */
+    .formation .sidebar .cours-list {
+        padding: 1rem;
+    }
+
+    .formation .sidebar .cours-list h2 {
+        font-size: 1.3rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .formation .content .cours {
+        gap: 1rem;
+    }
+
+    .formation .content .cours .cour {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .formation .content .cours .cour .module {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+    }
+
+    .formation .content .cours .cour .module .module-info {
+        flex: 1;
+        margin-right: 1rem;
+    }
+
+    .formation .content .cours .cour .module .module-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .formation .content .cours .cour .module .module-info p {
+        font-size: 0.9rem;
+    }
+
+    .formation .content .cours .cour .module-last {
+        width: auto;
+        height: auto;
+        padding: 0.5rem;
+    }
+
+    .formation .content .cours .cour .modul-progress {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Très petits écrans */
+    .formation {
+        padding: 0.5rem;
+    }
+
+    .formation .content .video-container {
+        height: 200px;
+        margin-bottom: 1.5rem;
+    }
+
+    .formation .content .formation-info {
+        padding: 1rem;
+    }
+
+    .formation .content .formation-info h1 {
+        font-size: 1.3rem;
+    }
+
+    .formation .content .formation-info p {
+        font-size: 0.8rem;
+    }
+
+    .formation .content .formation-actions {
+        padding: 1rem;
+    }
+
+    .formation .content .formation-actions button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .formation .sidebar .cours-list h2 {
+        font-size: 1.2rem;
+    }
+
+    .formation .content .cours .cour {
+        padding: 0.8rem;
+    }
+
+    .formation .content .cours .cour .module {
+        padding: 0.8rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .formation .content .cours .cour .module .module-info {
+        margin-right: 0;
+        margin-bottom: 0.8rem;
+    }
+
+    .formation .content .cours .cour .module .module-info h3 {
+        font-size: 1rem;
+    }
+
+    .formation .content .cours .cour .module .module-info p {
+        font-size: 0.8rem;
+    }
+}none;
+}
+

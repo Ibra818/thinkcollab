@@ -1,0 +1,1479 @@
+/* BintSchool - Login Page Styles */
+
+:root{
+    --primary:rgba(5,7,21,255);
+    --border: #1b1d27;
+    --block: rgb(20, 21, 36);
+    --secondary: #1B1B1B;
+}
+
+*{
+    font-family: "Noto Sans", sans-serif;
+}
+#blockpage{
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    background-color: rgb(3, 5, 19);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: space-evenly;
+    padding: 0 5% 0 5%;
+}
+
+#blockpage .container-left, #blockpage .container-right{
+    width:20%;
+    height: 145%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
+    top:-20%;
+}
+
+#blockpage .container-right{
+    position: relative;
+    right:-5%;
+}
+#blockpage .container-left{
+    position: relative;
+    left:-5%;
+}
+
+#blockpage .container-left .block, #blockpage .container-right .block{
+    width: 100%;
+    height:25vh;
+    max-height: 100%;
+    border-radius: 10px;
+    background-color: var(--primary);
+}
+
+#blockpage .container-left .block img, #blockpage .container-right .block img{
+    width: 100%;
+    filter: blur(15px);
+    height: 100%;
+    object-fit: cover;
+}
+
+/* #blockpage .container-left .block:nth-child(4) img, #blockpage .container-right .block:nth-child(4) img{} */
+
+#blockpage .container-left .block:nth-child(4), #blockpage .container-right .block:nth-child(1){
+    border: 4px solid rgba(194, 194, 194, 0.26);
+
+}
+
+.overlay{
+    width: 70%;
+    max-width: 70%;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    padding-top: 5%;
+    background-color: transparent;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top:0;
+}
+
+.overlay .logo{
+    background-color:white;
+    opacity:0.8;
+    width:20%;
+    height:10%;
+    padding: 0 1% 0 0;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+ #forgotten-pass{
+    max-height:65%;
+    background-color: var(--primary);
+    position: absolute;
+    top:20%;
+}
+
+.overlay .login, .overlay .register{
+    background-color: var(--primary);
+    position: absolute;
+    top:20%;
+}
+
+
+.overlay .login .login-head p, .overlay .register .register-head p{
+    color:white;
+    font-size: .8em;
+}
+
+.overlay .login{
+    text-align:center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:400px;
+    z-index: 1;
+    transition: all .5s ease;
+}
+.overlay .register{
+    height: 530px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    z-index: 2;
+    width: 100%;
+    transform: translateX(0);
+    transition: transform .5s ease;
+    /* padding: 0 0 2% 0; */
+}
+
+.overlay .register .register-head{
+    margin: 0 0 3% 0;
+}
+
+.overlay .register h2{
+    color: white;
+}
+
+.overlay .register form, .overlay .login form{
+    background-color: var(--block);
+    height: 500px;
+}
+
+.overlay .register form h3{
+    color: white;
+    width: 100%;
+    text-align: left;
+    padding: 0 0 0 5%;
+}
+
+
+.overlay h1{
+    text-align: center;
+    font-size: 2.5vh;
+    font-size:2.5em;
+    margin: 0 0 2% 0;
+    color: white;
+}
+.register form{
+    display:flex;
+    border-radius: 15px;
+    align-items: center;
+    flex-direction:column;
+    width: 45%;
+    max-width:60%;
+    height: 500px;
+    max-height: 450px;
+    justify-content: space-around;
+    align-items: center;
+    overflow: hidden;
+    background-color: transparent;
+    padding: 0 0 5% 0;
+}
+
+.overlay .login form{
+    background-color: var(--block);
+    border-radius: 15px;
+    width: 45%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5% 0 5% 0;
+}
+
+.overlay .login form .btns{
+    height: 15%;
+    margin: 0 0 5% 0;
+}
+
+.overlay form .input-container input{
+    height: 40px;
+    border-radius: 10px;
+    /* min-height: 80%; */
+    border: 1px solid white;
+    background-color: transparent;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    /* padding: 0 0 0 2%; */
+}
+
+.overlay form label{
+    color: white;
+    font-size: 0.75em
+}
+.register .register-head, .login .login-head{
+    width: 60%;
+    /* margin: 2% 0 2% 5%; */
+}
+.overlay form .input-container{
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: 90%;
+    /* margin: 2% 0 2% 0; */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.overlay .register.active{
+    margin:0;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-out;
+}
+.overlay form .btns{
+    text-align: center;
+    width: 90%;
+    border: none;
+    height: 20%;
+    min-height: 20%;
+    /* margin: 0 0 5% 0; */
+}
+.overlay form .btns div{
+    font-size: 2vh;
+    color: white;
+}
+
+.overlay form .btns button:nth-child(1){
+    background-color: orange;
+    border:none;
+    color: black;
+    width: 100%;
+    min-width: 100%;
+    height:4.5vh;
+
+}
+.overlay form .btns button:nth-child(3){
+    background-color: #222430;
+    color: white;
+    border: none;
+    height:4.5vh;
+}
+.overlay form .btns button:nth-child(1), .overlay form .btns button:nth-child(3){
+    font-size: 2vh;
+    border-radius: 5px;
+    width: 100%;
+}
+.overlay form input::placeholder{
+    color: white;
+    text-align: center;
+}
+
+.overlay form input:focus{
+    color: white;
+    outline: none;
+    /* padding: 0 5% 0 5%; */
+    background-color: transparent;
+}
+.overlay form input{
+    /* display: block; */
+    width: 100%;
+    border: none;
+    color: white;
+    /* padding: 0 5% 0 5%; */
+    background-color:rgba(49, 49, 49, 0.23);
+}
+
+.overlay .register .btns{
+    margin: 5% 0 0 0;
+}
+
+.overlay form button{
+    font-weight: 600;
+}
+.overlay .login a{
+    color: white;
+    width: 100%;
+    font-size:.85em;
+    /* margin: 5% 0 5% 0; */
+    padding: 0 5% 0 0;
+    text-align: right;
+}
+
+
+#message{
+    width: 0%;
+    max-height: 0vh;
+    overflow:hidden;
+}
+#message .close-msg{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-weight:600;
+    font-size:1em;
+    width:40%;
+    height:3vh;
+    margin: 0 0 1% 0;
+    border-radius:5px;
+    background-color: transparent;
+    border:3px solid white;
+    color:white;
+}
+
+#message.success .success.active{
+    background-color: var(--block);
+    box-shadow: 0 0 20px 0 #ffffff53;
+    height:20%;
+    width: 20%;
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    align-items:center;
+    margin: 10px 0 10px 0;
+    text-align: center;
+    position:fixed;
+    top:0;
+    left:40%;
+    z-index: 100;
+    transition:all .5s ease;
+}
+
+#message.success .success.active h4{
+    width: 100%;
+    font-weight: 500;
+    gap: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#message.success .success.active h4 svg{
+    height: 90%;
+    width:30px;
+    padding: 1% 2% 2% 2%;
+    border-radius: 50%;
+    fill: white;
+    background-color: greenyellow;
+}
+
+#message.error .success, #message.success .error{
+    width: 0;
+    height:0;
+    max-width:0;
+    max-height:0;
+    overflow:hidden;
+    transition: all .5s ease;
+}
+
+ 
+#message.error .error.active{
+    /*  red:  #a91d1dff*/
+    background-color: rgb(224, 40, 40); 
+    overflow-y:scroll;
+    scrollbar-width: none;
+    box-shadow: 0 0 10px 0 #ffffff15;
+    height:auto;
+    min-height: 20%;
+    height: 25%;
+    max-height: 25%;
+    width: 20%;
+    text-align:center;
+    color: white;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items:center;
+    margin: 10px 0 10px 0;
+    position:fixed;
+    top:0;
+    left:40%;
+    word-wrap: break-word;
+    z-index: 100;
+    transition:all .5s ease;
+    padding: 0 0 .5% 0;
+}
+
+#message.error .error.active h4{
+    width: 100%;
+    height: 35%;
+    min-height: 25%;
+    font-size: 2em;
+    font-weight: 500;
+    gap: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#message.error .error.active h4 .ctn-svg{
+    min-height: 40px;
+    width:40px;
+    border-radius: 50%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+#message.error .error.active h4 .ctn-svg svg{
+    fill: red;
+    height:60%;
+    width: 60%;
+}
+#message.error .error.active .error-msg{
+    width: 100%;
+    height: 50%;
+    min-height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+}
+
+#loader-overlay{
+    width: 0;
+    height:0;
+    overflow:hidden;
+    opacity: 0;
+    transition: opacity .5s ease-out;
+}
+
+#loader-overlay.active{
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 16;
+    opacity: 1;
+    position:fixed;
+    top:0;
+    height:100%;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    transition: opacity .5s ease-out
+}
+
+#loader-overlay.active .loader{
+    width: 0;
+    height:0;
+    overflow: hidden;
+    z-index:-1;
+}
+
+#loader-overlay.active .loader.active{
+    background-color: var(--secondary);
+    color:white;
+    font-size: 1.4em;
+    font-weight: 600;
+    text-align:center;
+    width:15%;
+    height: 20%;
+    z-index: 16;
+    border-radius:5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes spinner{
+    0%{
+        rotate :0deg
+    }
+    100%{
+        rotate:360deg;
+    }
+}
+#loader-overlay.active .spinner{
+    width:60%;
+    height:90%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+    animation: spinner .7s ease-out infinite;
+}
+
+#loader-overlay.active .spinner .vertical, #loader-overlay.active .spinner .horizontal{
+    position:absolute;
+}
+#loader-overlay.active .spinner .horizontal{
+    width: 60%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#loader-overlay.active .spinner .vertical{
+    height: 70%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#loader-overlay.active .loader.active .spinner .top, #loader-overlay.active .loader.active .spinner .left, #loader-overlay.active .loader.active .spinner .right, #loader-overlay.active .loader.active .spinner .bottom{
+    width:20px;
+    height:20px;
+    border-radius: 100px;
+    background-color: white;
+}
+
+
+
+#forgotten-pass{
+    width: 0;
+    height:0;
+    overflow:hidden;
+    transform: translateY(150%);
+}
+
+#forgotten-pass.active{
+    width: 90%;
+    height: 800px;
+    color: white;
+    background-color: var(--primary);
+    z-index: 15;
+    transition: all .5s ease;
+    transform: translateY(0%);
+    transition: all .5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#forgotten-pass.active .text{
+    text-align: center;
+    width: 90%;
+}
+#forgotten-pass.active .text h3{
+    font-size: 2em;
+    width: 100%;
+}
+
+#forgotten-pass.active .text img{
+    width: 20%;
+    height: 10%;
+    object-fit: center;
+}
+
+#forgotten-pass.active .text p{
+    font-size: 1em;
+}
+#forgotten-pass.active form .input-container{
+    border-radius: 10px;
+    overflow: hidden;
+    width:90%;
+}
+
+#forgotten-pass.active .btns{
+    margin: 0 0 5% 0;
+    height: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* #forgotten-pass.active form .btns button:nth-child(1){}
+
+#forgotten-pass.active form .btns button:nth-child(3){} */
+
+#forgotten-pass.active form{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--block);
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    width: 400px;
+    height: 250px;
+    padding: 2% 0 0 0;
+}
+
+#profile{
+    width: 100%;
+    height: 100%;
+    color:white;
+    background-color: var(--primary);
+    transform: translateX(-100%);
+    transition: transform .5s ease;
+    padding: 0 0 0 0;
+    overflow:hidden;
+}
+
+#profile.active{
+    transform: translateX(0);
+    z-index:3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    transition: transform .5s ease;
+}
+
+#profile .profile-head{
+    height:25%;
+    width: 100%;
+    margin: 0 0 5% 0;
+    padding: 5% 0 0% 0;
+}
+
+#profile .profile-head img{
+    width: 15%;
+    height:30%;
+    margin: 0 0 5% 45%;
+    padding: 0% 0 0% 0;
+    object-fit: cover;
+}
+
+  #profile .profile-head .text{
+    width: 35%;
+    height: 65%;
+    padding: 0 0 0 0;
+    margin: 0% 0 0% 35%;
+    text-align: center;
+}
+
+#profile .btn-continue{
+    background-color: orange;
+    height: 5vh;
+    width: 15%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:10px;
+    color: var(--border);
+    font-weight: 600;
+    font-size: 1.2em;
+    z-index: 1;
+}
+
+#profile .overlay-btn{
+    height: 8vh;
+    width: 100%;
+    background: var(--primary);
+    opacity: 0.7;
+    z-index: 10;
+
+}
+#profile .overlay-btn.unactive{
+    height: 0;
+    width: 0;
+    overflow:hidden;
+}
+
+#profile .btn-continue, #profile .overlay-btn{
+    position:absolute;
+    bottom: 5%;
+}
+
+ #profile .btn-continue{
+    cursor:pointer;
+ }
+
+#profile .profiles{
+    display: flex;
+    justify-content: center;
+    padding: 0 0 0 4%;
+    height: 60%;
+    width: 70%;position: relative;
+    top: -5%;
+
+}
+
+#profile .profiles svg{
+    width:40px;
+    height:60px;
+    fill:white;
+    transition: fill .5s ease;
+    margin: 0 0 1% 5%;
+}
+
+#profile .profiles .learner, #profile .profiles .teacher{
+    position:relative;
+    height:80%;
+    width: 70%;
+}
+
+#profile .profiles .profile-teacher, #profile .profiles .profile-learner{
+    border-radius:20px;
+    z-index: 10;
+    background-color: var(--border);
+    width: 80%;
+    height:100%;
+    
+}
+
+#profile .profiles .profile-teacher img, #profile .profiles .profile-learner img{
+    width: 90%;
+    height: 50%;
+    border-radius: 10px;
+    z-index: 16;
+    margin: 0 0 5% 5%;
+    object-fit: cover;
+}
+
+#profile .profiles .profile-teacher .text, #profile .profiles .profile-learner .text{
+    width:80%;
+    max-height:25%;
+    font-size: .8em;
+    overflow:hidden;
+    margin: 0 0 1% 5%;
+}
+
+ #profile .profiles .profile-teacher.active, #profile .profiles .profile-learner.active{
+    border: 1px solid orange;
+    background: rgba(139, 73, 20, 0.14);
+    opacity: 1;
+
+}
+
+#profile .profiles .profile-teacher.active svg, #profile .profiles .profile-learner.active svg{
+    fill:orange;
+    transition: all .5s ease;
+}
+
+#profile .profiles .profile-teacher.active img, #profile .profiles .profile-learner.active img, #profile .profiles .profile-teacher.active .text, #profile .profiles .profile-learner.active .text{
+    z-index: 2000;
+    transition:all .5s ease;
+}
+
+
+#loader-overlay.active #restore-pass{
+    widtH:0;
+    height:0;
+    overflow:hidden;
+}
+#loader-overlay.active #restore-pass.active{
+    width: 30%;
+    height:auto;
+    z-index:17;
+    padding: 1% 1% 0 1%;
+    text-align: center;
+    border-radius: 10px;
+    background-color: var(--block);
+    color:white;
+}
+
+#loader-overlay.active #restore-pass.active p{
+    padding: 0 5% 0 5%;
+    margin: 1% 0 2% 0;
+}
+
+#restore-pass.active .useremail{
+    font-weight:600;
+    color: orange;
+}
+
+#restore-pass .goBack-btn{
+    padding: 1% 0 1% 0;
+    margin: 0 0 5% 2.5%;
+    width: 95%;
+    border-radius: 10px;
+    border:none;
+    background-color: var(--border);
+    height:5%;
+    color: white;
+}
+
+/* ========== RESPONSIVE DESIGN POUR LOGIN ========== */
+
+/* Tablette et écrans moyens (768px et moins) */
+@media (max-width: 768px) {
+    #blockpage {
+        flex-direction: column;
+        padding: 1rem;
+        overflow-y: auto;
+        min-height: 100vh;
+        background-color: rgb(3, 5, 19); /* Conserver la couleur desktop */
+    }
+
+    #blockpage .container-left, 
+    #blockpage .container-right {
+        display: none; /* Masquer les éléments décoratifs sur mobile */
+    }
+
+    .overlay {
+        width: 100%;
+        max-width: 100%;
+        padding: 2rem 1rem;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overlay .logo {
+        width: 120px;
+        height: 60px;
+        margin-bottom: 2rem;
+        background-color: white;
+        opacity: 0.8;
+        border-radius: 10px;
+    }
+
+    /* Login Form Responsive */
+    .overlay .login {
+        position: relative;
+        top: 0;
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 450px;
+        padding: 2rem 0;
+        background-color: var(--primary); /* Conserver couleur desktop */
+        border-radius: 15px;
+        margin: 1rem 0;
+    }
+
+    .overlay .login form {
+        width: 90%;
+        max-width: 350px;
+        height: auto;
+        min-height: 350px;
+        padding: 2rem 1.5rem;
+        background-color: var(--block); /* Conserver couleur desktop */
+        border-radius: 15px;
+    }
+
+    .overlay .login h1 {
+        font-size: 1.8rem;
+        color: white; /* Conserver couleur desktop */
+        margin-bottom: 2rem;
+    }
+
+    .overlay form .input-container {
+        height: auto;
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+
+    .overlay form .input-container input {
+        height: 50px;
+        padding: 0 1rem;
+        font-size: 1rem;
+        background-color: rgba(49, 49, 49, 0.23); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+        border: 1px solid white;
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    .overlay form label {
+        color: white; /* Conserver couleur desktop */
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .overlay form .btns {
+        height: auto;
+        margin-top: 2rem;
+        gap: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .overlay form .btns button:nth-child(1) {
+        background-color: orange; /* Conserver couleur desktop */
+        color: black; /* Conserver couleur desktop */
+        height: 50px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        width: 100%;
+        border: none;
+    }
+
+    .overlay form .btns button:nth-child(3) {
+        background-color: #222430; /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+        height: 50px;
+        border-radius: 8px;
+        font-size: 1rem;
+        width: 100%;
+        border: none;
+    }
+
+    .overlay .login a {
+        color: white; /* Conserver couleur desktop */
+        font-size: 0.9rem;
+        text-align: center;
+        display: block;
+        margin-top: 1rem;
+        padding: 0;
+    }
+
+    /* Register Form Responsive */
+    .overlay .register {
+        position: relative;
+        top: 0;
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 580px;
+        padding: 2rem 0;
+        background-color: var(--primary); /* Conserver couleur desktop */
+        border-radius: 15px;
+        margin: 1rem 0;
+    }
+
+    .overlay .register form {
+        width: 90%;
+        max-width: 350px;
+        height: auto;
+        min-height: 500px;
+        padding: 2rem 1.5rem;
+        background-color: var(--block); /* Conserver couleur desktop */
+        border-radius: 15px;
+    }
+
+    .overlay .register h2 {
+        color: white; /* Conserver couleur desktop */
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .overlay .register form h3 {
+        color: white; /* Conserver couleur desktop */
+        font-size: 1rem;
+        text-align: left;
+        margin-bottom: 1.5rem;
+        padding: 0;
+    }
+
+    .overlay .register .btns {
+        margin-top: 2rem;
+    }
+
+    /* Profile Selection Responsive */
+    #profile.active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        padding: 2rem 1rem;
+        background-color: var(--primary); /* Conserver couleur desktop */
+        z-index: 3;
+        transform: translateX(0);
+        overflow-y: auto;
+    }
+
+    #profile .profile-head {
+        height: auto;
+        text-align: center;
+        margin-bottom: 2rem;
+        padding: 1rem 0;
+    }
+
+    #profile .profile-head img {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1rem auto;
+        border-radius: 50%;
+    }
+
+    #profile .profile-head .text {
+        width: 100%;
+        margin: 0;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #profile .profiles {
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        height: auto;
+        padding: 0;
+        top: 0;
+        position: relative;
+    }
+
+    #profile .profiles .learner,
+    #profile .profiles .teacher {
+        width: 100%;
+        height: auto;
+    }
+
+    #profile .profiles .profile-teacher,
+    #profile .profiles .profile-learner {
+        width: 100%;
+        height: auto;
+        min-height: 200px;
+        padding: 1.5rem;
+        background-color: var(--border); /* Conserver couleur desktop */
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    #profile .profiles .profile-teacher img,
+    #profile .profiles .profile-learner img {
+        width: 80%;
+        height: 120px;
+        margin: 0 auto 1rem auto;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    #profile .profiles .profile-teacher .text,
+    #profile .profiles .profile-learner .text {
+        width: 100%;
+        max-height: none;
+        font-size: 1rem;
+        color: white; /* Conserver couleur desktop */
+        margin: 0;
+    }
+
+    #profile .profiles .profile-teacher.active,
+    #profile .profiles .profile-learner.active {
+        border: 2px solid orange; /* Conserver couleur desktop */
+        background: rgba(139, 73, 20, 0.14); /* Conserver couleur desktop */
+    }
+
+    #profile .profiles svg {
+        width: 30px;
+        height: 40px;
+        fill: white; /* Conserver couleur desktop */
+        margin-bottom: 1rem;
+    }
+
+    #profile .profiles .profile-teacher.active svg,
+    #profile .profiles .profile-learner.active svg {
+        fill: orange; /* Conserver couleur desktop */
+    }
+
+    #profile .btn-continue {
+        position: relative;
+        bottom: auto;
+        width: 100%;
+        max-width: 300px;
+        height: 50px;
+        margin: 2rem auto 0 auto;
+        background-color: orange; /* Conserver couleur desktop */
+        color: var(--border); /* Conserver couleur desktop */
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #profile .overlay-btn {
+        display: none;
+    }
+
+    /* Forgotten Password Responsive */
+    #forgotten-pass.active {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 500px;
+        padding: 2rem 1rem;
+        background-color: var(--primary); /* Conserver couleur desktop */
+        border-radius: 15px;
+        margin: 2rem auto;
+        position: relative;
+        top: 0;
+        transform: translateY(0);
+    }
+
+    #forgotten-pass.active .text {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    #forgotten-pass.active .text h3 {
+        font-size: 1.6rem;
+        color: white; /* Conserver couleur desktop */
+        margin-bottom: 1rem;
+    }
+
+    #forgotten-pass.active .text img {
+        width: 100px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+
+    #forgotten-pass.active .text p {
+        font-size: 1rem;
+        color: white; /* Conserver couleur desktop */
+        margin-bottom: 2rem;
+    }
+
+    #forgotten-pass.active form {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        min-height: 280px;
+        padding: 2rem 1.5rem;
+        background-color: var(--block); /* Conserver couleur desktop */
+        border-radius: 15px;
+    }
+
+    #forgotten-pass.active form .input-container {
+        width: 100%;
+        margin-bottom: 1.5rem;
+        border-radius: 10px;
+    }
+
+    #forgotten-pass.active form .input-container input {
+        height: 50px;
+        padding: 0 1rem;
+        font-size: 1rem;
+        background-color: rgba(49, 49, 49, 0.23); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+        border: 1px solid white;
+        border-radius: 10px;
+    }
+
+    #forgotten-pass.active .btns {
+        height: auto;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    #forgotten-pass.active form .btns button:nth-child(1) {
+        background-color: orange; /* Conserver couleur desktop */
+        color: black; /* Conserver couleur desktop */
+        height: 50px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+    }
+
+    #forgotten-pass.active form .btns button:nth-child(3) {
+        background-color: #222430; /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+        height: 50px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1rem;
+        border: none;
+    }
+
+    /* Messages et Loaders Responsive */
+    #message.success .success.active,
+    #message.error .error.active {
+        width: 90%;
+        max-width: 350px;
+        left: 5%;
+        top: 20px;
+        margin: 0;
+    }
+
+    #loader-overlay.active .loader.active {
+        width: 90%;
+        max-width: 300px;
+        height: auto;
+        min-height: 150px;
+        padding: 2rem 1rem;
+    }
+
+    #loader-overlay.active #restore-pass.active {
+        width: 90%;
+        max-width: 350px;
+        padding: 2rem 1.5rem;
+        margin: 1rem auto;
+        background-color: var(--block); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #restore-pass.active .useremail {
+        color: orange; /* Conserver couleur desktop */
+        font-weight: 600;
+    }
+
+    #restore-pass .goBack-btn {
+        width: 100%;
+        height: 50px;
+        padding: 1rem;
+        margin: 1rem 0;
+        background-color: var(--border); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+}
+
+/* Mobile (480px et moins) - Version optimisée */
+@media (max-width: 480px) {
+    #blockpage {
+        padding: 0.5rem;
+        background-color: rgb(3, 5, 19); /* Conserver couleur desktop */
+    }
+
+    .overlay {
+        padding: 1rem 0.5rem;
+        min-height: 100vh;
+    }
+
+    .overlay .logo {
+        width: 100px;
+        height: 50px;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Login Form Mobile */
+    .overlay .login {
+        max-width: 100%;
+        min-height: 400px;
+        padding: 1.5rem 0;
+        margin: 0.5rem 0;
+    }
+
+    .overlay .login form {
+        width: 95%;
+        max-width: 100%;
+        min-height: 320px;
+        padding: 1.5rem 1rem;
+    }
+
+    .overlay .login h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    .overlay form .input-container {
+        margin-bottom: 1.2rem;
+    }
+
+    .overlay form .input-container input {
+        height: 45px;
+        padding: 0 0.8rem;
+        font-size: 0.9rem;
+        background-color: rgba(49, 49, 49, 0.23); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+
+    .overlay form label {
+        font-size: 0.8rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    .overlay form .btns {
+        margin-top: 1.5rem;
+        gap: 0.8rem;
+    }
+
+    .overlay form .btns button:nth-child(1) {
+        height: 45px;
+        font-size: 0.9rem;
+        background-color: orange; /* Conserver couleur desktop */
+        color: black; /* Conserver couleur desktop */
+    }
+
+    .overlay form .btns button:nth-child(3) {
+        height: 45px;
+        font-size: 0.9rem;
+        background-color: #222430; /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+
+    .overlay .login a {
+        font-size: 0.8rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    /* Register Form Mobile */
+    .overlay .register {
+        max-width: 100%;
+        min-height: 520px;
+        padding: 1.5rem 0;
+        margin: 0.5rem 0;
+    }
+
+    .overlay .register form {
+        width: 95%;
+        max-width: 100%;
+        min-height: 450px;
+        padding: 1.5rem 1rem;
+    }
+
+    .overlay .register h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    .overlay .register form h3 {
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    /* Profile Selection Mobile */
+    #profile.active {
+        padding: 1.5rem 0.8rem;
+    }
+
+    #profile .profile-head {
+        margin-bottom: 1.5rem;
+        padding: 0.8rem 0;
+    }
+
+    #profile .profile-head img {
+        width: 70px;
+        height: 70px;
+    }
+
+    #profile .profile-head .text {
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #profile .profiles {
+        gap: 1.2rem;
+    }
+
+    #profile .profiles .profile-teacher,
+    #profile .profiles .profile-learner {
+        min-height: 180px;
+        padding: 1.2rem 0.8rem;
+        background-color: var(--border); /* Conserver couleur desktop */
+    }
+
+    #profile .profiles .profile-teacher img,
+    #profile .profiles .profile-learner img {
+        height: 100px;
+    }
+
+    #profile .profiles .profile-teacher .text,
+    #profile .profiles .profile-learner .text {
+        font-size: 0.9rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #profile .profiles .profile-teacher.active,
+    #profile .profiles .profile-learner.active {
+        border: 2px solid orange; /* Conserver couleur desktop */
+        background: rgba(139, 73, 20, 0.14); /* Conserver couleur desktop */
+    }
+
+    #profile .profiles svg {
+        width: 25px;
+        height: 35px;
+        fill: white; /* Conserver couleur desktop */
+    }
+
+    #profile .profiles .profile-teacher.active svg,
+    #profile .profiles .profile-learner.active svg {
+        fill: orange; /* Conserver couleur desktop */
+    }
+
+    #profile .btn-continue {
+        max-width: 100%;
+        height: 45px;
+        margin: 1.5rem auto 0 auto;
+        font-size: 1rem;
+        background-color: orange; /* Conserver couleur desktop */
+        color: var(--border); /* Conserver couleur desktop */
+    }
+
+    /* Forgotten Password Mobile */
+    #forgotten-pass.active {
+        max-width: 100%;
+        min-height: 450px;
+        padding: 1.5rem 0.8rem;
+        margin: 1rem auto;
+    }
+
+    #forgotten-pass.active .text h3 {
+        font-size: 1.4rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #forgotten-pass.active .text img {
+        width: 80px;
+        height: 50px;
+    }
+
+    #forgotten-pass.active .text p {
+        font-size: 0.9rem;
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #forgotten-pass.active form {
+        max-width: 100%;
+        min-height: 250px;
+        padding: 1.5rem 1rem;
+    }
+
+    #forgotten-pass.active form .input-container input {
+        height: 45px;
+        padding: 0 0.8rem;
+        font-size: 0.9rem;
+        background-color: rgba(49, 49, 49, 0.23); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #forgotten-pass.active form .btns button:nth-child(1) {
+        height: 45px;
+        font-size: 0.9rem;
+        background-color: orange; /* Conserver couleur desktop */
+        color: black; /* Conserver couleur desktop */
+    }
+
+    #forgotten-pass.active form .btns button:nth-child(3) {
+        height: 45px;
+        font-size: 0.9rem;
+        background-color: #222430; /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+
+    /* Messages et Loaders Mobile */
+    #message.success .success.active,
+    #message.error .error.active {
+        width: 95%;
+        max-width: 100%;
+        left: 2.5%;
+        top: 10px;
+    }
+
+    #loader-overlay.active .loader.active {
+        width: 95%;
+        max-width: 100%;
+        min-height: 120px;
+        padding: 1.5rem 0.8rem;
+    }
+
+    #loader-overlay.active #restore-pass.active {
+        width: 95%;
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+        margin: 0.5rem auto;
+        background-color: var(--block); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+
+    #restore-pass.active .useremail {
+        color: orange; /* Conserver couleur desktop */
+    }
+
+    #restore-pass .goBack-btn {
+        height: 45px;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        background-color: var(--border); /* Conserver couleur desktop */
+        color: white; /* Conserver couleur desktop */
+    }
+}

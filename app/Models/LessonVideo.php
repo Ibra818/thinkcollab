@@ -14,7 +14,7 @@ class LessonVideo extends Model
     protected $fillable = [
         'formation_id',
         'titre',
-        'url',
+        'url_video',
         'ordre',
         'duree',
     ];
