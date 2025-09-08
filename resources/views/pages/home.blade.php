@@ -3161,8 +3161,14 @@
                         }else{
                             data.append('prix', 0);
                         }
+                        if(file){
+                            data.append('file', file);
+                        }else{
+                            const createFormfile= document.querySelector('#create-formation .create-formation-body input[name="file"]');
+                            data.append('file', createFormfile.files[0]);
+                        }
                         
-                        data.append('file', file);
+                        
                         data.append('titre', titre);
                         data.append('legende', legende);
                         data.append('categorie', categorie);
@@ -3408,7 +3414,7 @@
             function submitFormationVideos() {
                 const partTemps = document.querySelectorAll('#create-formation .part-temp');
                 if (partTemps.length === 0) {
-                    console.log('Aucune partie à soumettre');
+                    alert('Aucune partie à soumettre');
                     return;
                 }
                 

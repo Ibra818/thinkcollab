@@ -107,13 +107,19 @@
 
                 response.forEach((element, index) =>{
                     const courItem = template.content.cloneNode(true);
+                    courItem.querySelector('.video video').preload = 'metadata';
+                    courItem.querySelector('.video video').onloadedmetadata = () => {
+                        const total = formatTime(courItem.querySelector('.video video').duration);
+                        total= Math.floor(total)/60;
+                        courItem.querySelector('.module-last').innerText = `${total} min`;
+                    };
 
                     courItem.querySelector('.video video source').src= apiStorage+element.url_video;
                     courItem.querySelector('.module').innerText= element.titre;
 
-                    const minutes = Math.floor(element.duree / 60);
-                    const secondes = element.duree % 60;
-                    courItem.querySelector('.module-last').innerText = `${minutes} min ${secondes}s`;
+                    // const minutes = Math.floor(element.duree / 60);
+                    // const secondes = element.duree % 60;
+                    // courItem.querySelector('.module-last').innerText = `${minutes} min ${secondes}s`;
 
                     coursContainer.appendChild(courItem);
 

@@ -36,9 +36,6 @@ use App\Models\{User,};
 //     return $request->user();
 // });
 
-// Route::get('trial', function(){
-//     return response() -> json('Le test marche');
-// });
 
 // Routes publiques
 // Route::get('/categories', [CategorieController::class, 'index']);
