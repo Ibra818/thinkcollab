@@ -35,7 +35,8 @@
         const goBackBtn = document.querySelector('#restore-pass .goBack-btn');
         const spanRestorePass = document.querySelector('#restore-pass p .useremail');
         const restoreText = document.querySelector('#restore-pass p');
-        const apiUrl = 'http://localhost:8000/';
+        const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+        const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
 
 
         goBackBtn.addEventListener('click', (e)=>{
