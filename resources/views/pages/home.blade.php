@@ -3669,7 +3669,7 @@
                     },
                     success: function(response){
                         console.log(response);
-                        window.location.href= 'http://localhost:8000/login';
+                        window.location.href= apiUrl;
                     },
                     error: function(erreurs){
                         console.log(erreurs);
