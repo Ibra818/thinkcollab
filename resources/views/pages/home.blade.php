@@ -773,6 +773,7 @@
             const formationFile = document.querySelector('#create-formation .file-ctn');
             const gratuit= document.querySelector('#create-formation .create-formation-body form .btns button:nth-child(1)');
             const payant= document.querySelector('#create-formation .create-formation-body form .btns button:nth-child(2)');
+            let feedVideoDuration= null;
             let formationID= null;
             let part= 1;
             let lesson= 1;
@@ -794,6 +795,7 @@
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                 },
                 success: function(response){
                     // console.log('user:', response);
@@ -804,6 +806,9 @@
                     // console.log('description', document.querySelector('#profile .user-info p'));
                     document.querySelector('#profile .user-info p').innerText= response.bio;
                     // if(response.role == 'apprenant') addFormLink.style.display = 'none';
+                    if(response.role == 'apprenant') document.querySelector('nav .pages ul li:nth-child(3)').style.display = 'none';
+                    if(response.role == 'apprenant') document.querySelector('nav .pages ul li:nth-child(4)').style.display = 'none';
+                    if(response.role == 'apprenant') document.querySelector('nav .pages ul li:nth-child(6)').style.display = 'none';
                     if(response.role == 'formateur') btnDevForma.style.display= 'none';
                     if(response.role == 'formateur') formaSuivieLink.innerHTML= 
                     `<svg viewBox="0 0 32 32" fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" >
@@ -839,6 +844,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                 },
                 
                 success: function(response){
@@ -1078,6 +1084,7 @@
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                 },
                 success: function(response){
                     
@@ -1098,6 +1105,7 @@
 
                         contentUser.onclick= ()=>{
                             document.querySelector('#formateur-profile').classList.add('active');
+                            alert('En cours de développement');
                         }
 
                         content.querySelector('video').addEventListener('click', (e)=>{
@@ -1133,6 +1141,7 @@
                                     'Content-Type': 'application/json',
                                     'Accept': 'application/json',
                                     'Authorization': `Bearer ${token}`,
+                                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                 },
                                 success: function(response){
                                     message.classList= [];
@@ -1158,6 +1167,7 @@
                                     'Content-Type': 'application/json',
                                     'Accept': 'application/json',
                                     'Authorization': `Bearer ${token}`,
+                                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                 },
                                 success: function(response){
                                     message.classList= [];
@@ -1185,6 +1195,7 @@
                                     'Content-Type': 'application/json',
                                     'Accept': 'application/json',
                                     'Authorization': `Bearer ${token}`,
+                                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                 },
                                 success: function(response){
 
@@ -1195,6 +1206,7 @@
                                             'Content-Type': 'application/json',
                                             'Accept': 'application/json',
                                             'Authorization': `Bearer ${token}`,
+                                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                         },
                                         success: function(lessons){
                                             console.log('formation-lessons', lessons);
@@ -1263,6 +1275,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                         'Authorization': `Bearer ${token}`,
                     },
                     success: function(response) {
@@ -1669,7 +1682,7 @@
                 overlay.classList = [];
 
                 if(changeUserInfo.classList.contains('active')) changeUserInfo.classList.remove('active');
-                if(addForma.classList.contains('active')) addForma.classList.remove('active');
+                // if(addForma.classList.contains('active')) addForma.classList.remove('active');
                 if(confSwitchAcc.classList.contains('active')){
                     confSwitchAcc.classList= [];
                     switchAcc.classList.add('active');
@@ -1695,6 +1708,7 @@
                             // 'Content-Type': 'application/json',
                             // 'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`,
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
                         },
                         data: profileData,
                         success: function(response){
@@ -1736,6 +1750,7 @@
                             // 'Content-Type': 'application/json',
                             // 'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`,
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
                         },
                         data: coverData,
                         success: function(response){
@@ -1933,6 +1948,7 @@
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`,
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
                         },
                         data: JSON.stringify({
                             deletion_reason: reasons ? reasons : 'Je n\'utilise plus le compte',
@@ -1994,6 +2010,7 @@
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`,
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     },
                     success: function(response){
                         console.log(response)
@@ -2126,6 +2143,7 @@
                         'Content-Type': 'accept/json',
                         'Accept': 'accept/json',
                         'Authorization': `Bearer ${token}`,
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     },
                     success: function(response){
                         console.log('profile', response);
@@ -2212,6 +2230,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     },
                     success: function(response) {
                         console.log('My formations:', response);
@@ -2404,6 +2423,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     },
                     success: function(response) {
                         console.log('Balance:', response);
@@ -2422,6 +2442,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     },
                     success: function(response) {
                         console.log('Transactions:', response);
@@ -2685,6 +2706,7 @@
                 messagerie.classList.add('active');
                 if(document.querySelector('#formateur-profile').classList.contains('active')) document.querySelector('#formateur-profile').classList.remove('active');
                 messagerieLink.classList.add('active');
+                alert('En cours de développement');
                 
                 
                 // Initialiser la messagerie si ce n'est pas déjà fait
@@ -2719,6 +2741,7 @@
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
                         },
 
                         success: function(response){
@@ -2825,6 +2848,7 @@
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
                         },
 
                         success: function(response){
@@ -2970,6 +2994,12 @@
             }
 
             // Drag & drop files
+
+            createFormation.querySelector('.btn-file').onclick= (e)=>{
+                e.preventDefault();
+
+                createFormation.querySelector('form input[type="file"]').click();
+            }
             
             formationFile.ondragover= (e)=>{
                 e.preventDefault();
@@ -2977,8 +3007,8 @@
             };
 
             formationFile.ondrop= (e)=>{
-
                 e.preventDefault();
+
                 const file= e.dataTransfer.files[0];
                 if(file.type.includes('image')){
                     const image= document.createElement('img');
@@ -3017,9 +3047,9 @@
                         </div>
 
                     `;
-                    formationFile.querySelector('.block').style.cssText= 'display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; background-color: var(--graylite); color white; padding-top: 10px;';
+                    formationFile.querySelector('.block').style.cssText= 'display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; background-color: var(--graylite); color: white; padding: 4% 0 0 0;';
                     formationFile.style.cssText= 'display: flex; flex-direction: row; justify-content: space-around; align-items: flex-start; background-color: var(--graylite); color white; padding-top: 10px;';
-                    formationFile.querySelector('.btns').style.cssText= 'display: flex; justify-content: space-between; align-items: center; background-color: var(--graylite); color white; width: 100px; height: 75px;';
+                    formationFile.querySelector('.btns').style.cssText= 'display: flex; justify-content: space-between; align-items: center; background-color: var(--graylite); color white; width: 100px; height: 70px;margin: 0 0 20% 0; position: relative; top: -6%;';
                     formationFile.querySelectorAll('button').forEach(button=>{
                         button.style.cssText= 'background-color: var(--graylite); color white; border: none; border-radius: 15px; padding: 10px; cursor: pointer; width: calc(90% / 2); height: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;';
                     });
@@ -3033,7 +3063,7 @@
                     formationFile.querySelectorAll('svg').forEach(svg=>{
                         svg.style.cssText= 'fill: white; height: 100%; width:90%;';
                     });
-                    formationFile.querySelector('.image-ctn').style.cssText= 'display: flex; justify-content: space-between; align-items: center; background-color: var(--graylite); color white; width: 120px; height: 85%; overflow: hidden;';
+                    formationFile.querySelector('.image-ctn').style.cssText= 'display: flex; justify-content: center; align-items: center; background-color: var(--graylite); color white; width: 120px; height: 100%; overflow: hidden;';
                     formationFile.querySelector('.image-ctn img').style.cssText= 'width: 85%; height: 100%; object-fit: cover; border-radius: 10px;';
                     // console.log('btn-delete:', formationFile);
                     formationFile.querySelector('.btn-edit').style.cssText+= 'background-color: var(--secondary); border-radius: 10px;';
@@ -3098,8 +3128,9 @@
                             </button>
                         </div>
                     `;
-                    formationFile.querySelector('.block').style.cssText= 'display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; background-color: var(--graylite); color: white; padding-top: 10px;'; 
+                    formationFile.querySelector('.block').style.cssText= 'display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start;padding: 2% 0 2% 0; background-color: var(--graylite); color: white;'; 
                     video.onloadedmetadata= ()=>{
+                        feedVideoDuration= video.duration;
                         formationFile.querySelector('.duree span').innerText= `${Math.floor(video.duration / 60)} min ${Math.floor(video.duration % 60)}s`;
                         formationFile.querySelector('.taille span').innerText= `${Math.floor(file.size / (1024 * 1024))} MB`;
                     };
@@ -3109,7 +3140,7 @@
                         span.style.cssText= 'color: white;';
                     });
                     formationFile.style.cssText= 'display: flex; flex-direction: row; justify-content: space-between; align-items: center; background-color: var(--graylite); color white;';
-                    formationFile.querySelector('.btns').style.cssText= 'display: flex; justify-content: space-between; align-items: center; background-color: var(--graylite); color white; width: 100px; height: 75px;';
+                    formationFile.querySelector('.btns').style.cssText= 'display: flex; justify-content: space-between; align-items: center; background-color: var(--graylite); color white; width: 100px; height: 70px;margin: 0 0 20% 0;';
                     formationFile.querySelectorAll('button').forEach(button=>{
                         button.style.cssText= 'background-color: var(--graylite); color white; border: none; border-radius: 15px; padding: 10px; cursor: pointer; width: calc(90% / 2); height: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;';
                     });
@@ -3123,7 +3154,7 @@
 
                     formationFile.querySelector('.btns .btn-delete').onclick= (e)=>{
                         e.preventDefault();
-                        console.log('btn-delete-clicked');
+
                         formationFile.innerHTML= `
                             <div class="ctn-svg">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
@@ -3155,16 +3186,18 @@
                         const legende= document.querySelector('#create-formation .create-formation-body input[name="legende"]').value;
                         const categorie= document.querySelector('#create-formation .create-formation-body select').value;
                         const description= document.querySelector('#create-formation .create-formation-body textarea').value;
+
                         if(payant.classList.contains('active')){
                         const prix= document.querySelector('#create-formation .create-formation-body .ctn-price input[type="number"]').value
                             data.append('prix', prix);
                         }else{
                             data.append('prix', 0);
                         }
+
                         if(file){
                             data.append('file', file);
                         }else{
-                            const createFormfile= document.querySelector('#create-formation .create-formation-body input[name="file"]');
+                            const createFormfile= document.querySelector('#create-formation form input[name="file"]');
                             data.append('file', createFormfile.files[0]);
                         }
                         
@@ -3173,6 +3206,8 @@
                         data.append('legende', legende);
                         data.append('categorie', categorie);
                         data.append('description', description);
+                        data.append('duree', Math.floor(feedVideoDuration));
+
 
                         $.ajax({
                             url: apiUrl +'formations',
@@ -3181,6 +3216,7 @@
                             contentType: false,
                             headers: {
                                 'Authorization': `Bearer ${token}`,
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
                                 // 'Content-Type': 'application/json',
                             },
                             data: data,
@@ -3225,7 +3261,7 @@
                             error: function(erreurs){
                                 message.classList.add('error');
                                 error.classList.add('active');
-                                erroMsg.innerText= 'Erreur lors de la création de la formation';
+                                errorMsg.innerText= 'Erreur lors de la création de la formation';
                             }
                         });
                         
@@ -3259,7 +3295,7 @@
 
                 partTemplate.innerHTML = `
                     <div class="part-head">
-                        <div class="partname">Part ${part + 1}
+                        <div class="partname">Part-${part}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -3418,50 +3454,96 @@
                     return;
                 }
                 
-                const data = new FormData();
-                data.append('id', formationID);
 
-                partTemps.forEach(partTemp => {
-                    partTemp.querySelectorAll('input[type="file"]').forEach(inputFile => {
-                        if (inputFile.files.length > 0) data.append(inputFile.name, inputFile.files[0]);
-                    });
-                    partTemp.querySelectorAll('input[type="text"]').forEach(inputText => {
-                        data.append(inputText.name, inputText.value);
-                    });
+                partTemps.forEach((partTemp, partIndex) => {
+
+                    const modules= partTemp.querySelectorAll('.module');
+
+                    modules.forEach((module, index) =>{
+                        
+                        const data = new FormData();
+                        const moduleFile= module.querySelector('input[type="file"]').files[0];
+                        let duration= null;
+                        
+                        module.querySelector('video').src= URL.createObjectURL(moduleFile);
+                        module.querySelector('video').preload= 'metadata';
+
+                        module.querySelector('video').onloadedmetadata= ()=>{
+                            
+                            URL.revokeObjectURL(module.querySelector('video').src);
+                            duration=  duration= module.querySelector('video').duration.toFixed(2);
+                            console.log('duration: ', duration);
+
+                            data.append('id', formationID);
+                            data.append('partie', partIndex+1);
+                            data.append('ordre', index+1);
+                            data.append('part_titre', partTemp.querySelector('.part-head').querySelector('input[type="text"]').value);
+                            data.append('file', module.querySelector('input[type="file"]').files[0]);
+                            data.append('titre', module.querySelector('input[type="text"]').value);
+                            data.append('duree', parseInt(duration));
+                            console.log('duree: ', duration);
+
+                            // console.log('formation_id: ', formationID);
+                            // console.log('partie: ', partIndex);
+                            // console.log('ordre: ', index+1);
+                            // console.log('file: ', module.querySelector('input[type="file"]').files[0]);
+                            // console.log('titre: ', module.querySelector('input[type="text"]').value);
+                            // console.log('duree: ', duration);
+
+                            $.ajax({
+                                url: apiUrl + `formations/${formationID}/videos`,
+                                type: 'POST',
+                                processData: false,
+                                contentType: false,
+                                headers: { 
+                                    'Authorization': `Bearer ${token}`,
+                                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                                 },
+                                data: data,
+                                success: function(response) {
+                                    console.log('Vidéos ajoutées avec succès:', response);
+                                    
+                                    // Réinitialiser tous les inputs du modal
+                                    resetCreateFormationModal();
+                                    
+                                    // Fermer le modal et afficher un message de succès
+                                    createFormation.classList.remove('active', 'parts');
+                                    overlay.classList.remove('create-formation');
+                                    
+                                    // Afficher message de succès
+                                    // message.classList.add('success');
+                                    // success.classList.add('active');
+                                    // successMsg.innerText = 'Videos ajoutées avec succès !';
+                                },
+                                error: function(err) { 
+                                    console.error('Erreur lors de l\'ajout des vidéos:', err);
+                                    // Afficher message d'erreur
+                                    message.classList.add('error');
+                                    error.classList.add('active');
+                                    errorMsg.innerText = 'Erreur lors de l\'ajout des vidéos';
+                                }
+                            });
+                        }
+
+                        
+                    });    
+                    // const data = new FormData();
+                    // data.append('id', formationID);
+                    // console.log('partname: ', partTemp.querySelector('.partname').innerText);
+                    // partTemp.querySelectorAll('input[type="file"]').forEach(inputFile => {
+                    //     if (inputFile.files.length > 0) data.append(inputFile.name, inputFile.files[0]);
+                    //     console.log(inputFile.name, inputFile.files[0]);
+                    // });
+                    // partTemp.querySelectorAll('input[type="text"]').forEach(inputText => {
+                    //     data.append(inputText.name, inputText.value);
+                    //     console.log(`module-name-part`, inputText.value);
+                    // });
+
                 });
 
                 console.log('Soumission des vidéos pour formation ID:', formationID);
                 
-                $.ajax({
-                    url: apiUrl + `formations/${formationID}/videos`,
-                    type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    headers: { 'Authorization': `Bearer ${token}` },
-                    data: data,
-                    success: function(response) {
-                        console.log('Vidéos ajoutées avec succès:', response);
-                        
-                        // Réinitialiser tous les inputs du modal
-                        resetCreateFormationModal();
-                        
-                        // Fermer le modal et afficher un message de succès
-                        createFormation.classList.remove('active', 'parts');
-                        overlay.classList.remove('create-formation');
-                        
-                        // Afficher message de succès
-                        message.classList.add('success');
-                        success.classList.add('active');
-                        successMsg.innerText = 'Formation créée avec succès !';
-                    },
-                    error: function(err) { 
-                        console.error('Erreur lors de l\'ajout des vidéos:', err);
-                        // Afficher message d'erreur
-                        message.classList.add('error');
-                        error.classList.add('active');
-                        errorMsg.innerText = 'Erreur lors de l\'ajout des vidéos';
-                    }
-                });
+                
             }
 
 
@@ -3581,6 +3663,7 @@
                     type: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     },
                     success: function(response){
                         console.log(response);

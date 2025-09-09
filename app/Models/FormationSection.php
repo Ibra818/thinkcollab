@@ -30,7 +30,7 @@ class FormationSection extends Model
 
     public function lessonVideos(): HasMany
     {
-        return $this->hasMany(LessonVideo::class, 'section_id')->orderBy('ordre');
+        return $this->hasMany(LessonVideo::class, 'formation_section_id')->orderBy('ordre');
     }
 
     // Helper methods

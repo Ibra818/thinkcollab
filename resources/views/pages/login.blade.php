@@ -93,7 +93,7 @@
             const password = document.querySelector('#password')?.value;
             const confirm_password = document.querySelector('#confirm_password')?.value;
             const name = document.querySelector('#username')?.value;
-            // const token = "{{ csrf_token() }}";
+            const token = "{{ csrf_token() }}";
             // console.log(token);
 
             $.ajax({
@@ -107,7 +107,7 @@
                 }),
                 type: 'POST',
                 headers: {
-                    // 'X-CSRF-TOKEN': token,
+                    'X-CSRF-TOKEN': token,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },

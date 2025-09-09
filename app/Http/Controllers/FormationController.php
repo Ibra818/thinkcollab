@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Formation, Feedvideo};
+use App\Models\{Formation, FeedVideo};
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -28,19 +28,50 @@ class FormationController extends Controller
         //     'statut' => 'required|in:brouillon,publie',
         // ]);
 
-        $couvPath= $request ->file('file') -> store('formations/couvertures', 'public');
+        $file = $request->file('file');
+        $mimeType = $file->getClientMimeType();
         
+        if(!in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg'])){
+            $videoPath = $file->store('feedVideos', 'public');
 
-        $formation = Formation::create([
-            'titre' => $request -> titre,
-            'description' => $request -> description,
-            'prix' => $request -> prix,
-            'categorie_id' => $request -> categorie,
-            'image_couverture' => '/'.$couvPath,
-            'statut' => 'brouillon',
-            'formateur_id' => $request -> user() ->id,
-        ]);
+            FeedVideo::create([
+                'user_id' => $request -> user() ->id,
+                'description' => $request -> description,
+                'categorie_id' => $request -> categorie,
+                'miniature' => 'Image not found',
+                'formation_id' => $request -> id,
+                'titre' => $request -> titre,
+                'url_video' => '/'.$videoPath,
+                'duree' => $request -> duree,
+            ]);
 
+            $formation = Formation::create([
+                'titre' => $request -> titre,
+                'description' => $request -> description,
+                'prix' => $request -> prix,
+                'categorie_id' => $request -> categorie,
+                'image_couverture' => 'Image not found',
+                'statut' => 'brouillon',
+                'formateur_id' => $request -> user() ->id,
+            ]);
+
+            return response() -> json(['message' => 'Formation créer avec success!', 'formation_id' => $formation->id, 201]);
+        }elseif(in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg'])){
+
+            $couvPath = $file->store('formations/couvertures', 'public');
+            
+            $formation = Formation::create([
+                'titre' => $request -> titre,
+                'description' => $request -> description,
+                'prix' => $request -> prix,
+                'categorie_id' => $request -> categorie,
+                'image_couverture' => '/'.$couvPath,
+                'statut' => 'brouillon',
+                'formateur_id' => $request -> user() ->id,
+            ]);
+
+            return response() -> json(['message' => 'Formation créer avec success!', 'formation_id' => $formation->id, 201]);
+        }
         // $vid_intro = $request -> file('video_intro') -> store('feedVideos', 'public');
         // $FeedVideo= FeedVideo::create([
         //     'user_id' => $request -> user() ->id,
@@ -52,8 +83,7 @@ class FormationController extends Controller
         //     'url_video' => '/'.$vid_intro,
         //     'duree' => $request -> duree,
         // ]);
-        // return response()->json($formation->load(['formateur', 'categorie']), 201);
-        return response() -> json(['message' => 'Formation créer avec success!', 'formation_id' => $formation->id, 201]);
+        return response() -> json(['message' => 'Erreur', 402]);
     }
 
     public function show(Formation $formation): JsonResponse

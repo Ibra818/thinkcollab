@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{LessonVideo, FeedVideo, Formation};
+use App\Models\{LessonVideo, FeedVideo, Formation, FormationSection};
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -27,28 +27,52 @@ class LessonVideoController extends Controller
 
         // $validated = $request->validate([
         //     'titre' => 'required|string|max:255',
-        //     'url_video' => 'required|string|max:255',
+        //     'file' => 'required|file|mimes:mp4,mov,avi,mkv,webm',
         //     'ordre' => 'required|integer|min:1',
         //     'duree' => 'required|integer|min:1',
+        //     'partie' => 'required|integer|min:1',
         // ]);
 
-        foreach( $request -> allFiles() as $key => $file){
+        $path = $request -> file('file')->store('lessons', 'public');
 
-                $index = str_replace('module-file-', '', $key);
-                $namekey = "module-name-" .$index; 
+        $section = FormationSection::create([
+
+            'titre' => $request -> part_titre,
+            'description' => $request -> description,
+            'ordre' =>  $request -> ordre,
+            'formation_id' => $request -> id,
+        ]);
+
+        $lesson = LessonVideo::create([
+
+            'titre' => $request -> titre,
+            'url_video' => '/'.$path,  
+            'ordre' => $request -> ordre,
+            'duree' => $request -> duree,
+            'formation_id' => $request -> id,   
+            'formation_section_id' => $section -> id,
+        ]);
+        
+
+        
+
+        // foreach( $request -> allFiles() as $key => $file){
+
+        //         $index = str_replace('module-file-', '', $key);
+        //         $namekey = "module-name-" .$index; 
                 
-                $lessonName = $request -> input($namekey);
-                $path = $file->store('lessons', 'public');
+        //         $lessonName = $request -> input($namekey);
+        //         $path = $file->store('lessons', 'public');
 
-                $lesson = LessonVideo::create(
-                    [
-                        'titre' => $lessonName? $lessonName : 'Sans titre',
-                        'url_video' => '/'.$path,  
-                        'ordre' => 1,
-                        'duree' =>  900,
-                        'formation_id' => $request -> id,
-                    ]);
-            }
+        //         $lesson = LessonVideo::create(
+        //             [
+        //                 'titre' => $lessonName? $lessonName : 'Sans titre',
+        //                 'url_video' => '/'.$path,  
+        //                 'ordre' => 1,
+        //                 'duree' =>  900,
+        //                 'formation_id' => $request -> id,
+        //             ]);
+        //     }
 
         return response() -> json(['success' => 'Modules ajoutées avec success']);
         // $video = LessonVideo::create($validated);
@@ -68,9 +92,10 @@ class LessonVideoController extends Controller
 
         $validated = $request->validate([
             'titre' => 'sometimes|string|max:255',
-            'url' => 'sometimes|string|max:255',
+            'url_video' => 'sometimes|string|max:255',
             'ordre' => 'sometimes|integer|min:1',
             'duree' => 'sometimes|integer|min:1',
+            'formation_section_id' => 'sometimes|exists:formation_sections,id',
         ]);
 
         $lessonVideo->update($validated);

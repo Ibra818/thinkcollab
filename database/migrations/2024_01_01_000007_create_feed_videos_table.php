@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('feed_videos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('categorie_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->foreignId('formation_id') -> nullable() -> constrained('formations') -> onDelete('set null');
             $table->string('titre');

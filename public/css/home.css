@@ -1741,6 +1741,7 @@
             position:absolute;
             top:0;
             right: 0;
+            padding-right: 3.5%;
         }
 
         #create-formation.active .create-formation-head, #create-formation.parts .create-formation-head{
@@ -1966,7 +1967,7 @@
         #create-formation.parts .formation-parts .part-body .module .video-edit video{
             width: 70%;
             height: 95%;
-            margin: 0 0 0 5px;
+            /* margin: 0 0 0 5px; */
             border-radius: 5px;
         }
 
@@ -2027,7 +2028,7 @@
         }
 
         #create-formation.active .create-formation-body form .file-ctn{
-            width: 90%;
+            width: 80%;
             height: 200px;
             background-color: var(--sidebar);
             display: flex;
@@ -2038,6 +2039,7 @@
             border-radius: 5px;
             margin-bottom: 2%;
             margin-top: 2%;
+            margin-right: 6%;
         }
 
         #create-formation.active .create-formation-body form .file-ctn .ctn-svg{
@@ -2208,11 +2210,12 @@
         
             
         #create-formation.active .create-formation-footer, #create-formation.parts .create-formation-footer{
-            width: 100%;
+            width: 90%;
             height: 10%;
             display: flex;
             justify-content: space-around;
             align-items: center;
+            margin-left: 5%;
         }
         #create-formation.active .create-formation-footer button, #create-formation.parts .create-formation-footer button{
             width: 30%;

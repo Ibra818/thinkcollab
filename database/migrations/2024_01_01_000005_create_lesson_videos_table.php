@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\FormationSection;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,8 +15,6 @@ return new class extends Migration
         Schema::create('lesson_videos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('formation_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('section_id')->nullable(); // Sera ajouté comme FK plus tard
-            $table->string('titre');
             $table->text('description')->nullable();
             $table->string('url_video');
             $table->integer('ordre');
@@ -23,6 +22,10 @@ return new class extends Migration
             $table->boolean('est_gratuit')->default(false);
             $table->timestamps();
         });
+
+        // Schema::table('lesson_videos', function (Blueprint $table) {
+        //     $table->foreignIdFor(FormationSection::class)->nullable()->constrained()->cascadeOnDelete();
+        // });
     }
 
     /**

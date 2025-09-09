@@ -17,6 +17,7 @@ class LessonVideo extends Model
         'url_video',
         'ordre',
         'duree',
+        'formation_section_id',
     ];
 
     protected $casts = [
@@ -32,7 +33,7 @@ class LessonVideo extends Model
 
     public function section(): BelongsTo
     {
-        return $this->belongsTo(FormationSection::class, 'section_id');
+        return $this->belongsTo(FormationSection::class, 'formation_section_id');
     }
 
     public function favoris(): HasMany
