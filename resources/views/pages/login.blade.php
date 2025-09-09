@@ -37,7 +37,8 @@
         const restoreText = document.querySelector('#restore-pass p');
         const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
         const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-
+        // const apiUrl= 'http://localhost:8000/'
+        // const apiStorage= 'http://localhost:8000/storage';
 
         goBackBtn.addEventListener('click', (e)=>{
             e.preventDefault();
@@ -94,7 +95,7 @@
             const password = document.querySelector('#password')?.value;
             const confirm_password = document.querySelector('#confirm_password')?.value;
             const name = document.querySelector('#username')?.value;
-            const token = "{{ csrf_token() }}";
+            // const token = "{{ csrf_token() }}";
             // console.log(token);
 
             $.ajax({
@@ -108,7 +109,7 @@
                 }),
                 type: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': token,
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
@@ -116,29 +117,37 @@
                     console.log(response);
                     if(response.success){
                         // Nettoyer les états précédents
-                        loaderOverlay.classList=[];
-                        loader.classList= [];
-                        error.classList= [];
-                        localStorage.setItem('user', response.user);
-                        localStorage.setItem('token', response.token);
-                        window.location.href = " {{ route('home') }}";
+                        loaderOverlay.classList.remove('active');
+                        loader.classList.remove('active');
+                        error.classList.remove('active');
+                        registerForm.classList.remove('active');
+                        profile.classList= [];
+                        
                         // Afficher le succès
                         successMsg.innerText = response.message;
                         message.classList.add('success');
                         success.classList.add('active');
-                        profile.classList.add('active');    
+                        registerForm.classList.add('active');
+                        loginForm.classList.add('active');
+                        
+                        localStorage.setItem('user', response.user);
+                        localStorage.setItem('token', response.token);
+                        
+                        loginForm.classList.add('active');
+                        // window.location.href = " {{ route('home') }}";
                     }
                 },
                 error: function(erreurs){
                     console.log(erreurs);
                     // Nettoyer les états précédents
-                    loaderOverlay.classList=[];
-                    loader.classList= [];
-                    success.classList= [];
-                    message.classList= [];
+                    loaderOverlay.classList.remove('active');
+                    loader.classList.remove('active');
+                    success.classList.remove('active');
+                    message.classList.remove('success');
                     let errorMessage = 'Erreur d\'inscription';
                     
-                    errorMessage = erreurs.responseJSON.errors;
+                    // errorMessage = erreurs.responseJSON.errors;
+                    errorMessage = 'Erreur d\'inscription';
                     console.log(errorMessage);
                     // Afficher l'erreur
                     errorMsg.innerText = errorMessage;
@@ -192,7 +201,7 @@
         restorePass.addEventListener('click', (e)=>{
             e.preventDefault();   
             console.log('clické!');  
-            forgottenPass.classList=  [];   
+            forgottenPass.classList.remove('active');   
             forgottenPass.classList.add('active');
         });     
 
@@ -232,8 +241,8 @@
                 success: function(response){
                     console.log('user: ',response);
                     if(response.success){
-                        loader.classList= [];
-                        loaderOverlay.classList= [];
+                        loader.classList.remove('active');
+                        loaderOverlay.classList.remove('active');
                         localStorage.setItem('user', response.user);
                         localStorage.setItem('token', response.token);
                          if(response.user.role== 'admin' || response.user.role== 'superadmin'){
@@ -312,7 +321,7 @@
                 <div class="block"></div>
             </div>
             <div class="overlay" >
-                <img src="https://www.bintschool.com/wp-content/uploads/2023/04/BintSchooloff.png" alt="" class="logo">
+                <img src="{{ asset('images/logo.png') }}" alt="" class="logo">
                 <div class="register">
                     <div class="register-head">
                         <h2>Créer un nouveau compte</h2>
