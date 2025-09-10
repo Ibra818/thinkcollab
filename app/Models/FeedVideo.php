@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Formation;
 
 class FeedVideo extends Model
 {
@@ -18,13 +19,30 @@ class FeedVideo extends Model
         'url_video',
         'duree',
         'miniature',
-        'formation_id'
+        'formation_id',
+        'categorie_id',
+        'est_public'
+    ];
+
+    protected $casts = [
+        'duree' => 'integer',
+        'est_public' => 'boolean',
     ];
 
     // Relations
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function formation(): BelongsTo
+    {
+        return $this->belongsTo(Formation::class, 'formation_id');
+    }
+
+    public function categorie(): BelongsTo
+    {
+        return $this->belongsTo(Categorie::class, 'categorie_id');
     }
 
     public function likes(): HasMany

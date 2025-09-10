@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\FeedVideo;
 
 class Formation extends Model
 {
@@ -30,6 +31,11 @@ class Formation extends Model
     public function formateur(): BelongsTo
     {
         return $this->belongsTo(User::class, 'formateur_id');
+    }
+
+    public function feedvideos(): HasMany
+    {
+        return $this->hasMany(FeedVideo::class);
     }
 
     public function categorie(): BelongsTo
@@ -76,5 +82,21 @@ class Formation extends Model
     public function scopeDraft($query)
     {
         return $query->where('statut', 'brouillon');
+    }
+
+    // Helper methods
+    public function hasFeedVideos(): bool
+    {
+        return $this->feedvideos()->exists();
+    }
+
+    public function getTotalFeedVideosCount(): int
+    {
+        return $this->feedvideos()->count();
+    }
+
+    public function getTotalFeedVideosDuration(): int
+    {
+        return $this->feedvideos()->sum('duree');
     }
 }

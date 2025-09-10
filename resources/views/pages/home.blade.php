@@ -777,16 +777,28 @@
             let formationID= null;
             let part= 1;
             let lesson= 1;
-            const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
-            const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-            // const apiUrl= 'http://localhost:8000/'
-            // const apiStorage= 'http://localhost:8000/storage';
+            let file= null; // Variable globale pour stocker le fichier sélectionné
+            // const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+            // const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
+            const apiUrl= 'http://localhost:8000/'
+            const apiStorage= 'http://localhost:8000/storage';
             const token = localStorage.getItem('token');
             
             // Mobile Navigation Elements
             const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
             const navOverlay = document.querySelector('.nav-overlay');
             const nav = document.querySelector('nav');
+            const imgCouv= document.querySelector('#img-couv');
+
+            btnAddImgCouv.onclick =(e)=>{
+                e.preventDefault();
+                imgCouv.click();
+            };
+
+            imgCouv.onchange =(e)=>{
+                e.preventDefault();
+                btnAddImgCouv.nextElementSibling.innerText= imgCouv.files[0].name;
+            };
 
             
             $.ajax({
@@ -1238,7 +1250,7 @@
                                     const block2 = courDetailsPage.querySelector('.cour-detail-body .container-right .cdtls-block2');
                                     // console.log('block2:',block2);
                                     // Image de couverture
-                                        block1.querySelector('img').src = apiStorage + response.formation.image_couverture;
+                                        block1.querySelector('img').src = response.formation.image_couverture ? apiStorage + response.formation.image_couverture : 'https://via.placeholder.com/300x200';
 
                                         // Catégorie + titre
                                         block2.querySelector('.cour-intro .cour-cat').innerText = 'Catégorie: ' + response.formation.categorie.nom;
@@ -2264,20 +2276,34 @@
 
             // Function to render formations grid
             function renderFormationsGrid(formations) {
+                console.log('renderFormationsGrid called with:', formations);
                 const grid = document.getElementById('formations-grid');
+                console.log('Grid element:', grid);
+                
+                if (!grid) {
+                    console.error('formations-grid element not found!');
+                    return;
+                }
+                
                 grid.innerHTML = '';
+                
+                if (!formations || formations.length === 0) {
+                    console.log('No formations to render');
+                    grid.innerHTML = '<p>Aucune formation trouvée</p>';
+                    return;
+                }
                 
                 formations.forEach(formation => {
                     const formationCard = document.createElement('div');
                     formationCard.className = 'formation-card';
                     formationCard.innerHTML = `
                         <div class="formation-thumbnail">
-                            <video poster="${formation.image_couverture ? apiStorage + formation.image_couverture : 'https://via.placeholder.com/300x200'}" preload="none">
-                                <source src="${formation.video_preview ? apiStorage + formation.video_preview : '#'}" type="video/mp4">
+                            <video muted poster="${formation.image_couverture ? apiStorage + formation.image_couverture : 'data:image/jpeg;base64,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'}">
+                                <source src="${formation.feedvideos && formation.feedvideos.length > 0 && formation.feedvideos[0].url_video ? apiStorage + formation.feedvideos[0].url_video : '#'}" type="video/mp4">
                             </video>
                             <div class="play-overlay">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                    <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                                 </svg>
                             </div>
                         </div>
@@ -2323,18 +2349,82 @@
                     const video = formationCard.querySelector('video');
                     const playOverlay = formationCard.querySelector('.play-overlay');
                     
-                    playOverlay.addEventListener('click', () => {
+                    // Fonction pour masquer/afficher le play overlay
+                    const togglePlayOverlay = (show) => {
+                        playOverlay.style.opacity = show ? '1' : '0';
+                        playOverlay.style.pointerEvents = show ? 'auto' : 'none';
+                    };
+                    
+                    // Vérifier si la vidéo a une source valide
+                    const hasValidVideo = formation.feedvideos && formation.feedvideos.length > 0 && formation.feedvideos[0].url_video;
+                    if (!hasValidVideo) {
+                        playOverlay.style.display = 'none';
+                    }
+                    
+                    // Gestionnaire pour le chargement de la vidéo
+                    video.addEventListener('loadstart', () => {
+                        console.log('Chargement de la vidéo commencé');
+                    });
+                    
+                    video.addEventListener('canplay', () => {
+                        console.log('Vidéo prête à être lue');
+                    });
+                    
+                    video.addEventListener('loadeddata', () => {
+                        console.log('Données vidéo chargées');
+                    });
+                    
+                    // Gestionnaire de clic sur le play overlay
+                    playOverlay.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
                         if (video.paused) {
-                            video.play();
-                            playOverlay.style.opacity = '0';
+                            // Activer le son lors de la lecture
+                            video.muted = false;
+                            video.play().then(() => {
+                                togglePlayOverlay(false);
+                            }).catch(error => {
+                                console.error('Erreur lors de la lecture de la vidéo:', error);
+                                // En cas d'erreur, réactiver le play overlay
+                                togglePlayOverlay(true);
+                            });
                         } else {
                             video.pause();
-                            playOverlay.style.opacity = '1';
+                            togglePlayOverlay(true);
                         }
                     });
                     
+                    // Gestionnaire pour la fin de la vidéo
                     video.addEventListener('ended', () => {
-                        playOverlay.style.opacity = '1';
+                        togglePlayOverlay(true);
+                    });
+                    
+                    // Gestionnaire pour les erreurs de lecture
+                    video.addEventListener('error', (e) => {
+                        console.error('Erreur de lecture vidéo:', e);
+                        togglePlayOverlay(true);
+                    });
+                    
+                    // Gestionnaire pour le clic sur la vidéo (pause/play)
+                    video.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (video.paused) {
+                            // Activer le son lors de la lecture
+                            video.muted = false;
+                            video.play().then(() => {
+                                togglePlayOverlay(false);
+                            }).catch(error => {
+                                console.error('Erreur lors de la lecture de la vidéo:', error);
+                                // En cas d'erreur, réactiver le play overlay
+                                togglePlayOverlay(true);
+                            });
+                        } else {
+                            video.pause();
+                            togglePlayOverlay(true);
+                        }
                     });
                     
                     grid.appendChild(formationCard);
@@ -2996,28 +3086,15 @@
                     <input type="number">
                     <div>CFA</div>
                 `;
-                div.querySelector('input').style.cssText+= `width: 90%; boder: 1px solid white; margin: 10px 0 15px 0;`;
-                div.style.cssText+= 'display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; width: 100%;';
+                div.querySelector('input').style.cssText+= `width: 100%; boder: 1px solid white; margin: 15px 0 25px 0;`;
+                div.style.cssText+= 'display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; width: 100%; margin: 0 0 20px 0;';
                 e.currentTarget.parentNode.parentNode.appendChild(div);
             }
 
             // Drag & drop files
 
-            createFormation.querySelector('.btn-file').onclick= (e)=>{
-                e.preventDefault();
-
-                createFormation.querySelector('form input[type="file"]').click();
-            }
-            
-            formationFile.ondragover= (e)=>{
-                e.preventDefault();
-
-            };
-
-            formationFile.ondrop= (e)=>{
-                e.preventDefault();
-
-                const file= e.dataTransfer.files[0];
+            // Fonction commune pour afficher les fichiers sélectionnés
+            function displaySelectedFile(file) {
                 if(file.type.includes('image')){
                     const image= document.createElement('img');
                     image.src= URL.createObjectURL(file);
@@ -3040,15 +3117,15 @@
 
                             <button class="btn-edit">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
+                                    <path fill-rule="evenodd" d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z'/>
                                 </svg>
                             </button>
 
                             <button class="btn-delete">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z'/>
+                                    <path d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z'/>
                                 </svg>
                             </button>
 
@@ -3073,16 +3150,17 @@
                     });
                     formationFile.querySelector('.image-ctn').style.cssText= 'display: flex; justify-content: center; align-items: center; background-color: var(--graylite); color white; width: 120px; height: 100%; overflow: hidden;';
                     formationFile.querySelector('.image-ctn img').style.cssText= 'width: 85%; height: 100%; object-fit: cover; border-radius: 10px;';
-                    // console.log('btn-delete:', formationFile);
                     formationFile.querySelector('.btn-edit').style.cssText+= 'background-color: var(--secondary); border-radius: 10px;';
+                    
+                    // Gestionnaire pour le bouton supprimer
                     formationFile.querySelector('.btns .btn-delete').onclick= (e)=>{
                         e.preventDefault();
                         console.log('btn-delete-clicked');
                         formationFile.innerHTML= `
                             <div class="ctn-svg">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                                    <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
-                                    <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                                    <path d='M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5'/>
+                                    <path d='M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z'/>
                                 </svg>
                                 Glisser et déposer ici
                             </div>
@@ -3093,6 +3171,7 @@
                         formationFile.style.cssText= 'display: flex; flex-direction: column; justify-content: space-around; align-items: center; background-color: var(--graylite); color white;';
                     };
 
+                    // Gestionnaire pour le bouton modifier
                     formationFile.querySelector('.btns .btn-edit').onclick= (e)=>{
                         e.preventDefault();
                         formationFile.querySelector('input[name="formation-file"]').click();
@@ -3108,12 +3187,12 @@
                         <div class="video-ctn">
                             <video src="${URL.createObjectURL(file)}" alt="Video"></video>
                             <svg class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                                <path d='M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z'/>
                             </svg>
                         </div>
                         <div>
                             <div class="duree">
-                                Duree: <span></span>
+                                Duree: <span>Chargement...</span>
                             </div>
                             <div class="taille">
                                 Taille: <span></span>
@@ -3123,15 +3202,15 @@
                         <div class="btns">  
                             <button class="btn-edit">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
+                                    <path fill-rule="evenodd" d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z'/>
                                 </svg>
                             </button>
 
                             <button class="btn-delete">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z'/>
+                                    <path d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z'/>
                                 </svg>
                             </button>
                         </div>
@@ -3141,6 +3220,12 @@
                         feedVideoDuration= video.duration;
                         formationFile.querySelector('.duree span').innerText= `${Math.floor(video.duration / 60)} min ${Math.floor(video.duration % 60)}s`;
                         formationFile.querySelector('.taille span').innerText= `${Math.floor(file.size / (1024 * 1024))} MB`;
+                        console.log('Durée vidéo chargée:', feedVideoDuration);
+                    };
+                    
+                    video.onerror= ()=>{
+                        console.error('Erreur lors du chargement de la vidéo');
+                        feedVideoDuration= 0;
                     };
                     formationFile.querySelector('.duree').style.cssText= 'display: flex; justify-content: space-between; align-items: baseline; overflow: hidden; text-align: left; font-size: .8em; background-color: var(--graylite); color: gray; width: 100px;';
                     formationFile.querySelector('.taille').style.cssText= 'display: flex; justify-content: space-between; align-items: baseline; overflow: hidden; text-align: left; font-size: .8em; background-color: var(--graylite); color: gray; width: 100px;';
@@ -3166,8 +3251,8 @@
                         formationFile.innerHTML= `
                             <div class="ctn-svg">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                                    <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
-                                    <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                                    <path d='M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5'/>
+                                    <path d='M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z'/>
                                 </svg>
                                 Glisser et déposer ici
                             </div>
@@ -3183,17 +3268,74 @@
                         document.querySelector('input[name="formation-file"]').click();
                     };
                 }
-                if(createFormation.classList.contains('active')){
+            }
+
+            createFormation.querySelector('.btn-file').onclick= (e)=>{
+                e.preventDefault();
+
+                createFormation.querySelector('form input[type="file"]').click();
+            }
+            
+            formationFile.ondragover= (e)=>{
+                e.preventDefault();
+
+            };
+
+            formationFile.ondrop= (e)=>{
+                e.preventDefault();
+
+                file= e.dataTransfer.files[0];
+                // Réinitialiser feedVideoDuration pour le nouveau fichier
+                feedVideoDuration = null;
+                displaySelectedFile(file);
+            };
+
+            // Gestionnaire pour l'input file
+            createFormation.querySelector('form input[type="file"]').addEventListener('change', (e)=>{
+                file= e.target.files[0];
+                if(file){
+                    // Réinitialiser feedVideoDuration pour le nouveau fichier
+                    feedVideoDuration = null;
+                    displaySelectedFile(file);
+                }
+            });
+
                     // Gestionnaire pour le bouton "Continuer" (soumission du formulaire)
                     document.querySelector('#create-formation .btn-submit-create-formation').onclick= (e)=>{
-
                         e.preventDefault();
-                        const data= new FormData();
-                        console.log('file-ctn-file: ', file);
+                
+                // Validation des champs obligatoires
                         const titre= document.querySelector('#create-formation .create-formation-body input[name="titre"]').value;
                         const legende= document.querySelector('#create-formation .create-formation-body input[name="legende"]').value;
                         const categorie= document.querySelector('#create-formation .create-formation-body select').value;
                         const description= document.querySelector('#create-formation .create-formation-body textarea').value;
+                
+                if(!titre || !categorie || !description) {
+                    message.classList.add('error');
+                    error.classList.add('active');
+                    errorMsg.innerText= 'Veuillez remplir tous les champs obligatoires';
+                    return;
+                }
+                
+                // Récupérer le fichier pour la validation
+                let selectedFile = null;
+                if(file){
+                    selectedFile = file;
+                } else {
+                    const createFormfile = document.querySelector('#create-formation form input[name="file"]');
+                    selectedFile = createFormfile.files[0];
+                }
+                
+                // Vérifier si c'est une vidéo et si la durée est chargée
+                if(selectedFile && selectedFile.type.includes('video') && !feedVideoDuration) {
+                    message.classList.add('error');
+                    error.classList.add('active');
+                    errorMsg.innerText= 'Veuillez attendre que la vidéo soit chargée';
+                    return;
+                }
+                
+                const data= new FormData();
+
 
                         if(payant.classList.contains('active')){
                         const prix= document.querySelector('#create-formation .create-formation-body .ctn-price input[type="number"]').value
@@ -3202,19 +3344,19 @@
                             data.append('prix', 0);
                         }
 
-                        if(file){
-                            data.append('file', file);
-                        }else{
-                            const createFormfile= document.querySelector('#create-formation form input[name="file"]');
-                            data.append('file', createFormfile.files[0]);
+                        if(selectedFile){
+                            data.append('file', selectedFile);
                         }
-                        
                         
                         data.append('titre', titre);
                         data.append('legende', legende);
                         data.append('categorie', categorie);
                         data.append('description', description);
-                        data.append('duree', Math.floor(feedVideoDuration));
+                        data.append('image_couverture', imgCouv.files[0]);
+                
+                // Vérifier si feedVideoDuration est disponible, sinon utiliser 0
+                const duree = feedVideoDuration ? Math.floor(feedVideoDuration) : 0;
+                data.append('duree', duree);
 
 
                         $.ajax({
@@ -3235,13 +3377,15 @@
                                 
                                 // Réinitialiser seulement les champs de la première étape
                                 document.querySelector('#create-formation form').reset();
+                        file = null; // Réinitialiser la variable globale file
+                        feedVideoDuration = null; // Réinitialiser la durée
                                 const fileCtn = document.querySelector('#create-formation .file-ctn');
                                 if (fileCtn) {
                                     fileCtn.innerHTML = `
                                         <div class="ctn-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                                                <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
-                                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                                        <path d='M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5'/>
+                                        <path d='M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z'/>
                                             </svg>
                                             Glisser et déposer ici
                                         </div>
@@ -3272,9 +3416,7 @@
                                 errorMsg.innerText= 'Erreur lors de la création de la formation';
                             }
                         });
-                        
-                    }
-                }
+            };
 
                 // Gestionnaire pour le bouton "Annuler" 
                 document.querySelector('#create-formation .btn-cancel-create-formation').onclick = (e) => {
@@ -3290,8 +3432,6 @@
                     e.preventDefault();
                     // Même action que le bouton Annuler
                     document.querySelector('#create-formation .btn-cancel-create-formation').click();
-                };
-
             };
 
             document.querySelector('#create-formation .formation-parts .btn-add-part').onclick = (e) => {
@@ -3305,8 +3445,8 @@
                     <div class="part-head">
                         <div class="partname">Part-${part}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z'/>
+                                <path d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z'/>
                             </svg>
                         </div>
                         <div class="block">
@@ -3324,8 +3464,8 @@
                                     <source src="">
                                 </video>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
+                                    <path fill-rule="evenodd" d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z'/>
                                 </svg>
                                 <input type="file" name="module-video-${lesson}" hidden>
                             </div>
@@ -3334,7 +3474,7 @@
                             </div>
                             <button class="btn-close">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                    <path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708'/>
                                 </svg>
                             </button>
                         </div>
@@ -3425,8 +3565,8 @@
                     fileCtn.innerHTML = `
                         <div class="ctn-svg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                                <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
-                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                                <path d='M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5'/>
+                                <path d='M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z'/>
                             </svg>
                             Glisser et déposer ici
                         </div>
@@ -3826,7 +3966,7 @@
                         <div class="pause-play">
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
 
                         </div>
@@ -3890,7 +4030,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3899,7 +4039,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3908,7 +4048,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3917,7 +4057,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3926,7 +4066,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3935,7 +4075,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3944,7 +4084,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
 
@@ -3953,7 +4093,7 @@
                                 <source src="#" type="video/mp4">
                             </video>
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                             </svg>
                         </div>
                         
@@ -4342,7 +4482,7 @@
                                             <div>
                                                 <button>
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                                        <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                                        <path d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393'/>
                                                     </svg>
                                                 </button> 
                                                 <div class="module-name">Titre du module</div>
@@ -5011,7 +5151,7 @@
                             <h3>Paramètres</h3> 
                                 <button class="btn-close-param">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                    <path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708'/>
                                 </svg>
                             </button>
                         </div>
@@ -5123,7 +5263,7 @@
                         <h3>Créer une formation</h3>
                         <button class="btn-close-create-formation">
                             <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x" viewBox="0 0 16 16">
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                <path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708'/>
                             </svg>
                         </button>
                     </div>
@@ -5134,8 +5274,8 @@
                             <div class="file-ctn">
                                 <div class="ctn-svg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                                        <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
-                                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                                        <path d='M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5'/>
+                                        <path d='M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z'/>
                                     </svg>
                                     Glisser et déposer ici
                                 </div>
@@ -5143,6 +5283,13 @@
                                     Choisir un fichier
                                 </button>
                             </div>
+
+                            <div class="input-ctn couv">
+                                <input type="file" id="img-couv" name="image_couverture" required>
+                                <button class="btn-img-couv">Image couverture</button>
+                                <div class="file-name"></div>
+                            </div>
+
                             <div class="input-ctn">
                                 <label for="formation-name">Titre</label>
                                 <input type="text" id="titre" name="titre" required>
@@ -5181,7 +5328,13 @@
                     </div>
 
                     <div class="formation-parts">
-                        <button class="btn-add-part">Ajouter une partie</button>
+                        <button class="btn-add-part">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16">
+                                <path d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z"/>
+                                <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5"/>
+                            </svg>
+                            Ajouter une partie
+                        </button>
                     </div>
 
                     <div class="create-formation-footer">

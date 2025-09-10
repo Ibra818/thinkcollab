@@ -432,7 +432,7 @@
             padding: 0 0 5% 0;
             font-size: .85em;
             overflow: hidden;
-            min-height: 50%;
+            max-height: 50%;
             /* border: 1px solid white; */
 
             /* height: 50px; */
@@ -1760,7 +1760,7 @@
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: space-around;
             position:absolute;
             top:0;
@@ -1773,7 +1773,9 @@
             height: 8%;
             padding: 0 5% 0 5%;
             display: flex;
-            justify-content: space-evenly;
+            justify-content: space-between;
+            font-size: 1em;
+            font-weight: 500;
             align-items: center;
             border-bottom: 2px solid var(--graylite);
             color: white;
@@ -2035,7 +2037,7 @@
             height: 80%;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             z-index: 2;
             opacity: 1;
@@ -2044,11 +2046,48 @@
         }
         #create-formation.active .create-formation-body form{
             width: 90%;
-            height: 100%;
+            height: 70%;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
+        }
+
+        #create-formation.active .create-formation-body form #img-couv{
+            display:none;
+        }
+
+        #create-formation.active .create-formation-body form .input-ctn.couv{
+            margin: 0 0 0 0;
+            display:flex;
+            flex-direction: row-reverse;
+            justify-content:  center;
+            align-items: right;
+            width: 80%;
+        }
+
+        #create-formation.active .create-formation-body form .input-ctn.couv button{
+            border:none;
+            border-radius: 10px;
+            background-color: var(--graylite);
+            color: white;
+            width: 35%;
+            height: 5vh;
+            max-height: 5vh;
+            padding: 0 0 0 2%;
+        }
+
+        #create-formation.active .create-formation-body form .input-ctn.couv .file-name{
+            width: 40%;;
+            padding: 0 0 0 2%;
+            border-radius: 10px;
+            font-size: .8em;
+            overflow: hidden;
+            display: flex;
+            justify-content: baseline;
+            align-items: center;
+            text-overflow: ellipsis;
+            color: white;
         }
 
         #create-formation.active .create-formation-body form .file-ctn{
@@ -2105,12 +2144,13 @@
             flex-direction: column;
             justify-content: space-evenly;
             align-items: space-around;
+            margin-bottom: 2.5%;
             
         }
         #create-formation.active .create-formation-body form input{
             border: 1px solid var(--graylite);
             color: white;
-            height: 4vh;
+            height: 5vh;
             max-height: 4vh;
             padding: 0 0 0 2%;
             width: 100%;
@@ -2140,13 +2180,13 @@
         }
         #create-formation.active .create-formation-body form label{
             color: white;
-            margin: 0 0 5px 0;
+            margin: 0 0 2px 0;
         }
         #create-formation.active .create-formation-body form textarea{
             border: none;
             border: 2px solid var(--graylite);
             border-radius: 5px;
-            height: 100px;
+            height: 80px;
             max-height: 100px;
             padding: 5px 0 0 2%;
             width: 100%;
@@ -2187,8 +2227,9 @@
         #create-formation.active .create-formation-body form .btns{
             width: 100%;
             display: flex;
-            justify-content: space-evenly;
-            align-items: center;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 10px 0 0 0;
         }
 
         #create-formation.active .create-formation-body form .btn-pay{
@@ -2235,10 +2276,11 @@
             
         #create-formation.active .create-formation-footer, #create-formation.parts .create-formation-footer{
             width: 90%;
-            height: 10%;
+            height: 8%;
             display: flex;
             justify-content: space-around;
             align-items: center;
+            /* border: 1px solid white; */
             margin-left: 5%;
         }
         #create-formation.active .create-formation-footer button, #create-formation.parts .create-formation-footer button{
@@ -2579,7 +2621,7 @@
             align-items: center
         }
         #cour-details.active .container-right .cdtls-block1{
-            width: 45%;
+            width: 200px;
             height: 100%;
             display:flex;
             flex-direction: column;
@@ -2587,14 +2629,15 @@
             justify-content: flex-start;
         }
         #cour-details.active .container-right .cdtls-block1 img{
-            width: 90%;
-            height:60%;
+            width: 100%;
+            height:250px;
             border-radius: 20px;
             object-fit: cover;
         }
         #cour-details.active .container-right .cdtls-block2{
             color: white;
             height:100%;
+            width: 650px;
             padding: 0 0 0 2%;
             overflow-y: scroll;
             scrollbar-width: none;
@@ -2690,7 +2733,7 @@
         }
 
         #cour-details.active .container-right .cdtls-block2 .cour-intro .cour-formateur img{
-            width: 20%;
+            width: 13%;
             height:95%;
             object-fit: cover;
             border-radius: 50%;
