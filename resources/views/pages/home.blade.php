@@ -778,10 +778,10 @@
             let part= 1;
             let lesson= 1;
             let file= null; // Variable globale pour stocker le fichier sélectionné
-            // const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
-            // const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-            const apiUrl= 'http://localhost:8000/'
-            const apiStorage= 'http://localhost:8000/storage';
+            const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+            const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
+            // const apiUrl= 'http://localhost:8000/'
+            // const apiStorage= 'http://localhost:8000/storage';
             const token = localStorage.getItem('token');
             
             // Mobile Navigation Elements

@@ -35,10 +35,10 @@
         const goBackBtn = document.querySelector('#restore-pass .goBack-btn');
         const spanRestorePass = document.querySelector('#restore-pass p .useremail');
         const restoreText = document.querySelector('#restore-pass p');
-        // const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
-        // const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-        const apiUrl= 'http://localhost:8000/'
-        const apiStorage= 'http://localhost:8000/storage';
+        const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+        const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
+        // const apiUrl= 'http://localhost:8000/'
+        // const apiStorage= 'http://localhost:8000/storage';
 
         goBackBtn.addEventListener('click', (e)=>{
             e.preventDefault();
