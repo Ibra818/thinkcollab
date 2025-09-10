@@ -1236,6 +1236,7 @@
                                                 module.querySelector('.module-name').innerText= lesson.titre;
                                                 contentItem.appendChild(module);
                                             });
+                                            window.location.reload();
 
                                         },
                                         error: function(erreurs){
@@ -1299,7 +1300,7 @@
                         'Authorization': `Bearer ${token}`,
                     },
                     success: function(response) {
-                        console.log('Suggestions Feed-videos:', response);
+                        // console.log('Suggestions Feed-videos:', response);
                         const suggestionsContainer = document.querySelector('#suggestions');
                         
                         // Clear existing videos
@@ -1640,6 +1641,7 @@
 
                     success: function (response){
                         if(overlay.classList.contains('load')) overlay.classList.remove('load');
+                        window.location.reload()
                         // console.log(response)
                     },
                     error: function(erreurs){
@@ -1738,7 +1740,7 @@
                             message.classList.add('success');
                             successMsg.innerText= response.message;
                             success.classList.add('active');
-                            // window.location.reload();
+                            window.location.reload();
                         },
                         error: function(erreurs){
                             console.log('change-profile-errors:', erreurs);
@@ -1780,7 +1782,7 @@
                             message.classList.add('success');
                             successMsg.innerText= response.message;
                             success.classList.add('active');
-                            // window.location.reload();
+                            window.location.reload();
                         },
                         error: function(erreurs){
                             console.log('change-profile-errors:', erreurs);
@@ -1982,7 +1984,7 @@
                             message.classList.add('success');
                             success.classList.add('active');
                             successMsg.innerText = '';
-                            window.location.href= apiUrl+"/login";
+                            window.location.href= apiUrl+ "login";
 
                         },
                         error: function(erreurs){
@@ -2207,6 +2209,7 @@
                 if(retrait.classList.contains('actuve')) retrait.classList.remove('active');
                 if(retraitLink.classList.contains('active')) retraitLink.classList.remove('active');
                 if(messagerie.classList.contains('active')) messagerie.classList.remove('active');
+                if(retrait.classList.contains('active')) retrait.classList.remove('active');
                 if(document.querySelector('#formateur-profile').classList.contains('active')) document.querySelector('#formateur-profile').classList.remove('active');
                 profilePage.classList.add('active');
                 

@@ -3696,9 +3696,9 @@
             cursor: pointer;
         }
 
-        #formation-suivie.active .forma-cour-list.active table tbody tr:nth-child(1){
+        /* #formation-suivie.active .forma-cour-list.active table tbody tr:nth-child(1){
             display:none;
-        }
+        } */
 
         #formation-suivie.active .forma-cour-list.active table thead svg{
             height: 20px;
@@ -3718,9 +3718,9 @@
             margin: 0 0 20px 0;
         }
 
-        #formation-suivie .forma-cour-grid.active .list-item:nth-child(1){
+        /* #formation-suivie .forma-cour-grid.active .list-item:nth-child(1){
             display: none;
-        }
+        } */
 
         #formation-suivie .forma-cour-grid.active .list-item .list-item-head{
             display: flex;
