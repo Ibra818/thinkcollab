@@ -6,6 +6,62 @@
     <!-- Responsive CSS pour mobile -->
     <style>
         /* ========================================
+           UPLOAD PROGRESS BAR STYLES
+           ========================================*/
+        
+        .upload-progress {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            max-width: 90vw;
+            padding: 30px;
+            background-color: var(--sidebar, #2c3e50);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            animation: progressBarAppear 0.3s ease-out;
+            color: white;
+        }
+        
+        @keyframes progressBarAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 16px;
+            color: black;
+            font-weight: 600;
+            color: white;
+        }
+        
+        /* ========================================
            RESPONSIVE MOBILE STYLES
            ========================================*/
         
@@ -1229,18 +1285,25 @@
                                             'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                         },
                                         success: function(lessons){
-                                            console.log('formation-lessons', lessons);
+                                            // console.log('formation-lessons', lessons);
                                             const contentItem= document.querySelector('#cour-details .cour-body .content-items');
                                             lessons.forEach(lesson => {
                                                 const module = document.querySelector('#cour-details .cour-body .content-items .item').cloneNode(true);
                                                 module.querySelector('.module-name').innerText= lesson.titre;
                                                 contentItem.appendChild(module);
                                             });
+                                            message.classList= [];
+                                            message.classList.add('success');
+                                            success.classList.add('active');
+                                            successMsg.innerText= 'Module(s) chargé avec succès';
                                             window.location.reload();
 
                                         },
                                         error: function(erreurs){
                                             console.log('formation-lessons-erreurs', erreurs);
+                                            message.classList.add('error');
+                                            error.classList.add('active');
+                                            errorMsg.innerText= erreurs.message;
                                         }
 
                                     });
@@ -1840,29 +1903,29 @@
                 const data = new FormData(mobPay);
                 const number = data.get('indicatif') + data.get('mobile-num');
                 const code = data.get('code0') + data.get('code1') + data.get('code2') + data.get('code3');
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/pay-cour',
-                    headers: {
-                        'X-CSRF-TOKEN': token,
-                        'Content-Type': 'application/json',
-                    },
-                    data: JSON.stringify({
-                        number: number,
-                        code: code,
-                    }),
-
-                    success: function(response){
-                        sellCourStep1.classList.remove('active')
                         sellCourStep2.classList.add('active');
-                        // console.log(response);
-                    },
+                // $.ajax({
+                //     type: 'POST',
+                //     url: '/pay-cour',
+                //     headers: {
+                //         'X-CSRF-TOKEN': token,
+                //         'Content-Type': 'application/json',
+                //     },
+                //     data: JSON.stringify({
+                //         number: number,
+                //         code: code,
+                //     }),
 
-                    error: function(error){
-                        console.log('error');
-                    }
-                });
+                //     success: function(response){
+                //         sellCourStep1.classList.remove('active')
+                //         sellCourStep2.classList.add('active');
+                //         // console.log(response);
+                //     },
+
+                //     error: function(error){
+                //         console.log('error');
+                //     }
+                // });
             });
 
             
@@ -2210,6 +2273,7 @@
                 if(retraitLink.classList.contains('active')) retraitLink.classList.remove('active');
                 if(messagerie.classList.contains('active')) messagerie.classList.remove('active');
                 if(retrait.classList.contains('active')) retrait.classList.remove('active');
+                if(coursEnVente.classList.contains('active')) coursEnVente.classList.remove('active');
                 if(document.querySelector('#formateur-profile').classList.contains('active')) document.querySelector('#formateur-profile').classList.remove('active');
                 profilePage.classList.add('active');
                 
@@ -2478,6 +2542,12 @@
                 // }
                 // console.log('Clické!')
 
+                // Nettoyer d'abord les éléments de progress bar s'ils existent
+                const existingProgress = document.getElementById('upload-progress-container');
+                const existingOverlay = document.getElementById('upload-progress-overlay');
+                if (existingProgress) existingProgress.remove();
+                if (existingOverlay) existingOverlay.remove();
+                
                 overlay.classList= [];
                 overlay.classList.add('create-formation');
                 console.log(document.querySelector('#create-formation').classList.add('active'));
@@ -3329,6 +3399,14 @@
                     selectedFile = createFormfile.files[0];
                 }
                 
+                // Validation de la taille du fichier côté client
+                if(selectedFile && selectedFile.size > 500 * 1024 * 1024) { // 500MB
+                    message.classList.add('error');
+                    error.classList.add('active');
+                    errorMsg.innerText= 'Le fichier est trop volumineux (max 500MB)';
+                    return;
+                }
+                
                 // Vérifier si c'est une vidéo et si la durée est chargée
                 if(selectedFile && selectedFile.type.includes('video') && !feedVideoDuration) {
                     message.classList.add('error');
@@ -3362,18 +3440,98 @@
                 data.append('duree', duree);
 
 
+                        // Nettoyer d'abord les éléments existants
+                        const existingProgress = document.getElementById('upload-progress-container');
+                        const existingOverlay = document.getElementById('upload-progress-overlay');
+                        if (existingProgress) existingProgress.remove();
+                        if (existingOverlay) existingOverlay.remove();
+                        
+                        // Afficher la progress bar
+                        const progressContainer = document.createElement('div');
+                        progressContainer.className = 'upload-progress';
+                        progressContainer.id = 'upload-progress-container';
+                        progressContainer.innerHTML = `
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">Upload en cours... 0%</div>
+                        `;
+                        
+                        // Créer un overlay sombre
+                        const overlay = document.createElement('div');
+                        overlay.id = 'upload-progress-overlay';
+                        overlay.style.cssText = `
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: rgba(0, 0, 0, 0.7);
+                            z-index: 9998;
+                        `;
+                        
+                        document.body.appendChild(overlay);
+                        document.body.appendChild(progressContainer);
+                        
+                        // Animation d'apparition
+                        setTimeout(() => {
+                            progressContainer.style.opacity = '1';
+                        }, 10);
+                        
+                        // Fonction de nettoyage globale
+                        window.cleanupUploadProgress = function() {
+                            const progressEl = document.getElementById('upload-progress-container');
+                            const overlayEl = document.getElementById('upload-progress-overlay');
+                            
+                            if (progressEl) {
+                                progressEl.remove();
+                            }
+                            if (overlayEl) {
+                                overlayEl.remove();
+                            }
+                        };
+
                         $.ajax({
                             url: apiUrl +'formations',
                             type: 'POST',
                             processData: false,
                             contentType: false,
+                            timeout: 600000, // 10 minutes timeout pour les gros fichiers (500MB)
+                            xhr: function() {
+                                const xhr = new window.XMLHttpRequest();
+                                xhr.upload.addEventListener("progress", function(evt) {
+                                    if (evt.lengthComputable) {
+                                        const percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                                        const progressFill = progressContainer.querySelector('.progress-fill');
+                                        const progressText = progressContainer.querySelector('.progress-text');
+                                        
+                                        progressFill.style.width = percentComplete + '%';
+                                        progressText.textContent = `Upload en cours... ${percentComplete}%`;
+                                        
+                                        if (percentComplete === 100) {
+                                            progressText.textContent = 'Traitement en cours...';
+                                        }
+                                    }
+                                }, false);
+                                return xhr;
+                            },
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                                 'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                                // 'Content-Type': 'application/json',
                             },
                             data: data,
                             success: function(response){
+                                // Supprimer la progress bar et l'overlay
+                                const progressEl = document.getElementById('upload-progress-container');
+                                const overlayEl = document.getElementById('upload-progress-overlay');
+                                
+                                if (progressEl) {
+                                    progressEl.remove();
+                                }
+                                if (overlayEl) {
+                                    overlayEl.remove();
+                                }
+                                
                                 message.classList.add('success');
                                 success.classList.add('active');
                                 successMsg.innerText= response.message;
@@ -3414,6 +3572,17 @@
                                 }, 100);
                             },
                             error: function(erreurs){
+                                // Supprimer la progress bar et l'overlay en cas d'erreur
+                                const progressEl = document.getElementById('upload-progress-container');
+                                const overlayEl = document.getElementById('upload-progress-overlay');
+                                
+                                if (progressEl) {
+                                    progressEl.remove();
+                                }
+                                if (overlayEl) {
+                                    overlayEl.remove();
+                                }
+                                
                                 message.classList.add('error');
                                 error.classList.add('active');
                                 errorMsg.innerText= 'Erreur lors de la création de la formation';
@@ -3592,6 +3761,12 @@
                 
                 // Réinitialiser les classes du modal
                 createFormation.classList.remove('active', 'parts');
+                
+                // Nettoyer la progress bar et l'overlay s'ils existent
+                const progressEl = document.getElementById('upload-progress-container');
+                const overlayEl = document.getElementById('upload-progress-overlay');
+                if (progressEl) progressEl.remove();
+                if (overlayEl) overlayEl.remove();
                 
                 console.log('Modal réinitialisé complètement');
             }
@@ -5283,7 +5458,7 @@
                                     Glisser et déposer ici
                                 </div>
                                 <button class="btn-file">
-                                    Choisir un fichier
+                                    Choisir une vidéo
                                 </button>
                             </div>
 

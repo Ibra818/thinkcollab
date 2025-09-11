@@ -1841,14 +1841,16 @@
 
         #create-formation.parts .formation-parts .part-temp{
             min-height: 300px;
+            max-height: auto;
+            height: auto;
             width: 85%;
             border-radius: 15px;
             display: flex; 
             flex-direction: column;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 2% 0 2% 3%;
-            margin-top: 15px;
+            padding: 2% 0 30px 3%;
+            margin: 15px 0 75px 0;
             background-color: var(--sidebar);
         }
 
@@ -2046,7 +2048,7 @@
         }
         #create-formation.active .create-formation-body form{
             width: 90%;
-            height: 70%;
+            height: 50%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -3133,8 +3135,9 @@
         }
 
         #cour-details.active #sell-cour-detail-overlay.active .sell-cour-steps .step1.active .payment-methods.mobile{
-            min-height: 450px;
-            height: 450px;
+            min-height: 400px;
+            height: 400px;
+            margin: 0 0 50px 0;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
@@ -3338,8 +3341,8 @@
             justify-content: center;
             align-items: center;
             background-color: var(--secondary);
-            height: 100%;
-            flex: 2%;
+            height: 80%;
+            /* flex: 2%; */
             border: 2px solid gray;
             border-radius: 10px;
             color: white;
@@ -3348,8 +3351,10 @@
         }
 
         #mobile-payment.active .number .ctn-mobile-num{
-            flex:4;
+            /* flex:4; */
+            margin: 15px 0 0 0;
             height: 100%;
+            width: 300px;
         }
 
 

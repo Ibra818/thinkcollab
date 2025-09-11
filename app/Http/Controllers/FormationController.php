@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Formation, FeedVideo};
+use App\Services\UploadService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class FormationController extends Controller
@@ -22,15 +24,15 @@ class FormationController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            // Validation des données
+            // Validation des données avec limites optimisées
             $validated = $request->validate([
                 'titre' => 'required|string|max:255',
                 'description' => 'required|string',
                 'prix' => 'required|integer|min:0',
                 'categorie' => 'required|exists:categories,id',
-                'file' => 'required|file',
+                'file' => 'required|file|max:512000', // 500MB max pour les vidéos
                 'duree' => 'required|integer|min:0',
-                'image_couverture' => 'required|file',
+                'image_couverture' => 'required|file|image|mimes:jpeg,png,jpg|max:51200', // 50MB max pour les images
             ]);
 
             $file = $request->file('file');
@@ -40,8 +42,9 @@ class FormationController extends Controller
             return DB::transaction(function () use ($request, $file, $mimeType) {
                 if (!in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg'])) {
                     // Cas vidéo - créer Formation + FeedVideo
-                    $videoPath = $file->store('feedVideos', 'public');
-                    $couvPath = $request->file('image_couverture') ->store('formations/couvertures', 'public');
+                    $uploadService = new UploadService();
+                    $videoPath = $uploadService->uploadVideo($file, 'feedVideos');
+                    $couvPath = $uploadService->uploadImage($request->file('image_couverture'), 'formations/couvertures');
 
                     // Créer d'abord la Formation
                     $formation = Formation::create([
@@ -49,7 +52,7 @@ class FormationController extends Controller
                         'description' => $request->description,
                         'prix' => $request->prix,
                         'categorie_id' => $request->categorie,
-                        'image_couverture' => '/'. $couvPath,
+                        'image_couverture' => $couvPath,
                         'statut' => 'brouillon',
                         'formateur_id' => $request->user()->id,
                     ]);
@@ -59,10 +62,10 @@ class FormationController extends Controller
                         'user_id' => $request->user()->id,
                         'description' => $request->description,
                         'categorie_id' => $request->categorie,
-                        'miniature' => '/' . $couvPath,
+                        'miniature' => $couvPath,
                         'formation_id' => $formation->id,
                         'titre' => $request->titre,
-                        'url_video' => '/' . $videoPath,
+                        'url_video' => $videoPath,
                         'duree' => $request->duree,
                         'est_public' => true,
                     ]);

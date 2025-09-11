@@ -39,9 +39,12 @@
         const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
         // const apiUrl= 'http://localhost:8000/'
         // const apiStorage= 'http://localhost:8000/storage';
+        // const apiUrl= 'localhost:8000/'
+        // const apiStorage= 'localhost:8000/storage'
 
         goBackBtn.addEventListener('click', (e)=>{
             e.preventDefault();
+            
             loaderOverlay.classList.remove('active');
             restorePassword.classList.remove('active');
             forgottenPass.classList.remove('active');
@@ -284,12 +287,12 @@
                     success.classList.remove('active');
                     message.classList.remove('success');
                     
-                    let errorMessage = erreur.responseJSON.message;
-                    console.log(errorMessage);
-                    // Afficher l'erreur
-                    errorMsg.innerText = errorMessage;
-                    error.classList.add('active');
-                    message.classList.add('error');
+                    // let errorMessage = erreur.responseJSON.message;
+                    // console.log(errorMessage);
+                    // // Afficher l'erreur
+                    // errorMsg.innerText = errorMessage;
+                    // error.classList.add('active');
+                    // message.classList.add('error');
                 }
             })
 
