@@ -4018,7 +4018,7 @@
                                     message.classList.add('success');
                                     success.classList.add('active');
                                     successMsg.innerText= 'Module(s) chargé avec succès';
-                                    window.location.reload();
+                                    // window.location.reload();
 
                                 },
                                 error: function(err) { 
