@@ -7,10 +7,10 @@
         const content= document.querySelector('.formation .content');
         const playingVideo = document.querySelector('.formation .content .video video');
         const token = localStorage.getItem('token');
-        // const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
-        // const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-        const apiUrl= 'http://localhost:8000/'
-        const apiStorage= 'http://localhost:8000/storage';
+        const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+        const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
+        // const apiUrl= 'http://localhost:8000/'
+        // const apiStorage= 'http://localhost:8000/storage';
 
         const segments= window.location.pathname.split('/');
         const id = segments.pop();
