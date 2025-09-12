@@ -476,6 +476,16 @@
                 height: auto;
             }
             
+            /* Style pour l'icône de contrôle vidéo */
+            #content .content-item .pause-play {
+                cursor: pointer;
+                transition: opacity 0.3s ease;
+            }
+            
+            #content .content-item .pause-play:hover {
+                opacity: 0.8;
+            }
+            
             /* Categories responsive */
             #categories {
                 margin-bottom: 20px;
@@ -1484,10 +1494,15 @@
                 // Scroll to the new video
                 newContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
-                // Auto play the video after a short delay
+                // Le nouveau système d'Intersection Observer gérera automatiquement la lecture
+                // Pas besoin d'auto-play manuel ici
+                
+                // S'assurer que la nouvelle vidéo est observée (au cas où le MutationObserver ne l'attrape pas)
                 setTimeout(() => {
-                    video.play().catch(e => console.log('Auto-play prevented:', e));
-                }, 500);
+                    if (typeof window.observeNewVideo === 'function') {
+                        window.observeNewVideo(video);
+                    }
+                }, 100);
             }
 
             // Load suggestions videos on page load
@@ -1503,24 +1518,183 @@
                 });
             });
 
-            document.querySelectorAll('#content .content-item video').forEach(video=>{
-                video.addEventListener('click', (e)=>{
-                    e.preventDefault();
-                    if(e.currentTarget.paused){
-                        e.currentTarget.play();
-                        // console.log('video-clické');
-                        e.currentTarget.nextElementSibling.classList.add('active');
-                        e.currentTarget.muted = false;
-                    }else{
-                        console.log(e.currentTarget.nextElementSibling)
-                        e.currentTarget.nextElementSibling.classList.remove('active');
-                        e.currentTarget.pause();
-                        // console.log('video-pause');
+            // Gestionnaire centralisé des vidéos
+            let currentlyPlayingVideo = null;
+            
+            // Fonction pour mettre en pause toutes les vidéos sauf celle spécifiée
+            function pauseAllVideos(exceptVideo = null) {
+                document.querySelectorAll('#content .content-item video').forEach(video => {
+                    if (video !== exceptVideo && !video.paused) {
+                        video.pause();
+                        video.muted = true;
+                        const pausePlayElement = video.nextElementSibling;
+                        if (pausePlayElement) {
+                            pausePlayElement.classList.remove('active');
+                        }
                     }
-                    
                 });
-
+            }
+            
+            // Fonction pour jouer une vidéo et mettre en pause les autres
+            function playVideo(video) {
+                pauseAllVideos(video);
+                video.play().catch(error => {
+                    console.log('Erreur de lecture vidéo:', error);
+                    // En cas d'erreur, s'assurer que la vidéo est en pause
+                    pauseVideo(video);
+                });
+                video.muted = false;
+                const pausePlayElement = video.nextElementSibling;
+                if (pausePlayElement) {
+                    pausePlayElement.classList.add('active');
+                }
+                currentlyPlayingVideo = video;
+            }
+            
+            // Fonction pour mettre en pause une vidéo
+            function pauseVideo(video) {
+                video.pause();
+                video.muted = true;
+                const pausePlayElement = video.nextElementSibling;
+                if (pausePlayElement) {
+                    pausePlayElement.classList.remove('active');
+                }
+                if (currentlyPlayingVideo === video) {
+                    currentlyPlayingVideo = null;
+                }
+            }
+            
+            // Intersection Observer pour la lecture automatique
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    const pausePlayElement = video.nextElementSibling;
+                    
+                    if (entry.isIntersecting) {
+                        // La vidéo est visible, la jouer automatiquement
+                        playVideo(video);
+                    } else {
+                        // La vidéo n'est plus visible, la mettre en pause
+                        pauseVideo(video);
+                    }
+                });
+            }, {
+                threshold: 0.3, // La vidéo doit être visible à 30% pour être jouée (plus sensible)
+                rootMargin: '0px'
             });
+            
+            // Observer toutes les vidéos existantes
+            document.querySelectorAll('#content .content-item video').forEach(video => {
+                videoObserver.observe(video);
+                
+                // Gestionnaire de clic pour contrôler manuellement
+                video.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (video.paused) {
+                        playVideo(video);
+                    } else {
+                        pauseVideo(video);
+                    }
+                });
+                
+                // Gestionnaire de clic sur l'icône SVG (pause-play)
+                const pausePlayElement = video.nextElementSibling;
+                if (pausePlayElement) {
+                    pausePlayElement.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (video.paused) {
+                            playVideo(video);
+                        } else {
+                            pauseVideo(video);
+                        }
+                    });
+                }
+            });
+            
+            // Observer les nouvelles vidéos ajoutées dynamiquement
+            const contentObserver = new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) { // Element node
+                            const videos = node.querySelectorAll ? node.querySelectorAll('video') : [];
+                            videos.forEach(video => {
+                                videoObserver.observe(video);
+                                video.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    if (video.paused) {
+                                        playVideo(video);
+                                    } else {
+                                        pauseVideo(video);
+                                    }
+                                });
+                                
+                                // Gestionnaire de clic sur l'icône SVG (pause-play)
+                                const pausePlayElement = video.nextElementSibling;
+                                if (pausePlayElement) {
+                                    pausePlayElement.addEventListener('click', (e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        if (video.paused) {
+                                            playVideo(video);
+                                        } else {
+                                            pauseVideo(video);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+            
+            // Observer les changements dans la section content
+            const contentSection = document.querySelector('#content');
+            if (contentSection) {
+                contentObserver.observe(contentSection, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+            
+            // Fonction globale pour observer une nouvelle vidéo
+            window.observeNewVideo = function(video) {
+                if (video && typeof videoObserver !== 'undefined') {
+                    videoObserver.observe(video);
+                    video.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (video.paused) {
+                            playVideo(video);
+                        } else {
+                            pauseVideo(video);
+                        }
+                    });
+                    
+                    // Gestionnaire de clic sur l'icône SVG (pause-play)
+                    const pausePlayElement = video.nextElementSibling;
+                    if (pausePlayElement) {
+                        pausePlayElement.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (video.paused) {
+                                playVideo(video);
+                            } else {
+                                pauseVideo(video);
+                            }
+                        });
+                    }
+                }
+            };
+            
+            // Fonction pour nettoyer les observateurs (utile pour les performances)
+            window.cleanupVideoObservers = function() {
+                if (typeof videoObserver !== 'undefined') {
+                    videoObserver.disconnect();
+                }
+                if (typeof contentObserver !== 'undefined') {
+                    contentObserver.disconnect();
+                }
+            };
             
             // Ajouter un module a une formation
 
@@ -2547,7 +2721,7 @@
                 const existingOverlay = document.getElementById('upload-progress-overlay');
                 if (existingProgress) existingProgress.remove();
                 if (existingOverlay) existingOverlay.remove();
-                
+
                 overlay.classList= [];
                 overlay.classList.add('create-formation');
                 console.log(document.querySelector('#create-formation').classList.add('active'));
@@ -3984,22 +4158,25 @@
             // Logout
 
             document.querySelector('#logout').onclick= ()=> {
-                $.ajax({
-                    url: apiUrl + `logout`,
-                    type: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                    },
-                    success: function(response){
-                        console.log(response);
-                        window.location.href= apiUrl;
-                    },
-                    error: function(erreurs){
-                        console.log(erreurs);
-                    }
 
-                });
+                        window.location.href= apiUrl;
+                // $.ajax({
+                //     url: apiUrl + `logout`,
+                //     type: 'GET',
+                //     headers: {
+                //         'Authorization': `Bearer ${token}`,
+                //         'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                //         // 'Authorization': `Bearer ${token}`,
+                //     },
+                //     success: function(response){
+                //         console.log(response);
+                //         window.location.href= apiUrl;
+                //     },
+                //     error: function(erreurs){
+                //         console.log(erreurs);
+                //     }
+
+                // });
             }
 
             // Animate the nav element
