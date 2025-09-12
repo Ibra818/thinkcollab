@@ -1310,10 +1310,10 @@
 
                                         },
                                         error: function(erreurs){
-                                            console.log('formation-lessons-erreurs', erreurs);
-                                            message.classList.add('error');
-                                            error.classList.add('active');
-                                            errorMsg.innerText= erreurs.message;
+                                            // console.log('formation-lessons-erreurs', erreurs);
+                                            // message.classList.add('error');
+                                            // error.classList.add('active');
+                                            // errorMsg.innerText= erreurs.message;
                                         }
 
                                     });
