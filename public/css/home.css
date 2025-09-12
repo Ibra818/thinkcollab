@@ -3078,28 +3078,35 @@
             width: 90%;
             height: 50%;
             color: gray;
-            font-size: 1.1em;
+            font-size: .75em;
         }
 
         #cour-details.active #sell-cour-detail-overlay.active .sell-cour-steps .step1.active .head .block2 .cour-price .price{
             color: white;
-            font-size: 1.2em;
+            width: 50%;
+            display: flex;
+            text-align: center;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 1em;
             font-weight: 600;
         }
 
 
         #cour-details.active #sell-cour-detail-overlay.active .sell-cour-steps .step1.active .head .block2 .validite{
             display: flex;
-            justify-content: space-between;
+            justify-content: baseline;
             width:90%;
             font-size: 1.2em;
             color: gray;
+            padding: 0 0 0 1%;
+            margin: 0 0 2% 0;
 
         }
 
         #cour-details.active #sell-cour-detail-overlay.active .sell-cour-steps .step1.active .head .block2 .validite svg{
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             fill: var(--green);
         }
         #cour-details.active #sell-cour-detail-overlay.active .sell-cour-steps .step1.active .head .block2 .validite button{

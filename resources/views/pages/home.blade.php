@@ -1302,11 +1302,11 @@
                                                 module.querySelector('.module-name').innerText= lesson.titre;
                                                 contentItem.appendChild(module);
                                             });
-                                            message.classList= [];
-                                            message.classList.add('success');
-                                            success.classList.add('active');
-                                            successMsg.innerText= 'Module(s) chargé avec succès';
-                                            window.location.reload();
+                                            // message.classList= [];
+                                            // message.classList.add('success');
+                                            // success.classList.add('active');
+                                            // successMsg.innerText= 'Module(s) chargé avec succès';
+                                            // window.location.reload();
 
                                         },
                                         error: function(erreurs){
@@ -2723,7 +2723,10 @@
                 if (existingOverlay) existingOverlay.remove();
 
                 overlay.classList= [];
+                delAccMsg.classList= [];
                 overlay.classList.add('create-formation');
+                
+                
                 console.log(document.querySelector('#create-formation').classList.add('active'));
                 // $('#overlay').classList.add('create-formation');
                 // $('#create-formation').classList.add('active');
@@ -4011,9 +4014,12 @@
                                     overlay.classList.remove('create-formation');
                                     
                                     // Afficher message de succès
-                                    // message.classList.add('success');
-                                    // success.classList.add('active');
-                                    // successMsg.innerText = 'Videos ajoutées avec succès !';
+                                    message.classList= [];
+                                    message.classList.add('success');
+                                    success.classList.add('active');
+                                    successMsg.innerText= 'Module(s) chargé avec succès';
+                                    window.location.reload();
+
                                 },
                                 error: function(err) { 
                                     console.error('Erreur lors de l\'ajout des vidéos:', err);
