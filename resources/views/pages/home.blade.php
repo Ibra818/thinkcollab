@@ -3,6 +3,17 @@
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     
+    <!-- Police Inter pour toute l'application -->
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        }
+        
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        }
+    </style>
+    
     <!-- Responsive CSS pour mobile -->
     <style>
         /* ========================================
@@ -1412,6 +1423,19 @@
                                     videoElement.classList.remove('playing');
                                 }
                             });
+                            
+                            // Double-click sur la vidéo pour remplacer la vidéo principale
+                            video.addEventListener('dblclick', (e) => {
+                                e.stopPropagation();
+                                
+                                // Arrêter la vidéo de suggestion
+                                video.pause();
+                                video.currentTime = 0;
+                                videoElement.classList.remove('playing');
+                                
+                                // Remplacer la vidéo visible dans content-item
+                                replaceVisibleVideo(feed);
+                            });
 
                             // Add click event on SVG to play video
                             playIcon.addEventListener('click', (e) => {
@@ -1430,10 +1454,6 @@
                                 video.currentTime = 0;
                             });
 
-                            // Double-click pour ajouter au contenu principal
-                            videoElement.addEventListener('dblclick', () => {
-                                addVideoToMainContent(feed);
-                            });
                             
                             suggestionsContainer.appendChild(videoElement);
                         });
@@ -1456,57 +1476,108 @@
                 });
             }
 
-            function addVideoToMainContent(feed) {
-                const mainContent = document.querySelector('#content');
-                const contentItem = document.querySelector('#content .content-item');
+            function replaceVisibleVideo(feed) {
+                // Trouver la vidéo actuellement visible dans le content-item
+                const contentItems = document.querySelectorAll('#content .content-item');
+                let visibleContentItem = null;
                 
-                // Create new content item based on the template
-                const newContent = contentItem.cloneNode(true);
+                // Trouver le content-item visible (celui qui est au centre de l'écran)
+                contentItems.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    // Vérifier si l'élément est visible (au moins 50% dans la viewport)
+                    if (rect.top < windowHeight * 0.75 && rect.bottom > windowHeight * 0.25) {
+                        visibleContentItem = item;
+                    }
+                });
                 
-                // Set video source and poster
-                const video = newContent.querySelector('video');
-                const videoSource = newContent.querySelector('video source');
+                // Si aucun content-item n'est trouvé, prendre le premier
+                if (!visibleContentItem) {
+                    visibleContentItem = contentItems[0];
+                }
+                
+                if (!visibleContentItem) return;
+                
+                // Arrêter la vidéo actuelle
+                const currentVideo = visibleContentItem.querySelector('video');
+                if (currentVideo && !currentVideo.paused) {
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0;
+                }
+                
+                // Remplacer les informations de la vidéo
+                const video = visibleContentItem.querySelector('video');
+                const videoSource = visibleContentItem.querySelector('video source');
+                
+                // Mettre à jour la source et le poster
                 video.poster = feed.miniature ? apiStorage + feed.miniature : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjKpLDQpOaFi-qf8UyakjjLvBbUlKm4fvw4g&s";
                 videoSource.src = apiStorage + feed.url_video;
                 
-                // Set description
-                newContent.querySelector('.text .legend').innerText = feed.description || 'Vidéo suggestion';
+                // Mettre à jour la description si elle existe
+                const legendElement = visibleContentItem.querySelector('.text .legend');
+                if (legendElement) {
+                    legendElement.innerText = feed.description || 'Vidéo suggestion';
+                }
                 
-                // Set user info
-                const contentUser = newContent.querySelector('.text .user');
-                const userImg = contentUser.querySelector('img');
-                const userName = contentUser.querySelector('.info h3');
+                // Mettre à jour les informations utilisateur si elles existent
+                const contentUser = visibleContentItem.querySelector('.text .user');
+                if (contentUser) {
+                    const userImg = contentUser.querySelector('img');
+                    const userName = contentUser.querySelector('.info h3');
+                    
+                    if (userImg) {
+                        userImg.src = feed.user && feed.user.avatar_url ? 
+                            apiStorage + feed.user.avatar_url : 
+                            "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0NDQ4NDQ0NDQ4NDQ0NEA0ODQ8ODhANFxEWFhURFRUYHSoiGholGxUTITUhJSkuLi46Fx8zODMsNzQvOi0BCgoKDQ0NDw8PECsZHxkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/";
+                    }
+                    
+                    if (userName) {
+                        userName.innerText = feed.user && feed.user.name ? feed.user.name : 'Utilisateur';
+                    }
+                }
                 
-                userImg.src = feed.user && feed.user.avatar_url ? 
-                    apiStorage + feed.user.avatar_url : 
-                    "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0NDQ4NDQ0NDQ4NDQ0NEA0ODQ8ODhANFxEWFhURFRUYHSoiGholGxUTITUhJSkuLi46Fx8zODMsNzQvOi0BCgoKDQ0NDw8PECsZHxkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAcAAEAAwADAQEAAAAAAAAAAAAAAQIDEAEFBgcICRD/2wCEAAkGBw0NDQ4NDQ0NDQ4NDQ0NEA0ODQ8ODhANFxEWFhURFRUYHSoiGholGxUTITUhJSkuLi46Fx8zODMsNzQvOi0BCgoKDQ0NDw8PECsZHxkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/";
-                
-                userName.innerText = feed.user && feed.user.name ? feed.user.name : 'Utilisateur';
-                
-                // Reset video to start from beginning
+                // Recharger la vidéo et la démarrer
                 video.currentTime = 0;
                 video.load();
                 
-                // Insert at the beginning of main content (after the first template item)
-                const firstRealContent = mainContent.children[1] || mainContent.firstChild;
-                mainContent.insertBefore(newContent, firstRealContent);
+                // Démarrer la lecture automatiquement
+                setTimeout(() => {
+                    video.play().catch(e => {
+                        console.log('Autoplay prevented:', e);
+                    });
+                }, 200);
                 
-                // Scroll to the new video
-                newContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Le nouveau système d'Intersection Observer gérera automatiquement la lecture
-                // Pas besoin d'auto-play manuel ici
-                
-                // S'assurer que la nouvelle vidéo est observée (au cas où le MutationObserver ne l'attrape pas)
+                // S'assurer que la vidéo remplacée reste observée
                 setTimeout(() => {
                     if (typeof window.observeNewVideo === 'function') {
                         window.observeNewVideo(video);
                     }
-                }, 100);
+                }, 300);
             }
 
             // Load suggestions videos on page load
             loadSuggestionsVideos();
+
+            // Function to pause all videos when specific sections are active
+            function pauseAllVideosForSections() {
+                // Pause all content-item videos
+                document.querySelectorAll('#content .content-item video').forEach(video => {
+                    if (!video.paused) {
+                        video.pause();
+                        video.muted = true;
+                    }
+                });
+                
+                // Pause all suggestion videos
+                document.querySelectorAll('#suggestions .video video').forEach(video => {
+                    if (!video.paused) {
+                        video.pause();
+                        video.currentTime = 0;
+                        video.closest('.video').classList.remove('playing');
+                    }
+                });
+            }
 
             // Button to close the messages
 
@@ -1991,42 +2062,42 @@
                     // console.log('profile-pic:', document.querySelector('#profile-pic'));
                 });
 
-                document.querySelector('.change-profile').addEventListener('click', (e)=>{
-                    e.preventDefault();
-                    document.querySelector('#profile-pic').click();
-                });
+                // document.querySelector('.change-profile').addEventListener('click', (e)=>{
+                //     e.preventDefault();
+                //     document.querySelector('#profile-pic').click();
+                // });
 
-                document.querySelector('#cover-pic').onchange= (e)=> {
+                // document.querySelector('#cover-pic').onchange= (e)=> {
 
-                    const coverData= new FormData();
-                    coverData.append('cover', e.currentTarget.files[0]);
-                    $.ajax({
-                        url: apiUrl + `profile`,
-                        type: 'POST',
-                        processData: false,
-                        contentType: false,
-                        headers: {
-                            // 'Content-Type': 'application/json',
-                            // 'Accept': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                        },
-                        data: coverData,
-                        success: function(response){
-                            console.log('change-profile-response:', response);
-                            // message.classList= [];
-                            // success.classList= [];
-                            message.classList.add('success');
-                            successMsg.innerText= response.message;
-                            success.classList.add('active');
-                            window.location.reload();
-                        },
-                        error: function(erreurs){
-                            console.log('change-profile-errors:', erreurs);
-                        }
-                    });
+                //     const coverData= new FormData();
+                //     coverData.append('cover', e.currentTarget.files[0]);
+                //     $.ajax({
+                //         url: apiUrl + `profile`,
+                //         type: 'POST',
+                //         processData: false,
+                //         contentType: false,
+                //         headers: {
+                //             // 'Content-Type': 'application/json',
+                //             // 'Accept': 'application/json',
+                //             'Authorization': `Bearer ${token}`,
+                //             'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                //         },
+                //         data: coverData,
+                //         success: function(response){
+                //             console.log('change-profile-response:', response);
+                //             // message.classList= [];
+                //             // success.classList= [];
+                //             message.classList.add('success');
+                //             successMsg.innerText= response.message;
+                //             success.classList.add('active');
+                //             window.location.reload();
+                //         },
+                //         error: function(erreurs){
+                //             console.log('change-profile-errors:', erreurs);
+                //         }
+                //     });
 
-                }
+                // }
 
             
             /*=================== Éléments de la messagerie ================*/
@@ -2338,10 +2409,10 @@
 
             // Change the profile and cover picture
 
-            btnChangeCover.addEventListener('click', (e)=> {
-                e.preventDefault();
-                coverPic.click();
-            });
+            // btnChangeCover.addEventListener('click', (e)=> {
+            //     e.preventDefault();
+            //     coverPic.click();
+            // });
 
             // btnChangeCover.addEventListener('click', (e)=> {
             //     e.preventDefault();
@@ -2438,6 +2509,9 @@
 
                 });
 
+                // Pause all videos when profile section becomes active
+                pauseAllVideosForSections();
+
                 // if(addFormPage.classList.contains('active')) addFormPage.classList.remove('active');
                 if(profilePage.classList.contains('active')) return;
                 if(formaSuivieLink.classList.contains('active')) formaSuivieLink.classList.remove('active');
@@ -2457,6 +2531,9 @@
             coursEnVenteLink.addEventListener('click', (e)=>{
                 e.preventDefault();
                 console.log('Cours en vente clicked!');
+                
+                // Pause all videos when cours-en-vente section becomes active
+                pauseAllVideosForSections();
                 
                 if(coursEnVente.classList.contains('active')) return;
                 
@@ -2736,6 +2813,9 @@
             retraitLink.addEventListener('click', (e)=>{
                 e.preventDefault();
                 console.log('Retrait clicked!');
+                
+                // Pause all videos when retrait section becomes active
+                pauseAllVideosForSections();
                 
                 if(retrait.classList.contains('active')) return;
                 
@@ -3040,6 +3120,9 @@
             messagerieLink.addEventListener('click', (e)=>{
                 e.preventDefault();
 
+                // Pause all videos when messagerie section becomes active
+                pauseAllVideosForSections();
+
                 if(messagerie.classList.contains('active')) return;
                 // if(addFormPage.classList.contains('active')) addFormPage.classList.remove('active');
                 if(profile.classList.contains('active')) profile.classList.remove('active');
@@ -3067,6 +3150,9 @@
             let formationsLoaded = false;
 
             formaSuivieLink.addEventListener('click', (e)=>{
+                // Pause all videos when formation-suivie section becomes active
+                pauseAllVideosForSections();
+                
                 if(formaSuivie.classList.contains('active')) return;
                 // if(addFormPage.classList.contains('active')) addFormPage.classList.remove('active');
                 if(profile.classList.contains('active')) profile.classList.remove('active');
@@ -4496,8 +4582,8 @@
 
                             <!-- Contain the buttons in the profil -->
                         <div class="btns">
-                            <button class="change-profile">changer profile</button>
-                            <button class="change-cover">changer cover</button>
+                            <!-- <button class="change-profile">changer profile</button>
+                            <button class="change-cover">changer cover</button> -->
                             <button class="profile-share">Partage profil</button>
                             <button class="param">Paramètres</button>
                         </div>
@@ -4586,11 +4672,11 @@
                         <div class="cour">
                             <img src="{{ asset('images/image2.png') }}" alt="img-cour">
                             <div class="text">
-                                <h4>nom cour</h4>
+                                <h4>Apprendre le hacking</h4>
                                 <div class="meta-info">
-                                    <div class="hour">hour</div>
-                                    <div class="cour-cate">cour-cate</div>
-                                    <div class="publisher"> <img src="" alt=""> publisher</div>
+                                    <div class="hour">4h</div>
+                                    <div class="cour-cate">Hacking</div>
+                                    <div class="publisher"> <img src="{{ asset('images/image3.png') }}" alt=""> publisher</div>
                                 </div>
                             </div>
                         </div>
@@ -4598,11 +4684,11 @@
                         <div class="cour">
                             <img src="{{ asset('images/image2.png') }}" alt="img-cour">
                             <div class="text">
-                                <h4>nom cour</h4>
+                                <h4>Apprendre le hacking</h4>
                                 <div class="meta-info">
-                                    <div class="hour">hour</div>
-                                    <div class="cour-cate">cour-cate</div>
-                                    <div class="publisher"> <img src="" alt=""> publisher</div>
+                                    <div class="hour">4h</div>
+                                    <div class="cour-cate">Hacking</div>
+                                    <div class="publisher"> <img src="{{ asset('images/image3.png') }}" alt=""> publisher</div>
                                 </div>
                             </div>
                         </div>
@@ -4610,11 +4696,11 @@
                         <div class="cour">
                             <img src="{{ asset('images/image2.png') }}" alt="img-cour">
                             <div class="text">
-                                <h4>nom cour</h4>
+                                <h4>Apprendre le hacking</h4>
                                 <div class="meta-info">
-                                    <div class="hour">hour</div>
-                                    <div class="cour-cate">cour-cate</div>
-                                    <div class="publisher"> <img src="" alt=""> publisher</div>
+                                    <div class="hour">4h</div>
+                                    <div class="cour-cate">Hacking</div>
+                                    <div class="publisher"> <img src="{{ asset('images/image3.png') }}" alt=""> publisher</div>
                                 </div>
                             </div>
                         </div>
@@ -4622,11 +4708,11 @@
                         <div class="cour">
                             <img src="{{ asset('images/image2.png') }}" alt="img-cour">
                             <div class="text">
-                                <h4>nom cour</h4>
+                                <h4>Apprendre le hacking</h4>
                                 <div class="meta-info">
-                                    <div class="hour">hour</div>
-                                    <div class="cour-cate">cour-cate</div>
-                                    <div class="publisher"> <img src="" alt=""> publisher</div>
+                                    <div class="hour">4h</div>
+                                    <div class="cour-cate">Hacking</div>
+                                    <div class="publisher"> <img src="{{ asset('images/image3.png') }}" alt=""> publisher</div>
                                 </div>
                             </div>
                         </div>
@@ -5431,32 +5517,122 @@
 
             <!-- Section Retrait/Portefeuille -->
             <section id="retrait">
-                <div class="retrait-header">
-                    <div class="balance-card">
-                        <div class="balance-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-wallet2" viewBox="0 0 16 16">
-                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.5-1.5H2V1.78a1.5 1.5 0 0 1 1.864-1.454l8.272 1.454zm-3.032 1.18a.5.5 0 0 1-.398-.17L8 .5l-.706.836a.5.5 0 0 1-.398.17L3 2.78V3h10V2.78l-3.896-.274zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-                            </svg>
-                            <span>Solde actuel</span>
+                <div class="retrait-container">
+                    <!-- Header avec solde principal -->
+                    <div class="balance-main-card">
+                        <div class="balance-header">
+                            <div class="balance-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1 1 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"/>
+                                </svg>
+                            </div>
+                            <span class="balance-title">Solde actuel</span>
                         </div>
+                        
                         <div class="balance-amount">
                             <span class="amount" id="balance-amount">400 000</span>
                             <span class="currency">cfa</span>
-                            <div class="balance-change">
+                            <div class="balance-change positive">
                                 <span class="change-text">Hausse de 20%</span>
                             </div>
                         </div>
+                        
                         <div class="balance-actions">
-                            <button class="btn-withdraw">Lancer un retrait</button>
-                            <button class="btn-history">Voir historique de retrait</button>
+                            <button class="btn-action btn-withdraw">
+                                <span>Lancer un retrait</span>
+                            </button>
+                            <button class="btn-action btn-history">
+                                <span>Voir historique de retrait</span>
+                            </button>
                         </div>
                     </div>
-                </div>
 
-                <div class="transactions-section">
-                    <h3>ACHAT RÉCENTS</h3>
-                    <div class="transactions-list" id="transactions-list">
-                        <!-- Les transactions seront injectées ici via JavaScript -->
+                    <!-- Section des achats récents -->
+                    <div class="recent-purchases">
+                        <div class="section-header">
+                            <h3>ACHAT RÉCENTS</h3>
+                        </div>
+                        
+                        <div class="purchases-list" id="transactions-list">
+                            <!-- Exemple de transactions (sera remplacé par JavaScript) -->
+                            <div class="purchase-item">
+                                <div class="purchase-info">
+                                    <div class="purchase-details">
+                                        <div class="purchase-name">Mathieu Kouassi</div>
+                                        <div class="purchase-description">Comprendre la détermination des cryptos</div>
+                                    </div>
+                                </div>
+                                <div class="purchase-amount">
+                                    <div class="amount-value positive">+ 19 999 cfa</div>
+                                    <button class="btn-status available">Disponible pour retrait</button>
+                                </div>
+                            </div>
+                            
+                            <div class="purchase-item">
+                                <div class="purchase-info">
+                                    <div class="purchase-details">
+                                        <div class="purchase-name">Mathieu Kouassi</div>
+                                        <div class="purchase-description">Création créative et placement</div>
+                                    </div>
+                                </div>
+                                <div class="purchase-amount">
+                                    <div class="amount-value positive">+ 1 999 cfa</div>
+                                    <button class="btn-status processing">En cours</button>
+                                </div>
+                            </div>
+                            
+                            <div class="purchase-item">
+                                <div class="purchase-info">
+                                    <div class="purchase-details">
+                                        <div class="purchase-name">Mathieu Kouassi</div>
+                                        <div class="purchase-description">Revue de l'exercice</div>
+                                    </div>
+                                </div>
+                                <div class="purchase-amount">
+                                    <div class="amount-value positive">+ 9 999 cfa</div>
+                                    <button class="btn-status processing">En cours</button>
+                                </div>
+                            </div>
+                            
+                            <div class="purchase-item">
+                                <div class="purchase-info">
+                                    <div class="purchase-details">
+                                        <div class="purchase-name">Mathieu Kouassi</div>
+                                        <div class="purchase-description">Comprendre la détermination des cryptos</div>
+                                    </div>
+                                </div>
+                                <div class="purchase-amount">
+                                    <div class="amount-value positive">+ 19 999 cfa</div>
+                                    <button class="btn-status available">Disponible pour retrait</button>
+                                </div>
+                            </div>
+                            
+                            <div class="purchase-item">
+                                <div class="purchase-info">
+                                    <div class="purchase-details">
+                                        <div class="purchase-name">Mathieu Kouassi</div>
+                                        <div class="purchase-description">Comprendre la détermination des cryptos</div>
+                                    </div>
+                                </div>
+                                <div class="purchase-amount">
+                                    <div class="amount-value positive">+ 19 999 cfa</div>
+                                    <button class="btn-status available">Disponible pour retrait</button>
+                                </div>
+                            </div>
+                            
+                            <div class="purchase-item">
+                                <div class="purchase-info">
+                                    <div class="purchase-details">
+                                        <div class="purchase-name">Mathieu Kouassi</div>
+                                        <div class="purchase-description">Comprendre la détermination des cryptos</div>
+                                    </div>
+                                </div>
+                                <div class="purchase-amount">
+                                    <div class="amount-value positive">+ 19 999 cfa</div>
+                                    <button class="btn-status available">Disponible pour retrait</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

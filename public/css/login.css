@@ -1,14 +1,15 @@
 /* BintSchool - Login Page Styles */
 
 :root{
-    --primary:rgba(5,7,21,255);
+    --primary: #141623;
     --border: #1b1d27;
     --block: rgb(20, 21, 36);
     --secondary: #1B1B1B;
+    --block2: #050715;
 }
 
 *{
-    font-family: "Noto Sans", sans-serif;
+    font-family: SF Pro Display;
 }
 #blockpage{
     width: 100%;
@@ -48,7 +49,7 @@
     height:25vh;
     max-height: 100%;
     border-radius: 10px;
-    background-color: var(--primary);
+    background-color: var(--block2);
 }
 
 #blockpage .container-left .block img, #blockpage .container-right .block img{
@@ -66,9 +67,8 @@
 }
 
 .overlay{
-    width: 70%;
-    max-width: 70%;
-    height: 100%;
+    /* width: 481px; */
+    height: 726px;
     max-height: 100%;
     overflow: hidden;
     display: flex;
@@ -78,15 +78,17 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top:0;
+    /* top:101px;
+    left: 655px;
+    gap: 32px; */
 }
 
 .overlay .logo{
     background-color:white;
     opacity:0.8;
-    width:20%;
-    height:10%;
-    padding: 0 1% 0 0;
+    width: 169px;
+    height: 70px;
+    /* padding: 0 1% 0 0; */
     border-radius: 10px;
     object-fit: cover;
 }
@@ -98,61 +100,80 @@
     top:20%;
 }
 
-.overlay .login, .overlay .register{
-    background-color: var(--primary);
+.overlay .login, .overlay .register, #forgotten-pass.active{
+    /* background-color: var(--primary); */
+    background-color: rgb(3, 5, 19);
+    height: 575px;
+    width: 481px;
     position: absolute;
     top:20%;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    transform: translateX(0);
+    /* gap: 32px; */
+    padding: 20px;
+    font-family: SF Pro Display;
+    border-radius: 20px;
+    transition: transform .5s ease;
+    color: white;
+}
+
+.overlay .login .login-head, .overlay .register .register-head{
+    height: 90px;
+    width: 450px;
 }
 
 
 .overlay .login .login-head p, .overlay .register .register-head p{
     color:white;
-    font-size: .8em;
+    font-size: 14px;
+    font-weight: 400;
+    width: 396px;
+    height: 42px;
+    display: flex; 
+    flex-direction: center;
+    align-items: center;
+    text-align: center;
 }
 
-.overlay .login{
-    text-align:center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height:400px;
-    z-index: 1;
-    transition: all .5s ease;
-}
-.overlay .register{
-    height: 530px;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align:center;
+.register{
     z-index: 2;
-    width: 100%;
-    transform: translateX(0);
-    transition: transform .5s ease;
-    /* padding: 0 0 2% 0; */
 }
+
+
 
 .overlay .register .register-head{
-    margin: 0 0 3% 0;
+    font-family: SF Pro Display;
+    width: 396px;
+    /* height: 42px; */
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
 }
 
 .overlay .register h2{
     color: white;
-}
-
-.overlay .register form, .overlay .login form{
-    background-color: var(--block);
-    height: 500px;
+    width: 396px;
+    height: 42px;
+    font-size: 30px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
 }
 
 .overlay .register form h3{
     color: white;
+    font-family: SF Pro Display;
+    font-weight: 600;
+    font-size: 25px;
     width: 100%;
     text-align: left;
-    padding: 0 0 0 5%;
+}
+
+.register input{
+    max-height: 35px;
 }
 
 
@@ -160,86 +181,91 @@
     text-align: center;
     font-size: 2.5vh;
     font-size:2.5em;
-    margin: 0 0 2% 0;
     color: white;
+
 }
 .register form{
     display:flex;
-    border-radius: 15px;
+    font-family: SF Pro Display;
     align-items: center;
     flex-direction:column;
-    width: 45%;
-    max-width:60%;
-    height: 500px;
-    max-height: 450px;
-    justify-content: space-around;
+    justify-content: baseline;
     align-items: center;
+    height: 496px;
+    width: 481px;
+    border-radius: 20px;
+    padding: 10px;
+    /* gap: 32px; */
     overflow: hidden;
-    background-color: transparent;
-    padding: 0 0 5% 0;
+    background-color: var(--primary);
 }
 
 .overlay .login form{
-    background-color: var(--block);
-    border-radius: 15px;
-    width: 45%;
-    height: 300px;
+    border-radius: 20px;
+    gap: 10px;
+    height: 358px;
+    width: 481px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5% 0 5% 0;
-}
-
-.overlay .login form .btns{
-    height: 15%;
-    margin: 0 0 5% 0;
-}
-
-.overlay form .input-container input{
-    height: 40px;
-    border-radius: 10px;
-    /* min-height: 80%; */
-    border: 1px solid white;
-    background-color: transparent;
-    /* display: flex;
     justify-content: center;
-    align-items: center; */
-    /* padding: 0 0 0 2%; */
+    align-items: center;
+    background-color: var(--primary);
 }
+
+
 
 .overlay form label{
     color: white;
-    font-size: 0.75em
+    width: 441px;   
+    height: 14px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-style: regular;
+    font-family: SF Pro Display;
+
+
 }
 .register .register-head, .login .login-head{
-    width: 60%;
-    /* margin: 2% 0 2% 5%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 396px;
+    height: 42px;
 }
 .overlay form .input-container{
-    height: 50px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    width: 90%;
-    /* margin: 2% 0 2% 0; */
-    border-radius: 5px;
+    gap: 8px;
+    border-radius: 12px;
     overflow: hidden;
+    width: 441px;
+    height: 66px;
+    font-family: SF Pro Display;
+    font-weight: 400;
+    font-size: 14px;
+    font-style: regular;
+    background-color: transparent;
 }
 
 .overlay .register.active{
-    margin:0;
-    transform: translateX(-100%);
+    transform: translateX(-150%);
     transition: transform 0.5s ease-out;
 }
 .overlay form .btns{
     text-align: center;
-    width: 90%;
     border: none;
-    height: 20%;
-    min-height: 20%;
-    /* margin: 0 0 5% 0; */
+    width: 441px;
+    height: 30%;
+    margin: 2% 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /* height: 44px; */
+    /* border-radius: 12px; */
 }
 .overlay form .btns div{
     font-size: 2vh;
@@ -247,48 +273,47 @@
 }
 
 .overlay form .btns button:nth-child(1){
-    background-color: orange;
+    background-color: #FBBC05;
     border:none;
     color: black;
-    width: 100%;
-    min-width: 100%;
-    height:4.5vh;
-
+    height: 44px;
+    width: 441px;
+    border-radius: 12px;
 }
 .overlay form .btns button:nth-child(3){
     background-color: #222430;
+    border:none;
+    height: 44px;
+    width: 441px;
     color: white;
-    border: none;
-    height:4.5vh;
 }
 .overlay form .btns button:nth-child(1), .overlay form .btns button:nth-child(3){
     font-size: 2vh;
-    border-radius: 5px;
+    border-radius: 12px;
     width: 100%;
 }
 .overlay form input::placeholder{
     color: white;
     text-align: center;
+    border:1px solid #FFFFFF;
+    width: 441px;
+    height: 44px;
+    border-radius: 12px;
 }
 
 .overlay form input:focus{
-    color: white;
     outline: none;
-    /* padding: 0 5% 0 5%; */
-    background-color: transparent;
 }
 .overlay form input{
-    /* display: block; */
-    width: 100%;
-    border: none;
+    border:1px solid #FFFFFF;
+    width: 441px;
+    height: 44px;
+    border-radius: 12px;
     color: white;
-    /* padding: 0 5% 0 5%; */
-    background-color:rgba(49, 49, 49, 0.23);
+    background-color:transparent;
 }
 
-.overlay .register .btns{
-    margin: 5% 0 0 0;
-}
+
 
 .overlay form button{
     font-weight: 600;
@@ -541,13 +566,13 @@
 }
 
 #forgotten-pass.active{
-    width: 90%;
+    /* width: 90%;
     height: 800px;
-    color: white;
+    color: white; */
     background-color: var(--primary);
     z-index: 15;
-    transition: all .5s ease;
-    transform: translateY(0%);
+    /* transition: all .5s ease; */
+    transform: translateY(10%);
     transition: all .5s ease;
     display: flex;
     flex-direction: column;
@@ -576,11 +601,9 @@
 #forgotten-pass.active form .input-container{
     border-radius: 10px;
     overflow: hidden;
-    width:90%;
 }
 
 #forgotten-pass.active .btns{
-    margin: 0 0 5% 0;
     height: 55%;
     display: flex;
     flex-direction: column;
@@ -598,60 +621,64 @@
     background-color: var(--block);
     justify-content: space-between;
     align-items: center;
-    border-radius: 10px;
-    width: 400px;
-    height: 250px;
-    padding: 2% 0 0 0;
+    border-radius: 20px;
+    /* width: 400px;
+    height: 250px; */
+    /* padding: 2% 0 0 0; */
 }
 
 #profile{
-    width: 100%;
     height: 100%;
     color:white;
     background-color: var(--primary);
     transform: translateX(-100%);
     transition: transform .5s ease;
-    padding: 0 0 0 0;
     overflow:hidden;
 }
 
+#profile.active .profile-head{
+    width: 286px;
+    height: 90px;
+    text-align: center;
+}
+
+#profile.active h3{
+    font-size: 25px;
+    font-weight: 600;
+    width: 251px;
+    height: 42px;
+    margin: 0 0 0 20px;
+}
+
+
+#profile.active .profile-head .text p{
+    height: 42px;
+    width: 286px;
+    font-size: 14px;    
+    font-weight: 400;
+    color: white;
+}
+
 #profile.active{
+    min-width: 800px;
     transform: translateX(0);
-    z-index:3;
+    z-index:2000;
+    gap: 20px;
+    padding: 30px 0 0 0;
+    background-color: rgb(3, 5, 19);
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     transition: transform .5s ease;
 }
 
-#profile .profile-head{
-    height:25%;
-    width: 100%;
-    margin: 0 0 5% 0;
-    padding: 5% 0 0% 0;
-}
-
-#profile .profile-head img{
-    width: 15%;
-    height:30%;
-    margin: 0 0 5% 45%;
-    padding: 0% 0 0% 0;
-    object-fit: cover;
-}
-
-  #profile .profile-head .text{
-    width: 35%;
-    height: 65%;
-    padding: 0 0 0 0;
-    margin: 0% 0 0% 35%;
-    text-align: center;
-}
 
 #profile .btn-continue{
-    background-color: orange;
+    background-color: #FBBC05;
     height: 5vh;
-    width: 15%;
+    width: 25%;
+    margin: 5% 0 0 0;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -667,7 +694,7 @@
     height: 8vh;
     width: 100%;
     background: var(--primary);
-    opacity: 0.7;
+    opacity: 0.15;
     z-index: 10;
 
 }
@@ -679,7 +706,7 @@
 
 #profile .btn-continue, #profile .overlay-btn{
     position:absolute;
-    bottom: 5%;
+    bottom: 15%;
 }
 
  #profile .btn-continue{
@@ -688,63 +715,75 @@
 
 #profile .profiles{
     display: flex;
+    width: 700px;
     justify-content: center;
-    padding: 0 0 0 4%;
-    height: 60%;
-    width: 70%;position: relative;
-    top: -5%;
-
+    align-items: center;
+    position: relative;
+    gap: 30px;
+    /* top: -5%; */
 }
 
 #profile .profiles svg{
-    width:40px;
+    width:35px;
     height:60px;
     fill:white;
     transition: fill .5s ease;
-    margin: 0 0 1% 5%;
+    margin: 0 0 10px 5%;
 }
 
 #profile .profiles .learner, #profile .profiles .teacher{
     position:relative;
-    height:80%;
-    width: 70%;
+    border-radius:20px;
+    background-color: var(--primary);
 }
 
 #profile .profiles .profile-teacher, #profile .profiles .profile-learner{
-    border-radius:20px;
+    /*  */
     z-index: 10;
-    background-color: var(--border);
-    width: 80%;
-    height:100%;
+    background-color: var(--primary);
+    height:275px;
+    width: 245px;
+    padding: 16px 0 16px 0;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: baseline;
     
 }
 
 #profile .profiles .profile-teacher img, #profile .profiles .profile-learner img{
-    width: 90%;
-    height: 50%;
+    width: 210px;
+    height: 115px;
     border-radius: 10px;
     z-index: 16;
-    margin: 0 0 5% 5%;
+    /* margin: 0 0 5% 0; */
     object-fit: cover;
 }
 
 #profile .profiles .profile-teacher .text, #profile .profiles .profile-learner .text{
-    width:80%;
-    max-height:25%;
-    font-size: .8em;
+    width:210px;
+    max-height:150px;
+    height: 150px;
+    font-size: .75em;
+    word-wrap: break-word;
     overflow:hidden;
-    margin: 0 0 1% 5%;
+    margin: 0 2% 1% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: space-evenly;
 }
 
  #profile .profiles .profile-teacher.active, #profile .profiles .profile-learner.active{
-    border: 1px solid orange;
+    border: 1px solid #FBBC05;
     background: rgba(139, 73, 20, 0.14);
     opacity: 1;
 
 }
 
 #profile .profiles .profile-teacher.active svg, #profile .profiles .profile-learner.active svg{
-    fill:orange;
+    fill:#FBBC05;
     transition: all .5s ease;
 }
 
@@ -819,8 +858,8 @@
     }
 
     .overlay .logo {
-        width: 120px;
-        height: 60px;
+        width: 169px;
+        height: 70px;
         margin-bottom: 2rem;
         background-color: white;
         opacity: 0.8;
@@ -872,12 +911,6 @@
         border: 1px solid white;
         border-radius: 10px;
         width: 100%;
-    }
-
-    .overlay form label {
-        color: white; /* Conserver couleur desktop */
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
     }
 
     .overlay form .btns {
@@ -932,6 +965,7 @@
         margin: 1rem 0;
     }
 
+
     .overlay .register form {
         width: 90%;
         max-width: 350px;
@@ -944,7 +978,9 @@
 
     .overlay .register h2 {
         color: white; /* Conserver couleur desktop */
-        font-size: 1.8rem;
+        font-size: 32px;
+        font-weight: 600;
+        font-family: SF Pro Display;
         margin-bottom: 1.5rem;
     }
 
