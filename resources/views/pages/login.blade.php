@@ -46,10 +46,10 @@
         const goBackBtn = document.querySelector('#restore-pass .goBack-btn');
         const spanRestorePass = document.querySelector('#restore-pass p .useremail');
         const restoreText = document.querySelector('#restore-pass p');
-        // const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
-        // const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-        const apiUrl= 'http://localhost:8000/'
-        const apiStorage= 'http://localhost:8000/storage';
+        const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+        const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
+        // const apiUrl= 'http://localhost:8000/'
+        // const apiStorage= 'http://localhost:8000/storage';
         // const apiUrl= 'localhost:8000/'
         // const apiStorage= 'localhost:8000/storage'
 
@@ -335,7 +335,7 @@
                 <div class="block"></div>
             </div>
             <div class="overlay" >
-                <img src="{{ asset('images/logo.png') }}" alt="" class="logo">
+                <img src="https://www.bintschool.com/wp-content/uploads/2023/04/BintSchooloff.png" alt="" class="logo">
                 <div class="register">
                     <div class="register-head">
                         <h2>Créer un nouveau compte</h2>
@@ -369,8 +369,8 @@
                 </div>
                 <div class="login">
                     <div class="login-head">
-                        <h1>Se connecter</h1>
-                        <p>Renseignez ces champs pour acceder immédiatement aux cours</p>
+                        <h2>Connectez-vous !</h2>
+                        <p>Accédez à votre compte rapidement et simplement</p>
                     </div>
                     <form action="">
                         @csrf

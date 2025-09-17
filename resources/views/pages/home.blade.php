@@ -855,10 +855,10 @@
             let part= 1;
             let lesson= 1;
             let file= null; // Variable globale pour stocker le fichier sélectionné
-            // const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
-            // const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
-            const apiUrl= 'http://localhost:8000/'
-            const apiStorage= 'http://localhost:8000/storage';
+            const apiUrl = 'https://phplaravel-1249520-5839753.cloudwaysapps.com/';
+            const apiStorage= 'https://phplaravel-1249520-5839753.cloudwaysapps.com//storage';
+            // const apiUrl= 'http://localhost:8000/'
+            // const apiStorage= 'http://localhost:8000/storage';
             const token = localStorage.getItem('token');
             
             // Mobile Navigation Elements
@@ -894,6 +894,7 @@
                     username.innerText= response.name;
                     email.value = response.email;
                     userName.value = response.name;
+                    document.querySelector('#profile .complete-profil .block2 .send-link .link-mail span').innerText= response.email;
                     // console.log('description', document.querySelector('#profile .user-info p'));
                     document.querySelector('#profile .user-info p').innerText= response.bio;
                     // if(response.role == 'apprenant') addFormLink.style.display = 'none';
@@ -902,20 +903,12 @@
                     if(response.role == 'apprenant') document.querySelector('nav .pages ul li:nth-child(6)').style.display = 'none';
                     if(response.role == 'formateur') btnDevForma.style.display= 'none';
                     if(response.role == 'formateur') formaSuivieLink.innerHTML= 
-                    `<svg viewBox="0 0 32 32" fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" >
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier"> 
-                            <title>book-album</title> 
-                            <desc>Created with Sketch Beta.</desc> 
-                            <defs> </defs> 
-                            <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage"> 
-                                <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-414.000000, -101.000000)" fill="#000000"> 
-                                    <path d="M418,101 C415.791,101 414,102.791 414,105 L414,126 C414,128.209 415.885,129.313 418,130 L429,133 L429,104 C423.988,102.656 418,101 418,101 L418,101 Z M442,101 C442,101 436.212,102.594 430.951,104 L431,104 L431,133 C436.617,131.501 442,130 442,130 C444.053,129.469 446,128.209 446,126 L446,105 C446,102.791 444.209,101 442,101 L442,101 Z" id="book-album" sketch:type="MSShapeGroup"> </path> 
-                                </g> 
-                            </g> 
+                    `<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g opacity="0.4">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 3.03493L11.1634 3.00242C8.49 1.99919 5.51 1.99919 2.83663 3.00242C1.90173 3.35326 1.25 4.22207 1.25 5.22907V19.0797C1.25 20.5946 2.83232 21.4932 4.16836 20.9918C5.98537 20.31 8.01463 20.31 9.83164 20.9918L11.25 21.5241V3.03493ZM12.75 21.5241L14.1684 20.9918C15.9854 20.31 18.0146 20.31 19.8316 20.9918C21.1677 21.4932 22.75 20.5946 22.75 19.0797V5.22907C22.75 4.22207 22.0983 3.35326 21.1634 3.00242C18.49 1.99919 15.51 1.99919 12.8366 3.00242L12.75 3.03493V21.5241Z" fill="white"/>
                         </g>
-                    </svg>   My formations `;
+                    </svg>
+                    My formations `;
                     formaSuivieLink.querySelector('svg').style.cssText+= 'fill: white; stroke: white;';
 
                 },
@@ -1191,7 +1184,7 @@
                         const btnFollow = content.querySelector('.btn-follow');
                         const btnLike = content.querySelector('.btns button:nth-child(1)');
                         const btnSavoirPlus = content.querySelector('.more button');
-                        contentUser.querySelector('img').src= feed.user.avatar_url ? apiStorage+ feed.user.avatar_url : " data:image/jpeg;base64,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 ";
+                        contentUser.querySelector('img').src= feed.user.avatar_url ? apiStorage+ feed.user.avatar_url : " {{ asset('images/profile.png') }}";
                         contentUser.querySelector('h6').innerText= feed.user.name;
                         content.querySelector('.text .user .info .date').innerText= new Date(feed.created_at);
                         homeContent.appendChild(content);
@@ -1343,7 +1336,7 @@
 
                                         // Infos formateur
                                         block2.querySelector('.cour-intro .cour-formateur .formateur-info img')
-                                            .src = response.formation.formateur.avatar_url ? apiStorage + response.formation.formateur.avatar_url : "data:image/jpeg;base64,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";
+                                            .src = response.formation.formateur.avatar_url ? apiStorage + response.formation.formateur.avatar_url : " {{ asset('images/profile.png') }}";
                                         block2.querySelector('.cour-intro .cour-formateur .formateur-info h4')
                                             .innerText = response.formation.formateur.name;
                                         block2.querySelector('.cour-intro .cour-formateur .formateur-info span')
@@ -1423,7 +1416,7 @@
                                     videoElement.classList.remove('playing');
                                 }
                             });
-                            
+
                             // Double-click sur la vidéo pour remplacer la vidéo principale
                             video.addEventListener('dblclick', (e) => {
                                 e.stopPropagation();
@@ -1523,18 +1516,18 @@
                 // Mettre à jour les informations utilisateur si elles existent
                 const contentUser = visibleContentItem.querySelector('.text .user');
                 if (contentUser) {
-                    const userImg = contentUser.querySelector('img');
-                    const userName = contentUser.querySelector('.info h3');
-                    
-                    if (userImg) {
-                        userImg.src = feed.user && feed.user.avatar_url ? 
-                            apiStorage + feed.user.avatar_url : 
-                            "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0NDQ4NDQ0NDQ4NDQ0NEA0ODQ8ODhANFxEWFhURFRUYHSoiGholGxUTITUhJSkuLi46Fx8zODMsNzQvOi0BCgoKDQ0NDw8PECsZHxkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/";
-                    }
-                    
-                    if (userName) {
-                        userName.innerText = feed.user && feed.user.name ? feed.user.name : 'Utilisateur';
-                    }
+                const userImg = contentUser.querySelector('img');
+                const userName = contentUser.querySelector('.info h3');
+                
+                if (userImg) {
+                    userImg.src = feed.user && feed.user.avatar_url ? 
+                    apiStorage + feed.user.avatar_url : 
+                    " {{ asset('images/profile.png') }}"
+                }
+                
+                if (userName) {
+                    userName.innerText = feed.user && feed.user.name ? feed.user.name : 'Utilisateur';
+                }
                 }
                 
                 // Recharger la vidéo et la démarrer
@@ -2481,8 +2474,8 @@
                         console.log('user', user);
                         // console.log('image:' , document.querySelector('#profile .user-info img').src= );
 
-                        document.querySelector('#profile .user .cover img').src= user.cover ? apiStorage + user.cover_url : "https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg";
-                        document.querySelector('#profile .user-info img').src= user.avatar_url ? apiStorage + user.avatar_url : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0NDQ4NDQ0NDQ4NDQ0NEA0ODQ8ODhANFxEWFhURFRUYHSoiGholGxUTITUhJSkuLi46Fx8zODMsNzQvOi0BCgoKDQ0NDw8PECsZHxkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAcAAEAAwADAQEAAAAAAAAAAAAAAQYHBAUIAgP/xABDEAACAgADAQ0EBQsEAwAAAAAAAQIDBAURBwYSFiEiMUFRVGFxk9KBkaGxExQyUmIVIzNCU3JzkqLBwhdjgtGEsuH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADg5rm+FwUPpMVfXTHo3z5Uu6MVxyfgim7ttoccK54XAby3ERbjO58qqp9MUv1pL3Lv5jJ8bjLsRZK2+2dtkuec5avw7l3IDVMz2rYaDawuGtv/HZJUwfguN+9I6G7armDfIowkF3xsm/fvl8ihAovdW1TMk+VThJrq3lkflM7rLdrFTaWKwk6+udM1Yl3716P5mVAD0Xku6DBY+OuFxELGlq6+ONsfGD4146HaHmSm6dco2VzlXOL1jOEnGUX1po0vcbtIbccPmclx6Rhi9FFeFq5v8Akvb1kGoAhPXjXGnx6kgAAAAAAAAAAAAAAAAAAAAAAAADPtp2694aP1DCz0vsjrdZF8dVb5orqk/gvFFxz/NIYHCXYqfGqoNqPNvpvijH2tpHnbF4my+yd1snOy2cpzk+mTerA/EkgFEggASAQBIIAGlbL917hKGW4qWsJcnDWSf2ZfsX3Po6ubq01U8wptNNNppppriafQ0b/uHzz8oYCq6T1uh+Zu/ixS5XtWkvaQd+AAAAAAAAAAAAAAAAAAAAAAADNds2YuNeFwkX+klO+a7o6RivfKX8plRddrlzlmqj0V4WmKXjKcv8ilFAkgACSABIIAEggASaBsczFwxl+Fb5N9P0kV/uQf8AeMn/ACmfFh2fXOvN8E102zg/CVc4/wBwN+ABAAAAAAAAAAAAAAAAAAAAAAYltZg1m0n97D0SXhyl/iymmlbaMC1bhMUlxShPDyfU4vfxX9U/cZqUAAAAAEggkCAABJ3u4SDlm2BS/b772KEpP5HQl22SYF25m7tOThqLJ69U58hL3OfuA2kAEAAAAAAAAAAAAAAAAAAAAAB0O7fJfyhl91MVrbFfS0/xY8aXtWsfaefvh3PiZ6fMf2oblXhrnj6IfmL5a2xiv0Vz/W/dl8H4oCgAAoAACQAAIBIEG27LcleEy9XTjpbjGrnrzqrT82vdrL/kZ7s/3LSzHEqy2L+qUSUrG+ayfOql831LxRuaSS0XElxaLqIJAAAAAAAAAAAAAAAAAAAAAAAAPzxFELYSrsjGcJxcZQktYyi+dNH6ADF92u4G7BOWIwindhNXJxXKtoXU/vRX3ujp6ykHp8qG6PZ7gca5WVp4S+WrdlUVvJS65V8z9mjAw8FzzPZrmdLbqjVio9DrmoT9sZ6fBs6G7c3mNb0ngcWvCicl70ijqgdnVuezCb0jgcW//HsXzR3WW7Os1va39UMNF/rX2LXT92Or+QFSLTuP3F4jM5KyW+owifKva45rqrT5338y7+Yvu5/ZpgsM1ZipPGWLj0lHeUJ/uavX2v2F4jFJJJJJJJJLRJdRBxsty+nCUww9EFXVWtIxXxbfS31nKAAAAAAAAAAAAAAAAAAAAAAAAAAAHFx+YYfDQ3+Iuqpj12TjDXw15wOUCkZltPy2rVUq/FPrhX9HD3z0fuTK9i9rOIbf0GDpguh22TsfuSQGsAxWzafmr5vqsPCmT+cj8/8AUrN/2lHkL/sDbgYj/qVm/wC0o8hf9n3XtOzVc7w0vGlr5SA2sGR4Xaxi4/psJh7F+Cc6n8d8WDLtqeX2cV9V+Gf3t6rYe+PK/pAvgODlmcYTGR32GxFVy52oTTkvGPOvac4AAAAAAAAAAAAAAAAAAAAAAHBzfN8Ngandiro1Q49NXypP7sYrjk+5HQbtN29OWp01KN+La4q9eRWnzSsa/wDXnfcYzmuaYjG2u/E2ytsfS/sxX3YrmS7kBdt0W0/EWt14CH1evjX000p3PvS+zH4vwKHi8VbfN2XWTtm+edk3OXvZ+IKJIJIAEkEgCAAAAA+6rZVyU65ShOPNOEnGS8GuNF13PbSsbhmoYtfXKlxb56Rviu6XNL28feUcAeish3Q4PMa9/hbVJpcuqXJth+9H+/MdqeZ8Hi7cPZG6iydVkHrGcHpJf/O413cRtAhjHHDY3e1Yl6RhYuTVc+r8M+7mfR1EF7AAAAAAAAAAAAAAAAKRtC3aLAR+q4ZqWLnHjlzqiDX2n1yfQva+jXtt226WGV4VzWksRbrCit9Mumb/AAx1XwXSYLiL52zlZZOU7LJOc5yespSfO2B82TlOUpzk5SlJylKT1lKTerbfSz5AKJIAAkAgASQAJIAAkgACSAAAAA1fZzu4dzhgMbPWzijRfJ8dn+3N/e6n0+PPpB5hT041xNcaa4mn1m2bON1f5Qo+gvlri8PFb5vntq5lZ48yfsfSQXIAAAAAAAAAAD4tsjCMpzajGEXKUm9Eopats+yi7Ws6+r4KOFg9LMY3GWnOqI6b/wB7aXtYGabr8+lmWMsxD1Va/N0wf6tKfFxdb534nSkkFEkAAAAAAAAAASQSQAAAAAAAAAOdkuaW4LE1Yql8uqWunROHNKD7mtUcEAelcsx9eKoqxFT1ruhGceta9D709V7DlGY7Hc61V2Xzf2dcRTr1NpWRXtaftZpxAAAAAAAAAMH2j5n9azW/R6ww+mGh4Q1339bmbjj8SqKbbpfZpqstfhGLb+R5qtslOUpy45TlKcn1yb1fxYHyACgQSQBIBAEgEACQABBJAAkEASQAAAAAAAdpuZzJ4PH4bE8yrtjv/wCFLkz/AKZM9FJnmFnobcfjvrOW4O5vVyohGT/HDkS+MWQdyAAAAAAACv7v7/osoxsubWn6P+eSh/kYAb7tAwF+Kyy+jDVu22cqNIJxTajdCT429OZGS8Bc47FPzKfUBXQWLgLnHYp+ZT6hwFzjsU/Mp9RRXSCx8Bc47FPzKfUOAucdin5lPqArpBY+Aucdin5lPqHAXOOxT8yn1AV0gsfAXOOxT8yn1DgLnHYp+ZT6gK4SWLgLnHYp+ZT6hwFzjsU/Mp9QFcBY+Aucdin5lPqHAXOOxT8yn1AVwFj4C5x2KfmU+ocBc47FPzKfUBXAWPgLnHYp+ZT6hwFzjsU/Mp9QFcBY+Aucdin5lPqHAXOOxT8yn1AVwFj4C5x2KfmU+ocBc47FPzKfUBXTatkl+/ypR/Y4i+v36T/zM34C5x2KfmU+o0rZflGKwWDvqxVTplLFSsjFyjLWLqrWvJb6YsC5AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//2Q==";
+                        document.querySelector('#profile .user .cover img').src= user.cover ? apiStorage + user.cover_url : " {{ asset('images/cover.jpg') }} " ;
+                        document.querySelector('#profile .user-info img').src= user.avatar_url ? apiStorage + user.avatar_url : " {{ asset('images/profile.png') }}" ;
                         document.querySelector('#profile .user .user-profile .user-info .followers').innerText= response.stats.followers_count;
                         document.querySelector('#profile .user .user-profile .user-info .following').innerText= response.stats.followings_count;
                         document.querySelector('#profile .user .user-profile .user-info .profession').innerText= '  Développeur';
@@ -2493,7 +2486,7 @@
                         const animInt = setInterval(() => {
                             if (point <= max) {
                                 percentage.querySelector('.percent-jauge').style.background = `
-                                    conic-gradient(#5ede50ff ${point}%, gray ${point}%)
+                                    conic-gradient(#34a853   ${point}%, gray ${point}%)
                                 `;
                                 percentage.querySelector('.over-jauge').innerText = `${point}%`;
                                 point++;
@@ -3179,7 +3172,7 @@
                         },
 
                         success: function(response){
-                            // console.log('formations:',response);
+                            console.log('formations:',response);
                             const tableBody = formaSuivie.querySelector('table tbody');
                             const gridContainer = courGrid;
                             
@@ -3204,8 +3197,25 @@
                                     <img src="" alt="">
                                 </div>
                                 <div class="text">
-                                    <p class="type"></p>
-                                    <h4 class="name"></h4>
+                                    <div class="id"></div>
+                                    <div class="type"></div>
+                                    <div class="name"></div>
+                                    <div class="jauge"> 
+                                        <div class="jauge-jauge"></div> 
+                                        <div class="percent-suivi">
+                                            <div>10%</div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-trophy" viewBox="0 0 16 16">
+                                                <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935m10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935M3.504 1q.01.775.056 1.469c.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.5.5 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667q.045-.694.056-1.469z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="duree-user">
+                                        <div class="duree"></div>
+                                        <div class="user">
+                                            <img src=" {{ asset('images/image4.png') }} " alt="">
+                                            <div class="formateur-name">Formateur</div>
+                                        </div>
+                                    </div>
                                 </div>
                             `;
                             
@@ -3237,7 +3247,8 @@
                                 gridItem.querySelector(' .text .name').innerText=  element.titre;
                                 gridItem.querySelector(' .text .duree-user .duree').innerText=  element.duree_estimee +' min';
                                 gridItem.querySelector(' .text .duree-user .user img').src=  element.formateur.avatar_url;
-
+                                element.formateur.avatar_url ? element.formateur.avatar_url : " {{ asset('images/profile.png') }}";
+                                gridItem.querySelector(' .text .duree-user .user .formateur-name').innerText= element.formateur.name
                                 courGrid.appendChild(gridItem);
 
                                 // Show the content of the row of formation's table clicked
@@ -3286,7 +3297,7 @@
                         },
 
                         success: function(response){
-                            // console.log('formations:',response);
+                            console.log('formations:',response);
                             const tableBody = formaSuivie.querySelector('table tbody');
                             const gridContainer = courGrid;
                             
@@ -3307,16 +3318,27 @@
                             const templateGridItem = document.createElement('div');
                             templateGridItem.className = 'list-item';
                             templateGridItem.innerHTML = `
-                                <div class="list-item-head">
+                               <div class="list-item-head">
                                     <img src="" alt="">
                                 </div>
                                 <div class="text">
-                                    <p class="type"></p>
-                                    <h4 class="name"></h4>
+                                    <div class="id"></div>
+                                    <div class="type"></div>
+                                    <div class="name"></div>
+                                    <div class="jauge"> 
+                                        <div class="jauge-jauge"></div> 
+                                        <div class="percent-suivi">
+                                            <div>10%</div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-trophy" viewBox="0 0 16 16">
+                                                <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935m10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935M3.504 1q.01.775.056 1.469c.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.5.5 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667q.045-.694.056-1.469z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
                                     <div class="duree-user">
-                                        <span class="duree"></span>
+                                        <div class="duree"></div>
                                         <div class="user">
-                                            <img src="" alt="">
+                                            <img src=" {{ asset('images/image4.png') }}" alt="">
+                                            <div class="formateur-name"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -3342,15 +3364,15 @@
                                 tableRow.querySelector('td:nth-child(2)').innerText= element.duree_estimee;
                                 tableRow.querySelector('td:nth-child(3)').innerText= element.created_at;
                                 tableRow.querySelector('td:nth-child(4)').innerText= element.categorie.nom;
-                                // tableRow.querySelector('td:nth-child(5)').innerText= element.formateur.name;
+                                tableRow.querySelector('td:nth-child(5)').innerText= element.formateur.name;
                                 tableBody.appendChild(tableRow);
 
                                 gridItem.querySelector('.list-item-head img').src= apiStorage + element.image_couverture;
                                 gridItem.querySelector('.text .type').innerText=  element.categorie.nom;
                                 gridItem.querySelector(' .text .name').innerText=  element.titre;
                                 gridItem.querySelector(' .text .duree-user .duree').innerText=  element.duree_estimee +' min';
-                                // gridItem.querySelector(' .text .duree-user .user img').src=  element.formateur.avatar_url;
-
+                                gridItem.querySelector(' .text .duree-user .user img').src=  element.formateur.avatar_url ? element.formateur.avatar_url : " {{ asset('images/profile.png') }} ";
+                                gridItem.querySelector(' .text .duree-user .user .formateur-name').innerText= element.formateur.name
                                 courGrid.appendChild(gridItem);
 
                                 // Show the content of the row of formation's table clicked
@@ -4330,16 +4352,20 @@
             <ul>
                 MENU
                 <li class="pour-toi active">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="bi bi-house" viewBox="0 0 16 16">
-                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
-                    </svg>
-                    Pour toi
+                <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.5 9.93841C1.5 8.71422 2.06058 7.55744 3.02142 6.79888L8.52142 2.45677C9.97466 1.30948 12.0253 1.30948 13.4786 2.45677L18.9786 6.79888C19.9394 7.55744 20.5 8.71422 20.5 9.93841V16.5C20.5 18.7091 18.7091 20.5 16.5 20.5H15C14.4477 20.5 14 20.0523 14 19.5V16.5C14 15.3954 13.1046 14.5 12 14.5H10C8.89543 14.5 8 15.3954 8 16.5V19.5C8 20.0523 7.55228 20.5 7 20.5H5.5C3.29086 20.5 1.5 18.7091 1.5 16.5L1.5 9.93841Z" fill="white" stroke="white" stroke-width="1.5"/>
+                </svg>
+
+                Pour toi
                 </li>
 
                 <li class="profile-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.4">
+                    <circle cx="4" cy="4" r="4" transform="matrix(-1 0 0 1 16 3)" fill="white" stroke="white" stroke-width="1.5"/>
+                    <path d="M5 16.9347C5 16.0743 5.54085 15.3068 6.35109 15.0175C10.004 13.7128 13.996 13.7128 17.6489 15.0175C18.4591 15.3068 19 16.0743 19 16.9347V18.2502C19 19.4376 17.9483 20.3498 16.7728 20.1818L15.8184 20.0455C13.2856 19.6837 10.7144 19.6837 8.18162 20.0455L7.22721 20.1818C6.0517 20.3498 5 19.4376 5 18.2502V16.9347Z" fill="white" stroke="white" stroke-width="1.5"/>
+                    </g>
+                </svg>
                     Profil
                 </li>
 
@@ -4360,26 +4386,19 @@
                 </li>
 
                 <li class="messagerie-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
-                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                        <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g opacity="0.4">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7 2.25C3.82436 2.25 1.25 4.82436 1.25 8V20.9194C1.25 22.3868 2.94738 23.2026 4.09322 22.2859L6.92069 20.0239C7.14233 19.8466 7.41772 19.75 7.70156 19.75H17C20.1756 19.75 22.75 17.1756 22.75 14V8C22.75 4.82436 20.1756 2.25 17 2.25H7ZM7.0498 12.2998C7.74016 12.2998 8.2998 11.7402 8.2998 11.0498C8.2998 10.3594 7.74016 9.7998 7.0498 9.7998C6.35945 9.7998 5.7998 10.3594 5.7998 11.0498C5.7998 11.7402 6.35945 12.2998 7.0498 12.2998ZM13.2998 11.0498C13.2998 11.7402 12.7402 12.2998 12.0498 12.2998C11.3594 12.2998 10.7998 11.7402 10.7998 11.0498C10.7998 10.3594 11.3594 9.7998 12.0498 9.7998C12.7402 9.7998 13.2998 10.3594 13.2998 11.0498ZM17.0498 12.2998C17.7402 12.2998 18.2998 11.7402 18.2998 11.0498C18.2998 10.3594 17.7402 9.7998 17.0498 9.7998C16.3594 9.7998 15.7998 10.3594 15.7998 11.0498C15.7998 11.7402 16.3594 12.2998 17.0498 12.2998Z" fill="white"/>
+                        </g>
                     </svg>
                     Messagerie</li>
                 <li class="forma-suivie">
-                    <svg viewBox="0 0 32 32" fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" >
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier"> 
-                            <title>book-album</title> 
-                            <desc>Created with Sketch Beta.</desc> 
-                            <defs> </defs> 
-                            <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage"> 
-                                <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-414.000000, -101.000000)" fill="#000000"> 
-                                    <path d="M418,101 C415.791,101 414,102.791 414,105 L414,126 C414,128.209 415.885,129.313 418,130 L429,133 L429,104 C423.988,102.656 418,101 418,101 L418,101 Z M442,101 C442,101 436.212,102.594 430.951,104 L431,104 L431,133 C436.617,131.501 442,130 442,130 C444.053,129.469 446,128.209 446,126 L446,105 C446,102.791 444.209,101 442,101 L442,101 Z" id="book-album" sketch:type="MSShapeGroup"> </path> 
-                                </g> 
-                            </g> 
+                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g opacity="0.4">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 3.03493L11.1634 3.00242C8.49 1.99919 5.51 1.99919 2.83663 3.00242C1.90173 3.35326 1.25 4.22207 1.25 5.22907V19.0797C1.25 20.5946 2.83232 21.4932 4.16836 20.9918C5.98537 20.31 8.01463 20.31 9.83164 20.9918L11.25 21.5241V3.03493ZM12.75 21.5241L14.1684 20.9918C15.9854 20.31 18.0146 20.31 19.8316 20.9918C21.1677 21.4932 22.75 20.5946 22.75 19.0797V5.22907C22.75 4.22207 22.0983 3.35326 21.1634 3.00242C18.49 1.99919 15.51 1.99919 12.8366 3.00242L12.75 3.03493V21.5241Z" fill="white"/>
                         </g>
-                    </svg>  
+                    </svg>
+
                     Formation suivies
                 </li>
                
@@ -4445,10 +4464,7 @@
                                 </button>
                                 <button>
                                     1
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-send" viewBox="0 0 16 16">
-                                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
-                                    </svg>
-                                </button>
+                                    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>share-arrow</title> <g id="Layer_2" data-name="Layer 2"> <g id="invisible_box" data-name="invisible box"> <rect width="48" height="48" fill="none"></rect> </g> <g id="Q3_icons" data-name="Q3 icons"> <path d="M31.2,14.2,41,24.1l-9.8,9.8V26.8L27,27c-6.8.3-12,1-16.1,2.4,3.6-3.8,9.3-6.8,16.7-7.5l3.6-.3V14.2M28.3,6a1.2,1.2,0,0,0-1.1,1.3V17.9C12,19.4,2.2,29.8,2,40.3c0,.6.2,1,.6,1s.7-.3,1.1-1.1c2.4-5.4,7.8-8.5,23.5-9.2v9.7A1.2,1.2,0,0,0,28.3,42a.9.9,0,0,0,.8-.4L45.6,25.1a1.5,1.5,0,0,0,0-2L29.1,6.4a.9.9,0,0,0-.8-.4Z"></path> </g> </g> </g></svg>                                </button>
                             </div>
                             <div class="more">
                                 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga iste eum, similique impedit doloremque repudiandae sequi quisquam quidem voluptates placeat sunt adipisci commodi iure magni eligendi omnis. Neque, sequi vel.</p>
@@ -4565,7 +4581,7 @@
                 <!-- Contain user information -->
                 <div class="user">
                     <div class="cover">
-                        <img src="https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg" alt="">
+                        <img src=" {{ asset('images/cover.jpg') }} " alt="">
                     </div>
 
                     <div class="user-profile">
@@ -4627,12 +4643,10 @@
 
                         <div class="congratulations"> 
                             <h4>
-                                <div class="ctn-svg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                                        <path d="m80-80 200-560 360 360L80-80Zm132-132 282-100-182-182-100 282Zm370-246-42-42 224-224q32-32 77-32t77 32l24 24-42 42-24-24q-14-14-35-14t-35 14L582-458ZM422-618l-42-42 24-24q14-14 14-34t-14-34l-26-26 42-42 26 26q32 32 32 76t-32 76l-24 24Zm80 80-42-42 144-144q14-14 14-35t-14-35l-64-64 42-42 64 64q32 32 32 77t-32 77L502-538Zm160 160-42-42 64-64q32-32 77-32t77 32l64 64-42 42-64-64q-14-14-35-14t-35 14l-64 64ZM212-212Z"/>
-                                    </svg>
-                                </div>
-                                Bravo, vous y êtes presque.
+                                <!-- <div class="ctn-svg"> -->
+                                    
+                                <!-- </div> -->
+                               🥳 Bravo, vous y êtes presque.
                             </h4>
                             <p>Continuer de compléter les étapes pour avoir un profil parfait</p>
                         </div>
@@ -4649,7 +4663,7 @@
 
                             <div class="send-link">
                                 <h4>Un lien de confirmation a été envoyé</h4>
-                                <div class="link-mail"><p>Votre addresse mail: iba@gmail.com</p> <a href="">Modifier</a></div>
+                                <div class="link-mail"><p>Votre addresse mail: <span>iba@gmail.com</span></p> <a href="">Modifier</a></div>
                             </div>
                         </div>
 
@@ -4734,7 +4748,7 @@
                 <!-- Contain user information -->
                 <div class="user">
                     <div class="cover">
-                        <img src="https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg" alt="">
+                        <img src=" {{ asset('images/cover.jpg') }} " alt="">
                     </div>
 
                     <div class="user-profile">
@@ -5328,7 +5342,10 @@
             <section id="formation-suivie">
 
                 <div class="forma-head">
-                    <h4>Vos formations</h4>
+                    <div class="title">
+                        <h5>Vos formations</h5>
+                        <p>Les cours que vous suivez sont ici</p>
+                    </div>
 
                     <div class="ctn-right">
                         <form action="">
@@ -5346,7 +5363,6 @@
                 </div>
 
                 <div class="btns">
-                    Les cours que vous suivez sont ici
 
                     <div class="btns-btns">
                         <button class="btn-table-view">
@@ -5428,7 +5444,7 @@
 
 
                     <div class="list-item">
-                        <div class="list-item-head">
+                        <!-- <div class="list-item-head">
                             <img src="" alt="">
                         </div>
                         <div class="text">
@@ -5437,15 +5453,18 @@
                             <div class="name"></div>
                             <div class="jauge"> 
                                 <div class="jauge-jauge"></div> 
-                                10% <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-trophy" viewBox="0 0 16 16">
-                                <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935m10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935M3.504 1q.01.775.056 1.469c.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.5.5 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667q.045-.694.056-1.469z"/>
-                                </svg>
+                                <div class="percent-suivi">
+                                    <div>10%</div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-trophy" viewBox="0 0 16 16">
+                                        <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935m10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935M3.504 1q.01.775.056 1.469c.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.5.5 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667q.045-.694.056-1.469z"/>
+                                    </svg>
+                                </div>
                             </div>
                             <div class="duree-user">
                                 <div class="duree"></div>
                                 <div class="user"><img src="" alt=""></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
 
@@ -5483,7 +5502,10 @@
             <section id="cours-en-vente">
                 <div class="cours-vente-header">
                     <div class="block1">
-                        <h2>Vos formations en vente</h2>
+                        <div class="p">
+                            <h2>Vos formations en vente</h2>
+                            <p>Les formations que vous achetez seront ici: </p>
+                        </div>
                         <div class="action-buttons">
                             <button class="btn-voir-brouillons">Voir brouillons</button>
                             <button class="btn-creer-formation">Créer une nouvelle formation</button>
@@ -5517,15 +5539,15 @@
 
             <!-- Section Retrait/Portefeuille -->
             <section id="retrait">
-                <div class="retrait-container">
+                <!-- <div class="retrait-container"> -->
                     <!-- Header avec solde principal -->
-                    <div class="balance-main-card">
+                    <!-- <div class="balance-main-card">
                         <div class="balance-header">
-                            <div class="balance-icon">
+                        <div class="balance-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                                     <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1 1 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"/>
-                                </svg>
-                            </div>
+                            </svg>
+                        </div>
                             <span class="balance-title">Solde actuel</span>
                         </div>
                         
@@ -5544,18 +5566,18 @@
                             <button class="btn-action btn-history">
                                 <span>Voir historique de retrait</span>
                             </button>
-                        </div>
                     </div>
+                </div> -->
 
                     <!-- Section des achats récents -->
-                    <div class="recent-purchases">
+                    <!-- <div class="recent-purchases">
                         <div class="section-header">
-                            <h3>ACHAT RÉCENTS</h3>
-                        </div>
+                    <h3>ACHAT RÉCENTS</h3>
+                        </div> -->
                         
-                        <div class="purchases-list" id="transactions-list">
+                        <!-- <div class="purchases-list" id="transactions-list"> -->
                             <!-- Exemple de transactions (sera remplacé par JavaScript) -->
-                            <div class="purchase-item">
+                            <!-- <div class="purchase-item">
                                 <div class="purchase-info">
                                     <div class="purchase-details">
                                         <div class="purchase-name">Mathieu Kouassi</div>
@@ -5634,7 +5656,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </section>
 
             <!-- container the settings element -->

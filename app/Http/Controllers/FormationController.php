@@ -192,6 +192,7 @@ class FormationController extends Controller
     {
         $formations = Formation::where('formateur_id', Auth::id())
                                ->with([
+                                    'formateur',
                                    'categorie:id,nom,slug',
                                    'lessonVideos:id,formation_id,titre,duree,ordre',
                                    'videoPresentation:id,formation_id,url',
