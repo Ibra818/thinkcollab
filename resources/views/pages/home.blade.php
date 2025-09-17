@@ -58,7 +58,7 @@
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            background: linear-gradient(90deg, #FBBC05, #FBBC05);
             border-radius: 6px;
             transition: width 0.3s ease;
             width: 0%;
@@ -1234,16 +1234,16 @@
                                     'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                 },
                                 success: function(response){
-                                    message.classList= [];
-                                    message.classList.add('success');
-                                    success.classList.add('active');
-                                    successMsg.innerText= response.message;
+                                    // message.classList= [];
+                                    // message.classList.add('success');
+                                    // success.classList.add('active');
+                                    // successMsg.innerText= response.message;
                                 },
                                 error: function(erreurs){
-                                    message.classList= [];
-                                    message.classList.add('error');
-                                    error.classList.add('active');
-                                    errorMsg.innerText= erreurs.message;
+                                    // message.classList= [];
+                                    // message.classList.add('error');
+                                    // error.classList.add('active');
+                                    // errorMsg.innerText= erreurs.message;
                                 }
                             });
                         });
@@ -1260,16 +1260,16 @@
                                     'X-CSRF-TOKEN': "{{ csrf_token() }}",
                                 },
                                 success: function(response){
-                                    message.classList= [];
-                                    message.classList.add('success');
-                                    success.classList.add('active');
-                                    successMsg.innerText= response.message;
+                                    // message.classList= [];
+                                    // message.classList.add('success');
+                                    // success.classList.add('active');
+                                    // successMsg.innerText= response.message;
                                 },
                                 error: function(erreurs){
-                                    message.classList= [];
-                                    message.classList.add('error');
-                                    error.classList.add('active');
-                                    errorMsg.innerText= erreurs.message;
+                                    // message.classList= [];
+                                    // message.classList.add('error');
+                                    // error.classList.add('active');
+                                    // errorMsg.innerText= erreurs.message;
                                 }
                             });
                         }
@@ -1921,8 +1921,8 @@
                 if(overlay.classList.contains('active')) overlay.classList.remove('active');
                 if(overlay.classList.contains('change-info')) overlay.classList.remove('change-info');
                 if(overlay.classList.contains('del-acc')) overlay.classList.remove('del-acc');
-                overlay.classList.add('load');
-                loader.classList.add('active')
+                // overlay.classList.add('load');
+                // loader.classList.add('active')
                 // console.log(email.length);
 
                 $.ajax({
@@ -2038,9 +2038,9 @@
                             console.log('change-profile-response:', response);
                             // message.classList= [];
                             // success.classList= [];
-                            message.classList.add('success');
-                            successMsg.innerText= response.message;
-                            success.classList.add('active');
+                            // message.classList.add('success');
+                            // successMsg.innerText= response.message;
+                            // success.classList.add('active');
                             window.location.reload();
                         },
                         error: function(erreurs){
@@ -2257,11 +2257,11 @@
                 btnConfirmDelAcc.addEventListener('click', (e)=>{
 
                     e.preventDefault();
-                    overlay.classList.add('load');
-                    loader.classList.add('active');
+                    // overlay.classList.add('load');
+                    // loader.classList.add('active');
                     const reasons= document.querySelector('#reasons')?.value;
                     const pwd = document.querySelector('#del-password')?.value;
-                    message.classList= [];
+                    // message.classList= [];
                     
                     $.ajax({
                         type: 'DELETE',
@@ -2280,21 +2280,21 @@
                         }),
                         success: function(response){
                             // console.log(response);
-                            loader.classList= [];
-                            overlay.classList= [];
-                            message.classList.add('success');
-                            success.classList.add('active');
-                            successMsg.innerText = '';
+                            // loader.classList= [];
+                            // overlay.classList= [];
+                            // message.classList.add('success');
+                            // success.classList.add('active');
+                            // successMsg.innerText = '';
                             window.location.href= apiUrl+ "login";
 
                         },
                         error: function(erreurs){
                             // console.log(erreurs);
-                            loader.classList= [];
-                            overlay.classList= [];
-                            message.classList.add('error');
-                            error.classList.add('active');
-                            errorMsg.innerText= `${erreurs.responseJSON.message}`;
+                            // loader.classList= [];
+                            // overlay.classList= [];
+                            // message.classList.add('error');
+                            // error.classList.add('active');
+                            // errorMsg.innerText= `${erreurs.responseJSON.message}`;
                         },
                     });
                 });
@@ -2342,9 +2342,9 @@
                         // console.log(erreurs);
                         // console.log('erreurs', erreurs.responseJSON.message);
                         erreurs = erreurs.responseJSON.message
-                        message.classList.add('error');
-                        error.classList.add('active');
-                        errorMsg.innerText= `${erreurs}`;
+                        // message.classList.add('error');
+                        // error.classList.add('active');
+                        // errorMsg.innerText= `${erreurs}`;
                         switchAcc.classList= [];
                         overlay.classList= [];
                         confSwitchAcc.classList= [];
@@ -2388,8 +2388,8 @@
 
             btnParam.addEventListener('click', (e)=>{
                 e.preventDefault();
-                delAccMsg.classList= [];
-                loader.classList= [];
+                // delAccMsg.classList= [];
+                // loader.classList= [];
                 if(switchAcc.classList.contains('active')) switchAcc.classList.remove('active');
                 if(! overlay.classList.contains('active')) overlay.classList.add('active');
                 if(! params.classList.contains('active')) params.classList.add('active');
@@ -3669,9 +3669,9 @@
                         const description= document.querySelector('#create-formation .create-formation-body textarea').value;
                 
                 if(!titre || !categorie || !description) {
-                    message.classList.add('error');
-                    error.classList.add('active');
-                    errorMsg.innerText= 'Veuillez remplir tous les champs obligatoires';
+                    // message.classList.add('error');
+                    // error.classList.add('active');
+                    // errorMsg.innerText= 'Veuillez remplir tous les champs obligatoires';
                     return;
                 }
                 
@@ -3686,17 +3686,17 @@
                 
                 // Validation de la taille du fichier côté client
                 if(selectedFile && selectedFile.size > 500 * 1024 * 1024) { // 500MB
-                    message.classList.add('error');
-                    error.classList.add('active');
-                    errorMsg.innerText= 'Le fichier est trop volumineux (max 500MB)';
+                    // message.classList.add('error');
+                    // error.classList.add('active');
+                    // errorMsg.innerText= 'Le fichier est trop volumineux (max 500MB)';
                     return;
                 }
                 
                 // Vérifier si c'est une vidéo et si la durée est chargée
                 if(selectedFile && selectedFile.type.includes('video') && !feedVideoDuration) {
-                    message.classList.add('error');
-                    error.classList.add('active');
-                    errorMsg.innerText= 'Veuillez attendre que la vidéo soit chargée';
+                    // message.classList.add('error');
+                    // error.classList.add('active');
+                    // errorMsg.innerText= 'Veuillez attendre que la vidéo soit chargée';
                     return;
                 }
                 
@@ -3817,9 +3817,9 @@
                                     overlayEl.remove();
                                 }
                                 
-                                message.classList.add('success');
-                                success.classList.add('active');
-                                successMsg.innerText= response.message;
+                                // message.classList.add('success');
+                                // success.classList.add('active');
+                                // successMsg.innerText= response.message;
                                 
                                 // Réinitialiser seulement les champs de la première étape
                                 document.querySelector('#create-formation form').reset();
@@ -3868,9 +3868,9 @@
                                     overlayEl.remove();
                                 }
                                 
-                                message.classList.add('error');
-                                error.classList.add('active');
-                                errorMsg.innerText= 'Erreur lors de la création de la formation';
+                                // message.classList.add('error');
+                                // error.classList.add('active');
+                                // errorMsg.innerText= 'Erreur lors de la création de la formation';
                             }
                         });
             };
@@ -4122,19 +4122,19 @@
                                     overlay.classList.remove('create-formation');
                                     
                                     // Afficher message de succès
-                                    message.classList= [];
-                                    message.classList.add('success');
-                                    success.classList.add('active');
-                                    successMsg.innerText= 'Module(s) chargé avec succès';
+                                    // message.classList= [];
+                                    // message.classList.add('success');
+                                    // success.classList.add('active');
+                                    // successMsg.innerText= 'Module(s) chargé avec succès';
                                     // window.location.reload();
 
                                 },
                                 error: function(err) { 
                                     console.error('Erreur lors de l\'ajout des vidéos:', err);
                                     // Afficher message d'erreur
-                                    message.classList.add('error');
-                                    error.classList.add('active');
-                                    errorMsg.innerText = 'Erreur lors de l\'ajout des vidéos';
+                                    // message.classList.add('error');
+                                    // error.classList.add('active');
+                                    // errorMsg.innerText = 'Erreur lors de l\'ajout des vidéos';
                                 }
                             });
                         }

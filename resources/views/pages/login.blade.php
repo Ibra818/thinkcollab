@@ -65,8 +65,8 @@
             e.preventDefault();
             const token = "{{ csrf_token() }}";
             const email = emailForgot?.value;
-            loaderOverlay.classList.add('active');
-            loader.classList.add('active');
+            // loaderOverlay.classList.add('active');
+            // loader.classList.add('active');
             $.ajax({
                 url: apiUrl + 'resetPassword',
                 headers: {
@@ -80,18 +80,18 @@
                 success: function(response){
                     email.value=null;
                     console.log('restore-pass classlist:',restorePassword.classList);
-                    console.log('loader-classlist: ', loader.classList);
+                    // console.log('loader-classlist: ', loader.classList);
                     
                     if(response.status==200){
-                        loader.classList.remove('active');
+                        // loader.classList.remove('active');
                         restorePassword.classList.add('active');
                         spanRestorePass.innerText = email;
                         restoreText.innerText = restoreText.innerText;
                         
                     }else if(response.status==400){
-                        loader.classList.remove('active');
+                        // loader.classList.remove('active');
                         restoreText.innerText = response.message;
-                        loaderOverlay.classList.add('active');
+                        // loaderOverlay.classList.add('active');
                         restorePassword.classList.add('active');
                     }
                 },
@@ -103,8 +103,8 @@
         });
 
         proBtnContinue.addEventListener('click', (e)=>{
-            loaderOverlay.classList.add('active');
-            loader.classList.add('active');
+            // loaderOverlay.classList.add('active');
+            // loader.classList.add('active');
             const email = document.querySelector('#email')?.value;
             const password = document.querySelector('#password')?.value;
             const confirm_password = document.querySelector('#confirm_password')?.value;
@@ -131,16 +131,16 @@
                     console.log(response);
                     if(response.success){
                         // Nettoyer les états précédents
-                        loaderOverlay.classList.remove('active');
-                        loader.classList.remove('active');
-                        error.classList.remove('active');
+                        // loaderOverlay.classList.remove('active');
+                        // loader.classList.remove('active');
+                        // error.classList.remove('active');
                         registerForm.classList.remove('active');
                         profile.classList= [];
                         
                         // Afficher le succès
-                        successMsg.innerText = response.message;
-                        message.classList.add('success');
-                        success.classList.add('active');
+                        // successMsg.innerText = response.message;
+                        // message.classList.add('success');
+                        // success.classList.add('active');
                         registerForm.classList.add('active');
                         loginForm.classList.add('active');
                         
@@ -154,19 +154,19 @@
                 error: function(erreurs){
                     console.log(erreurs);
                     // Nettoyer les états précédents
-                    loaderOverlay.classList.remove('active');
-                    loader.classList.remove('active');
-                    success.classList.remove('active');
-                    message.classList.remove('success');
+                    // loaderOverlay.classList.remove('active');
+                    // loader.classList.remove('active');
+                    // success.classList.remove('active');
+                    // message.classList.remove('success');
                     let errorMessage = 'Erreur d\'inscription';
                     
                     // errorMessage = erreurs.responseJSON.errors;
                     errorMessage = 'Erreur d\'inscription';
                     console.log(errorMessage);
                     // Afficher l'erreur
-                    errorMsg.innerText = errorMessage;
-                    message.classList.add('error');
-                    error.classList.add('active');
+                    // errorMsg.innerText = errorMessage;
+                    // message.classList.add('error');
+                    // error.classList.add('active');
                 },
             })
         });
@@ -237,8 +237,8 @@
             const logEmail = document.querySelector('#log-email')?.value;
             const logPassword = document.querySelector('#log-password')?.value;
             const token = "{{ csrf_token() }}";
-            loaderOverlay.classList.add('active');
-            loader.classList.add('active');
+            // loaderOverlay.classList.add('active');
+            // loader.classList.add('active');
             $.ajax({
                 type : 'POST',
                 url:  apiUrl + "login",
@@ -255,8 +255,8 @@
                 success: function(response){
                     console.log('user: ',response);
                     if(response.success){
-                        loader.classList.remove('active');
-                        loaderOverlay.classList.remove('active');
+                        // loader.classList.remove('active');
+                        // loaderOverlay.classList.remove('active');
                         localStorage.setItem('user', response.user);
                         localStorage.setItem('token', response.token);
                          if(response.user.role== 'admin' || response.user.role== 'superadmin'){
@@ -267,36 +267,36 @@
                         
 
                         // Nettoyer les états précédents
-                        if(loaderOverlay.classList.contains('active')) loaderOverlay.classList.remove('active');
-                        if(loader.classList.contains('active')) loader.classList.remove('active');
-                        if(error.classList.contains('active')) error.classList.remove('active');
-                        if(message.classList.contains('error')) message.classList.remove('error');
+                        // if(loaderOverlay.classList.contains('active')) loaderOverlay.classList.remove('active');
+                        // if(loader.classList.contains('active')) loader.classList.remove('active');
+                        // if(error.classList.contains('active')) error.classList.remove('active');
+                        // if(message.classList.contains('error')) message.classList.remove('error');
                         
                         // Afficher le succès
-                        successMsg.innerText = response.message;
-                        message.classList.add('success');
-                        success.classList.add('active');
+                        // successMsg.innerText = response.message;
+                        // message.classList.add('success');
+                        // success.classList.add('active');
                     }else{
-                        loaderOverlay.classList.remove('active');
-                        loader.classList.remove('active');
-                        success.classList.remove('active');
-                        message.classList.remove('success');
+                        // loaderOverlay.classList.remove('active');
+                        // loader.classList.remove('active');
+                        // success.classList.remove('active');
+                        // message.classList.remove('success');
                         
-                        let errorMessage = response.message;
+                        // let errorMessage = response.message;
                         console.log(errorMessage);
                         // Afficher l'erreur
-                        errorMsg.innerText = errorMessage;
-                        error.classList.add('active');
-                        message.classList.add('error');
+                        // errorMsg.innerText = errorMessage;
+                        // error.classList.add('active');
+                        // message.classList.add('error');
                     }
                 },
                 error: function(erreur){
                     
                     // Nettoyer les états précédents
-                    loaderOverlay.classList.remove('active');
-                    loader.classList.remove('active');
-                    success.classList.remove('active');
-                    message.classList.remove('success');
+                    // loaderOverlay.classList.remove('active');
+                    // loader.classList.remove('active');
+                    // success.classList.remove('active');
+                    // message.classList.remove('success');
                     
                     // let errorMessage = erreur.responseJSON.message;
                     // console.log(errorMessage);
@@ -315,8 +315,10 @@
         
         btnRegister.addEventListener('click', (e)=> {
             e.preventDefault();
-
-            profile.classList.add('active');
+            // const registerForm= document.querySelector('.register');
+            if(registerForm.querySelector('#email').value && registerForm.querySelector('#password').value, registerForm.querySelector('#username').value && registerForm.querySelector('#confirm_password').value){
+                profile.classList.add('active');
+            }
             
         });
 

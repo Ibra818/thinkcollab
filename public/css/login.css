@@ -215,10 +215,21 @@
 }
 
 .overlay .login form input{
-    min-height: 35px;
+    min-height: 30px;
 }
 
-
+.overlay .register form label{
+    color: white;
+    width: 441px;   
+    height: 14px;
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-left: 70px;
+    /* margin-bottom: 2px; */
+    font-style: regular;
+    font-family: 'SF Pro Display';
+}
 
 .overlay form label{
     color: white;
@@ -226,12 +237,11 @@
     height: 14px;
     font-weight: 400;
     font-size: 12px;
-    margin-top: 8px;
+    margin-top: 10px;
+    margin-left: 50px;
     /* margin-bottom: 2px; */
     font-style: regular;
     font-family: 'SF Pro Display';
-
-
 }
 .register .register-head, .login .login-head{
     display: flex;
@@ -258,7 +268,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
     border-radius: 12px;
     overflow: hidden;
@@ -322,12 +332,24 @@
 
 .overlay form input:focus{
     outline: none;
+    border: 1px solid #FBBC05;
+    transition: border .5s ease;
 }
 .overlay form input{
     border:1px solid #FFFFFF;
     width: 400px;
     height: 44px;
     border-radius: 12px;
+    color: white;
+    background-color:transparent;
+}
+
+
+.overlay .register form input{
+    border:1px solid #FFFFFF;
+    width: 380px;
+    height: 44px;
+    border-radius: 10px;
     color: white;
     background-color:transparent;
 }
@@ -650,7 +672,7 @@
 }
 
 #forgotten-pass.active form input{
-    min-height: 35px;
+    min-height: 30px;
 }
 
 #profile{
@@ -935,7 +957,7 @@
         background-color: rgba(49, 49, 49, 0.23); /* Conserver couleur desktop */
         color: white; /* Conserver couleur desktop */
         border: 1px solid white;
-        border-radius: 10px;
+        border-radius: 8px;
         width: 100%;
     }
 

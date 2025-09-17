@@ -2308,7 +2308,7 @@ input, textarea, select {
             background-color: var(--sidebar);
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             margin-left: 5%;
             border-radius: 5px;
@@ -2317,11 +2317,11 @@ input, textarea, select {
             margin-right: 6%;
         }
 
-        /* #create-formation.active .create-formation-body form .file-ctn .ctn-svg{
+        #create-formation.active .create-formation-body form .file-ctn .ctn-svg{
             width: 90%;
             color: white;
             max-height:70%;
-            border: 2px solid white;
+            /* border: 2px solid white; */
             margin: 2% 0 2% 0;
             padding: 1% 0 1% 0;
             border-radius: 10px;
@@ -2330,7 +2330,7 @@ input, textarea, select {
             justify-content: center;
             align-items: center;
             background-color: var(--graylite);
-        } */
+        }
 
         #create-formation.active .create-formation-body form .file-ctn .btn-file{
             width: 90%;
