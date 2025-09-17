@@ -354,6 +354,10 @@
     background-color:transparent;
 }
 
+.overlay .register form input:focus{
+    border: 1px solid #FBBC05;
+}
+
 
 
 .overlay form button{
