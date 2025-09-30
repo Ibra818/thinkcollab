@@ -24,6 +24,10 @@ use App\Http\Controllers\FormationSectionController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 
+Route::get('/{any}', function () {
+    return response()->file(public_path('index.html'));
+})->where('any', '^(?!api).*$');
+
 // Route::get('/', function () {
     // return view('pages.login');
 // });
