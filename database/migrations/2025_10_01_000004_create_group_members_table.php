@@ -13,6 +13,11 @@ return new class extends Migration
             $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('role', ['member','admin'])->default('member');
+            $table->text('content')->nullable();
+            $table->string('file_path')->nullable();
+            $table->string('file_name')->nullable();
+            $table->string('file_mime')->nullable();
+            $table->datetime('read_at')->nullable();
             $table->timestamps();
             $table->unique(['group_id','user_id']);
         });
