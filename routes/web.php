@@ -25,7 +25,7 @@ use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 
 // Route::get('/', function () {
-//     return view('pages.login');
+    // return view('pages.login');
 // });
 
 // Route::get('/home', function(){
