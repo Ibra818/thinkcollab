@@ -31,7 +31,7 @@ class FormationController extends Controller
                 'prix' => 'required|integer|min:0',
                 'categorie' => 'required|exists:categories,id',
                 'file' => 'required|file|max:512000', // 500MB max pour les vidéos
-                'duree' => 'required|integer|min:0',
+                // 'duree' => 'required|integer|min:0',
                 'image_couverture' => 'required|file|image|mimes:jpeg,png,jpg|max:51200', // 50MB max pour les images
             ]);
 
@@ -66,7 +66,7 @@ class FormationController extends Controller
                         'formation_id' => $formation->id,
                         'titre' => $request->titre,
                         'url_video' => $videoPath,
-                        'duree' => $request->duree,
+                        'duree' => 1000,
                         'est_public' => true,
                     ]);
 
