@@ -15,13 +15,13 @@ class CategorieSeeder extends Seeder
     {
         $categories = [
 
-            [
-                'nom' => 'Toutes les categories',
-                'slug' => '',
-                'description' => '',
-                'couleur' => '#3B82F6',
-                'icone' => 'code',
-            ],
+            // [
+            //     'nom' => 'Toutes les categories',
+            //     'slug' => '',
+            //     'description' => '',
+            //     'couleur' => '#3B82F6',
+            //     'icone' => 'code',
+            // ],
 
             [
                 'nom' => 'Développement Web',

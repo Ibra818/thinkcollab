@@ -9,6 +9,7 @@ use App\Models\FeedVideoShare;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\NotificationController;
 
 class FeedVideoController extends Controller
 {
@@ -64,6 +65,8 @@ class FeedVideoController extends Controller
             $video->likes_count = $video->likes->count();
             $video->views_count = $video->views->count();
             $video->shares_count = $video->shares->count();
+            // Ensure comments_count present at initialization
+            $video->comments_count = \App\Models\FeedVideoComment::where('feed_video_id', $video->id)->count();
             $video->is_liked = $userId ? $video->likes->contains('user_id', $userId) : false;
             
             // Nettoyer les relations pour éviter de surcharger la réponse
@@ -143,6 +146,18 @@ class FeedVideoController extends Controller
                 'feed_video_id' => $feedVideo->id,
                 'created_at' => now(),
             ]);
+
+            // Notification: like sur vidéo
+            if ($feedVideo->user_id !== $userId) {
+                NotificationController::createNotification(
+                    $feedVideo->user_id,
+                    'like',
+                    'Nouveau like',
+                    Auth::user()->name . ' a aimé votre vidéo',
+                    '/feed-videos/' . $feedVideo->id
+                );
+            }
+
             return response()->json(['message' => 'Vidéo likée', 'liked' => true]);
         }
     }

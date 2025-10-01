@@ -269,4 +269,24 @@ class UserProfileController extends Controller
         
         return response()->json(['message' => 'Email de vérification envoyé']);
     }
+
+    /**
+     * Search users by name or email
+     */
+    public function searchUsers(Request $request): JsonResponse
+    {
+        $query = $request->get('q', '');
+        
+        if (strlen($query) < 2) {
+            return response()->json(['data' => []]);
+        }
+
+        $users = User::where('name', 'like', "%{$query}%")
+            ->orWhere('email', 'like', "%{$query}%")
+            ->select('id', 'name', 'email', 'avatar_url', 'role')
+            ->limit(10)
+            ->get();
+
+        return response()->json(['data' => $users]);
+    }
 }

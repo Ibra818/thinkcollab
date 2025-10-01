@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    /**
+     * Helper statique pour créer une notification depuis d'autres contrôleurs
+     */
+    public static function createNotification(int $userId, string $type, string $title, string $message, ?string $link = null): Notification
+    {
+        return Notification::create([
+            'user_id' => $userId,
+            'type' => $type,
+            'title' => $title,
+            'message' => $message,
+            'link' => $link,
+        ]);
+    }
+
     public function index()
     {
         $userId = Auth::id();
@@ -50,5 +64,6 @@ class NotificationController extends Controller
         return response()->json(['data' => $notification], 201);
     }
 }
+
 
 

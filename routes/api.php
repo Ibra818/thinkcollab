@@ -206,6 +206,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/page-data', [UserProfileController::class, 'getProfilePageData']);
     Route::post('/profile/resend-verification', [UserProfileController::class, 'resendEmailVerification']);
     
+    // User Search
+    Route::get('/users/search', [UserProfileController::class, 'searchUsers']);
+    
     // Payment routes (auth required)
     Route::post('/payments/initialize', [PaymentController::class, 'initializePayment']);
     Route::get('/payments/{transactionId}/status', [PaymentController::class, 'checkPaymentStatus']);

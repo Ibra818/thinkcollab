@@ -38,6 +38,9 @@ class FeedVideoComment extends Model
     {
         return $this->hasMany(self::class, 'parent_id');
     }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(CommentLike::class, 'feed_video_comment_id');
+    }
 }
-
-

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\NotificationController;
 
 class MessageController extends Controller
 {
@@ -34,6 +35,16 @@ class MessageController extends Controller
         $validated['sent_at'] = now();
 
         $message = Message::create($validated);
+
+        // Notification: nouveau message
+        NotificationController::createNotification(
+            $validated['receiver_id'],
+            'message',
+            'Nouveau message',
+            Auth::user()->name . ' vous a envoyé un message',
+            '/contacts?user=' . Auth::id()
+        );
+
         return response()->json($message->load(['sender', 'receiver']), 201);
     }
 

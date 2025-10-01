@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\NotificationController;
 
 class FollowController extends Controller
 {
@@ -16,12 +17,34 @@ class FollowController extends Controller
             return response()->json(['message' => 'Vous ne pouvez pas vous suivre vous-même'], 400);
         }
 
-        $follow = DB::table('follows')->updateOrInsert([
-            'follower_id' => Auth::id(),
-            'followed_id' => $user->id,
-        ], [
-            'created_at' => now(),
-        ]);
+        $alreadyFollowing = DB::table('follows')
+            ->where('follower_id', Auth::id())
+            ->where('followed_id', $user->id)
+            ->exists();
+
+        if (!$alreadyFollowing) {
+            DB::table('follows')->insert([
+                'follower_id' => Auth::id(),
+                'followed_id' => $user->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Vérifier si c'est un follow-back
+            $isFollowBack = DB::table('follows')
+                ->where('follower_id', $user->id)
+                ->where('followed_id', Auth::id())
+                ->exists();
+
+            // Notification: follow ou follow-back
+            NotificationController::createNotification(
+                $user->id,
+                'follow',
+                $isFollowBack ? 'Follow-back' : 'Nouveau follower',
+                Auth::user()->name . ($isFollowBack ? ' vous suit également !' : ' vous suit maintenant'),
+                '/users/' . Auth::id() . '/profile'
+            );
+        }
 
         return response()->json(['message' => 'Utilisateur suivi avec succès']);
     }
